@@ -51,5 +51,5 @@ def tyranny_of_the_Rocket_Equation1(data):
 
 
 # %% Run code
-text = "./data/adventofcode_2019_day_1_input.txt"
+text = "../data/adventofcode_2019_day_1_input.txt"
 tyranny_of_the_Rocket_Equation1(text)

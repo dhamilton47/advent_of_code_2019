@@ -88,4 +88,4 @@ def IntCode(x):
 
 
 # %%
-main("./data/adventofcode_2019_day_2_input.txt")
+main("../data/adventofcode_2019_day_2_input.txt")

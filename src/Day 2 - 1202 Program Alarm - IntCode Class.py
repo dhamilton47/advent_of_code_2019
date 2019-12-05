@@ -121,7 +121,7 @@ class IntCode:
 
 # %%
 
-temp = IntCode(txtfile="./data/adventofcode_2019_day_2_input.txt", noun=12, verb=2)
+temp = IntCode(txtfile="../data/adventofcode_2019_day_2_input.txt", noun=12, verb=2)
 temp.run_program()
-temp = IntCode(txtfile="./data/adventofcode_2019_day_2_input.txt", noun=95, verb=7)
+temp = IntCode(txtfile="../data/adventofcode_2019_day_2_input.txt", noun=95, verb=7)
 temp.run_program()
