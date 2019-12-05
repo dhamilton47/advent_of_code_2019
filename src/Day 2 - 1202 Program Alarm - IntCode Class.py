@@ -60,14 +60,6 @@ class IntCode:
             return []
 
 # %%
-    def set_address(self, index, value):
-        self.address = value
-
-# %%
-    def get_address(self, index):
-        return self.address
-
-# %%
     def opcode1(self, var1, var2, var3):
         self.memory[var3] = self.memory[var1] + self.memory[var2]
         self.instruction_pointer += 4
