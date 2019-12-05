@@ -114,8 +114,8 @@ def plot_points(x, y):
 
 # %% Determine all of the intersections of the two wires
 def intersections(lst1, lst2):
-    tup1 = map(tuple, list(plot_x.pt))
-    tup2 = map(tuple, list(plot_y.pt))
+    tup1 = map(tuple, lst1)
+    tup2 = map(tuple, lst2)
     return list(map(list, set(tup1).intersection(tup2)))
 
 
@@ -125,7 +125,6 @@ def manhattan(pt1, pt2=[0, 0]):
 
 
 # %% Determine the minimum distance
-
 def minimum_distance(x):
     distances = []
 
@@ -145,14 +144,42 @@ plot_y = plot_points(codes_y1, len_codes_y)
 intersection = intersections(plot_x.pt, plot_y.pt)
 print(minimum_distance(intersection))
 
-# %% Plot the results
+# %% Plot the results (Uncomment to see graph)
 
 # Set the width and height of the figure
-plt.figure(figsize=(12, 6))
+# plt.figure(figsize=(12, 6))
 
-plt.plot(codes_x1['x1'], codes_x1['y1'], label='Wire 1')
-plt.plot(codes_y1['x1'], codes_y1['y1'][:], label='Wire 2')
-plt.plot([0, intersection[13][0]], [0, intersection[13][1]], label='Wire 1')
+# Add lines
+# plt.plot(codes_x1['x1'], codes_x1['y1'], label='Wire 1')
+# plt.plot(codes_y1['x1'], codes_y1['y1'][:], label='Wire 2')
+# plt.plot([0, intersection[13][0]], [0, intersection[13][1]], label='Wire 1')
 
 # Add title
-plt.title("Crossed Wires")
+# plt.title("Crossed Wires")
+
+
+# %% Determine the number of steps to each intersection
+def determine_steps(x, y):
+    steps = []
+    for i in y:
+        u = list(x.x[x.x == i[0]].index)
+        v = list(x.y[x.y == i[1]].index)
+        steps.append(list(set(u) & set(v))[0] + 1)
+
+    return steps
+
+
+def minimum_total_steps(x, y, z):
+    steps_x = determine_steps(x, z)
+    steps_y = determine_steps(y, z)
+    steps_total = []
+
+    for i in range(len(steps_x)):
+        steps_total.append(steps_x[i] + steps_y[i])
+
+    steps_total.sort()
+
+    return 'Day 3 - Part 2 - Minimum steps are = ' + str(steps_total[0])
+
+
+print(minimum_total_steps(plot_x, plot_y, intersection))
