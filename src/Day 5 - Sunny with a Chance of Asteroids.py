@@ -50,6 +50,13 @@ class IntCode:
         self.verb = self.memory[2]
 
 # %%
+    def set_instruction(self):
+        self.instruction = []
+        self.instruction.append(self.memory[self.instruction_pointer])
+        for i in range(1, self.instruction_length):
+            self.instruction.append(self.memory[self.instruction_pointer + i])
+
+# %%
     def set_instruction_length(self):
         self.instruction_length = self.instruction_length_dict[self.opcode] \
             if self.instruction_length_dict[self.opcode] else 0
@@ -89,23 +96,23 @@ class IntCode:
 # %%
     def address(self, i):
         if self.parameter_modes[i] == 'position':
-            return self.memory[self.parameters[i]]
+            return self.parameters[i]
         else:
-            return self.memory[self.instruction_pointer + 1 + i]
+            return self.instruction_pointer + 1 + i
 
 # %% Print Functions
     def prt0(self):
-        print('OpCode = {}, Instruction = {}, Parameters = {}'
-              .format(self.opcode, self.instruction, self.parameters))
+        print('IP = {}, Instruction = {}, OpCode = {}'
+              .format(self.instruction_pointer, self.instruction, self.opcode))
         # print('OpCode = {}, Instruction length = {}, Parameters = {}'
         #       .format(self.opcode, self.instruction_length, self.parameters))
 
-
-    def prt(self, i):
-        print('\tIPCode: {}, OpCode: {}, vm{}: {}, v{}: {}'
-              .format(self.memory[self.instruction_pointer],
-                      self.opcode, i + 1, self.parameter_modes[i],
-                      i + 1, self.parameters[i]))
+    def prt(self, i, pm, adr, val):
+        print('\tV{}: Mode = {}, Address = {}, Value = {}'
+              .format(i, pm, adr, val))
+        # print('\tV{} mode = {}, V{} value = {}'
+        #       .format(i + 1, self.parameter_modes[i],
+        #               i + 1, self.parameters[i]))
         # print('\tIPCode: {}, OpCode: {}, vm{}: {}, v{}: {}'
         #       .format(self.memory[self.instruction_pointer],
         #               self.opcode, i + 1, self.parameter_modes[i],
@@ -114,69 +121,96 @@ class IntCode:
     def prt1(self, x1, x2, x3):
         print('\t\tp1 = {}, p2 = {}, p3 = {} '.format(x1, x2, x3))
 
-
 # %%
     def opcode1(self, parameters):
         mem = self.memory
-        ip = self.instruction_pointer
+#        ip = self.instruction_pointer
         pm1, pm2 = self.parameter_modes
-        v1, v2 = self.parameters[:2]
+#        v1, v2 = self.parameters[:2]
 
         adr1 = self.address(0)
         adr2 = self.address(1)
-        self.prt(0)
-        self.prt1(adr1, adr2, adr1 + adr2)
+#        self.prt1(adr1, adr2, adr1 + adr2)
 #        print('\t\tp1 = {}, p2 = {}'.format())
-        
-        p1 = mem[parameters[0]] if pm1 == 'position' else mem[ip + 1]
-        p2 = mem[parameters[1]] if pm2 == 'position' else mem[ip + 2]
-        self.prt(1)
-        self.prt1(p1, p2, p1 + p2)
+#        adr1 = mem[ip + 1] if pm1 == 'position' else mem[parameters[0]]
+#        adr2 = mem[ip + 2] if pm2 == 'position' else mem[parameters[1]]
+
+        p1 = mem[adr1]
+        p2 = mem[adr2]
+        # p1 = mem[parameters[0]] if pm1 == 'position' else mem[ip + 1]
+        # p2 = mem[parameters[1]] if pm2 == 'position' else mem[ip + 2]
+
+        # self.prt0()
+        # self.prt(1, pm1, adr1, p1)
+        # self.prt(2, pm2, adr2, p2)
+        # self.prt(3, 'position', parameters[2], p1 + p2)
+#        self.prt1(p1, p2, p1 + p2)
 #        print('\t\tp1 = {}, p2 = {}'.format())
 
         self.memory[parameters[2]] = p1 + p2
         self.instruction_pointer += self.instruction_length
+#        print('Value at Memory Location 224 =', self.memory[224])
 
 # %%
     def opcode2(self, parameters):
 
         mem = self.memory
-        ip = self.instruction_pointer
+#        ip = self.instruction_pointer
         pm1, pm2 = self.parameter_modes
-        v1, v2 = self.parameters[:2]
+#        v1, v2 = self.parameters[:2]
 
         adr1 = self.address(0)
         adr2 = self.address(1)
-        self.prt(0)
-        self.prt1(adr1, adr2, adr1 * adr2)
+#        self.prt1(adr1, adr2, adr1 * adr2)
 #        print('\t\tp1 = {}, p2 = {}'.format(adr1, adr2))
+#        adr1 = mem[ip + 1] if pm1 == 'position' else mem[parameters[0]]
+#        adr2 = mem[ip + 2] if pm2 == 'position' else mem[parameters[1]]
 
-        p1 = mem[parameters[0]] if pm1 == 'position' else mem[ip + 1]
-        p2 = mem[parameters[1]] if pm2 == 'position' else mem[ip + 2]
-        self.prt(1)
-        self.prt1(p1, p2, p1 * p2)
+        p1 = mem[adr1]
+        p2 = mem[adr2]
+        # p1 = mem[parameters[0]] if pm1 == 'position' else mem[ip + 1]
+        # p2 = mem[parameters[1]] if pm2 == 'position' else mem[ip + 2]
+
+        # self.prt0()
+        # self.prt(1, pm1, adr1, p1)
+        # self.prt(2, pm2, adr2, p2)
+        # self.prt(3, 'position', parameters[2], p1 * p2)
+        # self.prt(0)
+        # self.prt(1)
+#        self.prt1(p1, p2, p1 * p2)
 #        print('\t\tp1 = {}, p2 = {}'.format(p1, p2))
 
-        self.parameters[2] = p1 * p2
+        self.memory[parameters[2]] = p1 * p2
         self.instruction_pointer += self.instruction_length
+#        print('Value at Memory Location 224 =', self.memory[224])
 
 # %%
     def opcode3(self, parameters):
-        self.memory[parameters[0]] = int(input('What unit are we testing? '))
+        self.prt0()
+        # print('Value at Memory Location 224 =', self.memory[224])
+
+        self.memory[parameters[0]] = \
+            int(input('Which System ID are we testing? '))
         self.instruction_pointer += self.instruction_length
 
 # %%
     def opcode4(self, parameters):
 
         mem = self.memory
-        pm1 = self.parameter_modes
-        v1 = self.parameters[0]
-        adr1 = self.address(0)
-        self.prt(0)
-        print('p1 = {}'.format(adr1))
+        pm1 = self.parameter_modes[0]
+#        v1 = self.parameters[0]
 
-        print('Test output:', adr1)
+        adr1 = self.address(0)
+        p1 = mem[adr1]
+
+        # self.prt0()
+        # self.prt(1, pm1, adr1, p1)
+#        print('p1 = {}'.format(p1))
+
+        if p1:
+            print('Day 5 - Part 1 - Diagnostic Code = {:,d}'.format(p1))
         self.instruction_pointer += self.instruction_length
+#        print('Value at Memory Location 224 =', self.memory[224])
 
 # %%
     def opcode99(self):
@@ -187,8 +221,7 @@ class IntCode:
                   .format(100 * self.memory[1] + self.memory[2]))
             print('Day 2 - Part 2 - Check = {}'.format(self.memory[0]))
         else:
-            print('Day 5 - Part 1 - Diagnostic Code = {:,d}'
-                  .format(self.memory[0]))
+            return
         self.instruction_pointer = len(self.memory)
 
 # %%
@@ -209,9 +242,13 @@ class IntCode:
         self.set_parameters()
         # p = self.parameters
 
-        self.prt0()
+        self.set_instruction()
+        # self.instruction.append(self.memory[self.instruction_pointer])
+
+        # self.prt0()
         # print('OpCode =', self.opcode, ' Instruction length =',
-              # self.instruction_length, ' Parameters =', self.parameters)
+        # self.instruction_length, ' Parameters =', self.parameters)
+
 
         return self.opcode, self.parameters
 
