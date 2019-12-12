@@ -5,9 +5,9 @@
  
 #
 
-# Thoughts on IntCode Structure - __(as of Day 7, Part 1)__
+# Thoughts on IntCode Structure _(as of Day 7, Part 1)_
 
-Yes, geoegraphy and code ideas are still fluid.
+Yes, geography and code ideas are still fluid.
 
 ### IntCode Class
 **Nouns:**
