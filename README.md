@@ -5,10 +5,12 @@
  
 #
 
-# Thoughts on IntCode Structure
+# Thoughts on IntCode Structure - __(as of Day 7, Part 1)__
+
+Yes, geoegraphy and code ideas are still fluid.
 
 ### IntCode Class
-** Nouns:**
+**Nouns:**
 - OS
 - I/O
 - CPU
