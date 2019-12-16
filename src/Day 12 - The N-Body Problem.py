@@ -29,7 +29,7 @@ from itertools import groupby
 # 3. Kinetic energy = |v(x)| + |v(y)| + |v(z)|
 
 # %% Functions
-def read_program(txtfile):
+def read_input(txtfile):
     f = open(txtfile, "r")
     if f.mode == 'r':
         contents = f.read()
@@ -38,21 +38,35 @@ def read_program(txtfile):
     return contents
 
 
-
-def transform_program(contents):
+def transform_input(data):
     for item in ['<', '>', '=', 'x', 'y', 'z', ',']:
-        contents = [''.join(j).strip(item) for sub in contents
-                    for k, j in groupby(sub, str.isdigit)]
+        data = [''.join(j).strip(item) for sub in data
+                for k, j in groupby(sub, str.isdigit)]
 
-    memory = str(''.join(contents)).replace('\n', ' ').split(' ')
-    return [int(item) for item in memory]
+    data = str(''.join(data)).replace('\n', ' ').split(' ')
+
+    return [int(item) for item in data]
 
 
-def convert_moon_list_to_dictionary(transformed_contents):
-    for i in range(4):
-        for j in range(3):
+def create_new_moons(a, b, c):
+    return {o:
+            {m:
+             {n:
+              0
+              for n in range(a)}
+             for m in range(b)}
+            for o in range(c)}
+
+
+def convert_moon_list_to_dictionary(data, a, b, c):
+    new_moons = create_new_moons(a, b, c)
+
+    for i in range(c):
+        for j in range(a):
             y = (3 * i) + j
-            moons[i][0][j] = transformed_contents[y]
+            new_moons[i][0][j] = data[y]
+
+    return new_moons
 
 
 def print_format(moons, time_steps):
@@ -95,14 +109,16 @@ def gravity_effect_per_pair(a, b):
             a[1][i] += 1
             b[1][i] -= 1
         else:
-            return
+            continue
 
 
-def gravity_effects_per_step(moon_pairs, moons):
-    for moon_pair in moon_pairs:
-        moon1 = moons[moon_pair[0]]
-        moon2 = moons[moon_pair[1]]
+def gravity_effects_per_step(sister_moons, moons):
+    for sister_moon in sister_moons:
+        moon1 = moons[sister_moon[0]]
+        moon2 = moons[sister_moon[1]]
         gravity_effect_per_pair(moon1, moon2)
+
+    return moons
 
 
 def position_at_end_of_time_step(moons):
@@ -110,122 +126,53 @@ def position_at_end_of_time_step(moons):
         for axis in range(3):
             moons[moon][0][axis] = moons[moon][0][axis] + moons[moon][1][axis]
 
+    return moons
+
+
+def energy(moons):
+    e_tot = 0
+    for i in range(4):
+        e_p = abs(moons[i][0][0]) + abs(moons[i][0][1]) + abs(moons[i][0][2])
+        e_k = abs(moons[i][1][0]) + abs(moons[i][1][1]) + abs(moons[i][1][2])
+        e_tot += e_p * e_k
+
+    return e_tot
+
+
+def moon_shot(new_moons, moons, max_steps):
+    time_steps = 0
+    print_format(moons, time_steps)
+    e = energy(moons)
+    print('Total energy in the system = {}'.format(e))
+    print()
+
+    for i in range(max_steps):
+        harvest_moons = gravity_effects_per_step(pairs, moons)
+        quarter_moons = position_at_end_of_time_step(harvest_moons)
+        e = energy(quarter_moons)
+        time_steps += 1
+        if quarter_moons == new_moons:
+            break
+        # if e == 0:
+        #     break
+
+    print_format(quarter_moons, time_steps)
+    print('Total energy in the system = {}'.format(e))
+    print()
+
 
 # %%  Set up variables
 
-moon_names = {0: 'Io', 2: 'Europa', 3: 'Ganymede', 4: 'Callisto'}
-
-vector_names = {0: 'pos', 1: 'vel'}
-
-vector_axes = {0: 'x', 1: 'y', 2: 'z'}
-
-moons = {0: {0: {0: 0, 1: 0, 2: 0},
-             1: {0: 0, 1: 0, 2: 0}},
-         1: {0: {0: 0, 1: 0, 2: 0},
-             1: {0: 0, 1: 0, 2: 0}},
-         2: {0: {0: 0, 1: 0, 2: 0},
-             1: {0: 0, 1: 0, 2: 0}},
-         3: {0: {0: 0, 1: 0, 2: 0},
-             1: {0: 0, 1: 0, 2: 0}}}
-
 pairs = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]]
-
-# moons1 = {'Io': {'pos': {'x': 0, 'y': 0, 'z': 0},
-#                 'vel': {'x': 0, 'y': 0, 'z': 0}},
-#          'Europa': {'pos': {'x': 0, 'y': 0, 'z': 0},
-#                     'vel': {'x': 0, 'y': 0, 'z': 0}},
-#          'Ganymede': {'pos': {'x': 0, 'y': 0, 'z': 0},
-#                       'vel': {'x': 0, 'y': 0, 'z': 0}},
-#          'Callisto': {'pos': {'x': 0, 'y': 0, 'z': 0},
-#                       'vel': {'x': 0, 'y': 0, 'z': 0}}}
-
-# for i, item in enumerate(['Io', 'Europa', 'Ganymede', 'Callisto']):
-#     for j, item1 in enumerate(['x', 'y', 'z']):
-#         y = (3 * i) + j
-#         moons[item]['pos'][item1] = transformed_contents[y]
-
-
-
-# for i in range(4):
-#     for j in range(3):
-#         y = (3 * i) + j
-#         moons[i][0][j] = transformed_contents[y]
-        
-# pos = ['0', '1', '2', '3', '4', '5']
-# num = ': 3d}'
-
-# format_string0 = 'x={' + pos[0] + num \
-#     + ', y={' + pos[1] + num \
-#     + ', z={' + pos[2] + num
-# format_string1 = 'x={' + pos[3] + num \
-#     + ', y={' + pos[4] + num \
-#     + ', z={' + pos[5] + num
-# format_string2 = ' pos=<' + format_string0 + '>, vel=<' + format_string1 + '>'
-
-# # Moons we are tracking:
-# print(('Io:\t\t' + format_string2)
-#       .format(moons['Io']['pos']['x'],
-#               moons['Io']['pos']['y'],
-#               moons['Io']['pos']['z'],
-#               moons['Io']['vel']['x'],
-#               moons['Io']['vel']['y'],
-#               moons['Io']['vel']['z']))
-# print(('Europa:\t\t' + format_string2)
-#       .format(moons['Europa']['pos']['x'],
-#               moons['Europa']['pos']['y'],
-#               moons['Europa']['pos']['z'],
-#               moons['Europa']['vel']['x'],
-#               moons['Europa']['vel']['y'],
-#               moons['Europa']['vel']['z']))
-# print(('Ganymede:\t' + format_string2)
-#       .format(moons['Ganymede']['pos']['x'],
-#               moons['Ganymede']['pos']['y'],
-#               moons['Ganymede']['pos']['z'],
-#               moons['Ganymede']['vel']['x'],
-#               moons['Ganymede']['vel']['y'],
-#               moons['Ganymede']['vel']['z']))
-# print(('Callisto:\t' + format_string2)
-#       .format(moons['Callisto']['pos']['x'],
-#               moons['Callisto']['pos']['y'],
-#               moons['Callisto']['pos']['z'],
-#               moons['Callisto']['vel']['x'],
-#               moons['Callisto']['vel']['y'],
-#               moons['Callisto']['vel']['z']))
-
-
-# Moons we are tracking:
-# print(('Io:\t\t' + format_string2)
-#       .format(moons[0][0][0], moons[0][0][1], moons[0][0][2],
-#               moons[0][1][0], moons[0][1][1], moons[0][1][2])) 
-# print(('Europa:\t\t' + format_string2)
-#       .format(moons[1][0][0], moons[1][0][1], moons[1][0][2],
-#               moons[1][1][0], moons[1][1][1], moons[1][1][2]))
-# print(('Ganymede:\t' + format_string2)
-#       .format(moons[2][0][0], moons[2][0][1], moons[2][0][2],
-#               moons[2][1][0], moons[2][1][1], moons[2][1][2]))
-# print(('Callisto:\t' + format_string2)
-#       .format(moons[3][0][0], moons[3][0][1], moons[3][0][2],
-#               moons[3][1][0], moons[3][1][1], moons[3][1][2]))
-
-
-# %%
-
-
-# update velocity
 
 # %% Development Environment
 
-txtfile = "../data/adventofcode_2019_day_12a_input.txt"
-contents = read_program(txtfile)
-transformed_contents = transform_program(contents)
-convert_moon_list_to_dictionary(transformed_contents)
+txtfile = "../data/adventofcode_2019_day_12_input.txt"
+start = read_input(txtfile)
+start_vector = transform_input(start)
+new_moons = convert_moon_list_to_dictionary(start_vector, 3, 2, 4)
+full_moons = convert_moon_list_to_dictionary(start_vector, 3, 2, 4)
 
-time_steps = 0
-print_format(moons, time_steps)
-
-gravity_effects_per_step(pairs, moons)
-position_at_end_of_time_step(moons)
-time_steps += 1
-print_format(moons, time_steps)
+moon_shot(new_moons, full_moons, 1000)
 
 # %% Production Environment
