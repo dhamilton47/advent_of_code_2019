@@ -7,6 +7,7 @@ Created on Fri Dec  6 12:04:20 2019
 
 
 # from itertools import groupby
+import math
 
 
 def read_input(txtfile):
@@ -62,6 +63,25 @@ def create_recipe_dictionary(data):
     return d
 
 
+def create_ingredient_dictionary_1(data):
+    d = {data[i][0]: {'batch_size': int(data[i][1]),
+                      'recipe':
+                          {data[i][3 + k * 2]: int(data[i][4 + k * 2])
+                           for k in range((len(data[i]) - 3) // 2)}}
+         for i in range(len(data))}
+
+    return d
+
+
+def create_cookbook_dictionary(data):
+    d = {i: {'recipe':
+             {data[i][3 + k * 2]: int(data[i][4 + k * 2])
+              for k in range((len(data[i]) - 3) // 2)}}
+         for i in range(len(data))}
+
+    return d
+
+
 def drop3(data):
     return [data[i][:len(data[i]) - 3] for i in range(len(data))]
 
@@ -101,13 +121,64 @@ def create_dict2(data):
 txtfile = "../data/adventofcode_2019_day_14_input.txt"
 start = read_input(txtfile)
 start_vector = transform_input(start)
-ingredients = create_ingredient_dictionary(start_vector)
-recipes = create_recipe_dictionary(start_vector)
-# start_vector1 = drop3(start_vector.copy())
 
-dict2 = create_dict2(start_vector)
+# make ingredient dictionary
+# ingredients1 = create_ingredient_dictionary(start_vector)
+ingredients = create_ingredient_dictionary_1(start_vector)
 
 # make recipe dictionary
+# recipes = create_recipe_dictionary(start_vector)
+# start_vector1 = drop3(start_vector.copy())
+
+# Create recursion dictionary
+recursion = {}
+
+# Seed reaction chain
+ingredient = 'FUEL'
+next_ingredient = {ingredient: {
+    'batch_size': ingredients[ingredient]['batch_size'],
+    'needed': 1,
+    'batches_to_make': 0,
+    'recipe': dict(ingredients[ingredient]['recipe']),
+    'reaction_chain_level': 0}}
+recursion = {**recursion,
+             **next_ingredient}
+             # **{ingredient: {
+             #     'batch_size': ingredients1[ingredient]['batch_size'],
+             #     'needed': 1,
+             #     'batches_to_make': 0,
+             #     'recipe': dict(ingredients1[ingredient]['recipe']),
+             #     'reaction_chain_level': 0}}}
+# Aggragate next level of requirments
+# ingredient = recursion[ingredient]['recipe'][0][0]
+
+d = {ingredient: {
+    'batch_size': ingredients[ingredient]['batch_size'],
+    'needed': 1,
+    'batches_to_make': 0,
+    'recipe': dict(ingredients[ingredient]['recipe']),
+    'reaction_chain_level': 0}}
+
+
+
+
+# recursion = {**recursion,
+#              **{item[0]: for item[0] in recursion.items: \
+#                     for item1[0] in recursion.items['recipe'].items:
+#                         item['needed'] * item1[1]}}
+
+
+
+
+
+
+
+
+
+
+# dict2 = create_dict2(start_vector)
+
+
 
 
 
