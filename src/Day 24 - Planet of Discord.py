@@ -21,7 +21,7 @@ import aoc
 def transform_program(x):
     x = list(x.strip("\n") + ' ')
 
-    z = np.zeros((7, 7), int)
+    z = np.zeros((7, 7), dtype=int)
 
     for row in range(1, 6):
         for column in range(1, 7):
@@ -620,15 +620,15 @@ def print_layer(layer):
     print(out)
 
 
-def count_critters(m, layers_needed):
+def count_critters(matrix, layers_needed):
     count = 0
     for i in range(1, layers_needed - 1):
-        for j in range(5):
-            for k in range(5):
-                if j == 2 and k == 2:
+        for j in range(1, 6):
+            for k in range(1, 6):
+                if j == 3 and k == 3:
                     count += 0
                 else:
-                    count += m[i, j, k]
+                    count += matrix[i, j, k]
         # print(f"layer = {i}, Count = {count}")
                 # print(f"layer = {i}, row = {j}, column = {k}, "
                 #        f"m[{i}, {j}, {k}] = {m[i, j, k]}, Count = {count}")
@@ -652,56 +652,70 @@ def sum_left():
 
 
 def sum_5(matrix, plane, row, column, direction):
+    """
+    """
     if direction == 'across':
         x = functools.reduce(lambda x, y: x + y,
                              matrix[plane, row, column:column + 5])
-    else:
+    elif direction == 'down':
         x = functools.reduce(lambda x, y: x + y,
-                             matrix[plane, row:row + 5, column:column + 5])
+                             matrix[plane, row:row + 5, column])
 
     return x
 
-matrix = np.zeros((5, 7, 7), int)
-plane = 1
+# matrix = np.zeros((5, 7, 7), int)
+# plane = 1
 
 
 def handle_outer_padding(matrix, planes):
+    """
+    Get the outer values needed for the next plane and place in
+    appropriate pad spaces of that next frame.
+
+    matrix = the complete folded space required to reach the end of the time
+             frame.
+    planes = number of planes to process, excluding the end padding planes,
+             for the complete time frame.
+    """
     for plane in range(1, planes - 1):
-        matrix[plane, 0, 1:6] = matrix[plane - 1, 1, 2]
-        # matrix[plane,0,1] = matrix[plane - 1, 1, 2]
-        # matrix[plane,0,2] = matrix[plane - 1, 1, 2]
-        # matrix[plane,0,3] = matrix[plane - 1, 1, 2]
-        # matrix[plane,0,4] = matrix[plane - 1, 1, 2]
-        # matrix[plane,0,5] = matrix[plane - 1, 1, 2]
-        matrix[plane, 1:6, 1] = matrix[plane - 1, 2, 1]
-        # matrix[plane,1,1] = matrix[plane - 1, 2, 1]
-        # matrix[plane,2,1] = matrix[plane - 1, 2, 1]
-        # matrix[plane,3,1] = matrix[plane - 1, 2, 1]
-        # matrix[plane,4,1] = matrix[plane - 1, 2, 1]
-        # matrix[plane,5,1] = matrix[plane - 1, 2, 1]
-        matrix[plane, 6, 1:6] = matrix[plane - 1, 3, 2]
-        # matrix[plane,6,1] = matrix[plane - 1, 3, 2]
-        # matrix[plane,6,2] = matrix[plane - 1, 3, 2]
-        # matrix[plane,6,3] = matrix[plane - 1, 3, 2]
-        # matrix[plane,6,4] = matrix[plane - 1, 3, 2]
-        # matrix[plane,6,5] = matrix[plane - 1, 3, 2]
-        matrix[plane,1:6,6] = matrix[plane - 1, 2, 3]
-        # matrix[plane,1,6] = matrix[plane - 1, 2, 3]
-        # matrix[plane,2,6] = matrix[plane - 1, 2, 3]
-        # matrix[plane,3,6] = matrix[plane - 1, 2, 3]
-        # matrix[plane,4,6] = matrix[plane - 1, 2, 3]
-        # matrix[plane,5,6] = matrix[plane - 1, 2, 3]
+        # Top
+        matrix[plane, 0, 1:6] = matrix[plane - 1, 2, 3]
+
+        # Left
+        matrix[plane, 1:6, 0] = matrix[plane - 1, 3, 2]
+
+        # Bottom
+        matrix[plane, 6, 1:6] = matrix[plane - 1, 4, 3]
+
+        # Right
+        matrix[plane, 1:6, 6] = matrix[plane - 1, 3, 4]
 
     return matrix
 
 
 def check_adjacent_folding(mat, matrix, plane):
-    z = np.zeros((7, 7), dtype=int)
+    """
+    Determine count of bugs in the 4 adjacent sides within the non-padded
+    portion of each plane.  The four spaces adjacent to the center are
+    adjusted for the next planes outer values.
 
+    mat =
+    matrix =
+    plane =
+    """
+    mat_copy = mat.copy()
+    # z = np.zeros((7, 7), dtype=int)
+
+    # for plane in range(1, len(matrix) - 1):
     count_top = sum_5(matrix, plane + 1, 1, 1, 'across')
-    count_bottom = sum_5(matrix, plane + 1, 6, 1, 'across')
+    count_bottom = sum_5(matrix, plane + 1, 5, 1, 'across')
     count_left = sum_5(matrix, plane + 1, 1, 1, 'down')
-    count_right = sum_5(matrix, plane + 1, 1, 6, 'down')
+    count_right = sum_5(matrix, plane + 1, 1, 5, 'down')
+    # print(f"top = {count_top}, "
+    #       f"bottom = {count_bottom}, "
+    #       f"left = {count_left}, "
+    #       f"right = {count_right}")
+
     for row in range(1, 6):
         for column in range(1, 6):
             count = (mat[row - 1, column] +
@@ -709,18 +723,194 @@ def check_adjacent_folding(mat, matrix, plane):
                      mat[row, column - 1] +
                      mat[row, column + 1])
 
-            z[row, column] = bug_no_bug(mat[row, column], count)
+            if row == 2 and column == 3:
+                print(f"count_top = {count_top}")
+                count += count_top
+            if row == 4 and column == 3:
+                print(f"count_bottom = {count_bottom}")
+                count += count_bottom
+            if row == 3 and column == 2:
+                print(f"count_left = {count_left}")
+                count += count_left
+            if row == 3 and column == 4:
+                print(f"count_right = {count_right}")
+                count += count_right
 
-    return z
+            # print(count)
+            mat_copy[row, column] = bug_no_bug(mat[row, column], count)
+
+    return mat_copy
+
+
+def check_adjacent_folding1(matrix, planes):
+    """
+    Determine count of bugs in the 4 adjacent sides within the non-padded
+    portion of each plane.  The four spaces adjacent to the center are
+    adjusted for the next planes outer values.
+
+    matrix = the complete folded space required to reach the end of the time
+             frame.
+    planes = number of planes to process, excluding the end padding planes,
+             for the complete time frame.
+    """
+    matrix_copy = matrix.copy()
+    # z = np.zeros((7, 7), dtype=int)
+
+    for plane in range(1, planes - 1):
+        # for plane in range(1, len(matrix) - 1):
+        count_top = sum_5(matrix, plane + 1, 1, 1, 'across')
+        count_bottom = sum_5(matrix, plane + 1, 5, 1, 'across')
+        count_left = sum_5(matrix, plane + 1, 1, 1, 'down')
+        # print(matrix[plane + 1, :, :])
+        count_right = sum_5(matrix, plane + 1, 1, 5, 'down')
+        # print(f"top = {count_top}, "
+        #       f"bottom = {count_bottom}, "
+        #       f"left = {count_left}, "
+        #       f"right = {count_right}")
+
+        for row in range(1, 6):
+            for column in range(1, 6):
+                count = (matrix[plane, row - 1, column] +
+                         matrix[plane, row + 1, column] +
+                         matrix[plane, row, column - 1] +
+                         matrix[plane, row, column + 1])
+
+                if row == 2 and column == 3:
+                    # print(f"plane = {plane}, count_top = {count_top}")
+                    count += count_top
+                if row == 4 and column == 3:
+                    # print(f"plane = {plane}, count_bottom = {count_bottom}")
+                    count += count_bottom
+                if row == 3 and column == 2:
+                    # print(f"plane = {plane}, count_left = {count_left}")
+                    count += count_left
+                if row == 3 and column == 4:
+                    # print(f"plane = {plane}, count_right = {count_right}")
+                    count += count_right
+
+                # print(count)
+                matrix_copy[plane, row, column] = \
+                    bug_no_bug(matrix[plane, row, column], count)
+
+    return matrix_copy
 
 
 # %% Development Environment
 
-txtfile = "../data/adventofcode_2019_day_24_input1.txt"
+# txtfile = "../data/adventofcode_2019_day_24_input1.txt"
+# contents = aoc.read_program(txtfile)
+# eris_initiator = transform_program_5_x_5(contents)
+# # eris[0, 2, 2] = 99
+# minutes = 10
+
+# layers_needed = layers_at_minute(minutes)
+# initial_layer = ((layers_needed - 1) // 2)
+
+# # We are setting up the folded space matrix to have one extra layer at each
+# # end.  This way we can execute each layer using the same set of positional
+# # functions as opposed to writing inner layer functions and end layer ones.
+
+# eris = np.zeros((layers_needed, 5, 5), dtype='int16')
+# eris[initial_layer, :, :] = eris_initiator
+# len_eris = len(eris) - 2
+# eris_one_minute_later = np.zeros((layers_needed, 5, 5), dtype='int16')
+# eris_one_minute_later[initial_layer, :, :] = eris_initiator
+# # eris[0, 2, 2] = 1
+# # in2 = np.array([0, 1, 0, 1, 0, 1, 0, 1, 0]).reshape((3, 3))
+# # print(eris[0, :, :])
+# # print(in2)
+
+# # p1 = sg.convolve2d(eris_initiator[0, :, :], in2, mode='same', boundary='fill', fillvalue=0)
+# # print(p1)
+
+# # print(f"\nMinute {0}:\n")
+# # print(f"Layer 0:")
+# # print(f"{matrix[initial_layer, :, :]}\n")
+
+
+# # for minute in range(1, minutes + 1):
+# #     eris_copy = eris.copy()
+# #     for layer in range(1, len_eris + 1):
+# #         for row in range(5):
+# #             for column in range(5):
+# #                 result = which_function(row, column)
+# #                 x = eris_copy[layer, row, column]
+# #                 args = [eris_copy, x, layer, row, column]
+# #                 eris_one_minute_later[layer, row, column] = result(*args)
+# #                 # if m == 2 and i == 1:
+# #                 #     print(f"Minute = {m}, "
+# #                 #           f"i = {1}, j = {j}, k = {k}\n"
+# #                 #           f"result = {result}\n"
+# #                 #           f"{eris[1, :, :]}\n"
+# #                 #           f"\n{eris_one_minute_later[1, :, :]}\n")
+# #     eris = eris_one_minute_later
+
+# # print(f"There are currently "
+# #       f"{count_critters(eris, layers_needed)}"
+# #       f" bugs present.")
+
+
+# def day24_part2(mat0, mat1, minutes, len_eris):
+#     for minute in range(1, minutes + 1):
+#         matrix_copy = mat0.copy()
+#         for layer in range(1, len_eris + 1):
+#             for row in range(5):
+#                 for column in range(5):
+#                     result = which_function(row, column)
+#                     x = matrix_copy[layer, row, column]
+#                     args = [matrix_copy, x, layer, row, column]
+#                     mat1[layer, row, column] = result(*args)
+#                     # if m == 2 and i == 1:
+#                         # print(f"i = {1}, j = {j}, k = {k}\n"
+#                         #       f"result = {result}\n"
+#                         #       f"{eris[1, :, :]}\n"
+#                         #       f"\n{eris_one_minute_later[1, :, :]}\n")
+
+#         mat0 = mat1
+
+#     return mat0
+
+
+#     # print(f"\nMinute {m}:\n")
+#     # print(f"Layer 0:")
+#     # print(f"{matrix[initial_layer, :, :]}\n")
+# eris_200 = day24_part2(eris, eris_one_minute_later, minutes, len_eris)
+# print(f"There are currently "
+#       f"{count_critters(eris_200, layers_needed)} "
+#       f"bugs present.")
+
+# # print(f"\nMinute {m}:\n")
+# # test = '''
+# # def day24_part2(matrix, minutes):
+# #     for m in range(1, minutes + 1):
+# #         for i in range(1, len(matrix) - 1):
+# #             for j in range(5):
+# #                 for k in range(5):
+# #                     result = which_function(i, j)
+# #                     args = [matrix, matrix[i, j, k], i, j, k]
+# #                     matrix1[i, j, k] = result(*args)
+
+# #         matrix = matrix1
+
+# #     return matrix
+# # '''
+
+# # print(timeit.timeit(test))
+# # for i in range(1, len(matrix1) - 1):
+# for i in range(1, layers_needed - 1):
+#     print(f"Layer {i - (layers_needed - 1) // 2}:")
+#     print_layer(eris_200
+#                 [i, :, :])
+
+# # for i in range(1, len_eris ++1):
+# #     print(np.array_equal(eris[i, :, :], eris_200[i, :, :]))
+
+
+# set up total time-line 3-d matrix
+txtfile = "../data/adventofcode_2019_day_24_input.txt"
 contents = aoc.read_program(txtfile)
-eris_initiator = transform_program_5_x_5(contents)
-# eris[0, 2, 2] = 99
-minutes = 10
+eris_initiator = transform_program(contents)
+minutes = 200
 
 layers_needed = layers_at_minute(minutes)
 initial_layer = ((layers_needed - 1) // 2)
@@ -729,115 +919,64 @@ initial_layer = ((layers_needed - 1) // 2)
 # end.  This way we can execute each layer using the same set of positional
 # functions as opposed to writing inner layer functions and end layer ones.
 
-eris = np.zeros((layers_needed, 5, 5), dtype='int16')
+eris = np.zeros((layers_needed, 7, 7), dtype=int)
 eris[initial_layer, :, :] = eris_initiator
-len_eris = len(eris) - 2
-eris_one_minute_later = np.zeros((layers_needed, 5, 5), dtype='int16')
+len_eris = layers_needed - 2
+eris[:, 3, 3] = 0
+eris_one_minute_later = np.zeros((layers_needed, 7, 7), dtype=int)
 eris_one_minute_later[initial_layer, :, :] = eris_initiator
-# eris[0, 2, 2] = 1
-# in2 = np.array([0, 1, 0, 1, 0, 1, 0, 1, 0]).reshape((3, 3))
-# print(eris[0, :, :])
-# print(in2)
 
-# p1 = sg.convolve2d(eris_initiator[0, :, :], in2, mode='same', boundary='fill', fillvalue=0)
-# print(p1)
-
-# print(f"\nMinute {0}:\n")
-# print(f"Layer 0:")
-# print(f"{matrix[initial_layer, :, :]}\n")
-
-
+# # loop on time
 # for minute in range(1, minutes + 1):
 #     eris_copy = eris.copy()
-#     for layer in range(1, len_eris + 1):
-#         for row in range(5):
-#             for column in range(5):
-#                 result = which_function(row, column)
-#                 x = eris_copy[layer, row, column]
-#                 args = [eris_copy, x, layer, row, column]
-#                 eris_one_minute_later[layer, row, column] = result(*args)
-#                 # if m == 2 and i == 1:
-#                 #     print(f"Minute = {m}, "
-#                 #           f"i = {1}, j = {j}, k = {k}\n"
-#                 #           f"result = {result}\n"
-#                 #           f"{eris[1, :, :]}\n"
-#                 #           f"\n{eris_one_minute_later[1, :, :]}\n")
-#     eris = eris_one_minute_later
 
-# print(f"There are currently "
-#       f"{count_critters(eris, layers_needed)}"
-#       f" bugs present.")
+# # process outer padding
+#     eris_copy = handle_outer_padding(eris, layers_needed)
 
+# # process inner sums
+# for plane in range(1, layers_needed - 1):
+#     eris_copy = check_adjacent_folding(eris[plane, :, :], eris, plane)
+#     print(f"plane {plane - 6}\n{eris_copy}\n")
+# # process each plane
 
-def day24_part2(mat0, mat1, minutes, len_eris):
-    for minute in range(1, minutes + 1):
-        matrix_copy = mat0.copy()
-        for layer in range(1, len_eris + 1):
-            for row in range(5):
-                for column in range(5):
-                    result = which_function(row, column)
-                    x = matrix_copy[layer, row, column]
-                    args = [matrix_copy, x, layer, row, column]
-                    mat1[layer, row, column] = result(*args)
-                    # if m == 2 and i == 1:
-                        # print(f"i = {1}, j = {j}, k = {k}\n"
-                        #       f"result = {result}\n"
-                        #       f"{eris[1, :, :]}\n"
-                        #       f"\n{eris_one_minute_later[1, :, :]}\n")
-
-        mat0 = mat1
-
-    return mat0
-
-
-    # print(f"\nMinute {m}:\n")
-    # print(f"Layer 0:")
-    # print(f"{matrix[initial_layer, :, :]}\n")
-eris_200 = day24_part2(eris, eris_one_minute_later, minutes, len_eris)
-print(f"There are currently "
-      f"{count_critters(eris_200, layers_needed)} "
-      f"bugs present.")
-
-# print(f"\nMinute {m}:\n")
-# test = '''
-# def day24_part2(matrix, minutes):
-#     for m in range(1, minutes + 1):
-#         for i in range(1, len(matrix) - 1):
-#             for j in range(5):
-#                 for k in range(5):
-#                     result = which_function(i, j)
-#                     args = [matrix, matrix[i, j, k], i, j, k]
-#                     matrix1[i, j, k] = result(*args)
-
-#         matrix = matrix1
-
-#     return matrix
-# '''
-
-# print(timeit.timeit(test))
-# for i in range(1, len(matrix1) - 1):
-for i in range(1, layers_needed - 1):
-    print(f"Layer {i - (layers_needed - 1) // 2}:")
-    print_layer(eris_200
-                [i, :, :])
-
-# for i in range(1, len_eris ++1):
-#     print(np.array_equal(eris[i, :, :], eris_200[i, :, :]))
-
-
-# set up total time-line 3-d matrix
+# # count critters
 
 # loop on time
+for minute in range(1, minutes + 1):
+    eris_copy = eris.copy()
 
 # process outer padding
+    eris_copy = handle_outer_padding(eris, layers_needed)
 
 # process inner sums
+    eris_copy = check_adjacent_folding1(eris, layers_needed)
 
+    eris_copy[:, 3, 3] = 0
+
+    eris= eris_copy
+
+    # print(f"plane {plane - 6}\n{eris_copy}\n")
 # process each plane
 
 # count critters
+print(f"There are currently "
+      f"{count_critters(eris, layers_needed)}"
+      f" bugs present.")
 
-
+# #     for layer in range(1, len_eris + 1):
+# #         for row in range(5):
+# #             for column in range(5):
+# #                 result = which_function(row, column)
+# #                 x = eris_copy[layer, row, column]
+# #                 args = [eris_copy, x, layer, row, column]
+# #                 eris_one_minute_later[layer, row, column] = result(*args)
+# #                 # if m == 2 and i == 1:
+# #                 #     print(f"Minute = {m}, "
+# #                 #           f"i = {1}, j = {j}, k = {k}\n"
+# #                 #           f"result = {result}\n"
+# #                 #           f"{eris[1, :, :]}\n"
+# #                 #           f"\n{eris_one_minute_later[1, :, :]}\n")
+# #     eris = eris_one_minute_later
 
 # %% Production Environment
 
