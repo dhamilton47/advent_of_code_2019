@@ -37,12 +37,48 @@ def reverse(deck):
     return data
 
 
+def reverse2(deck, cards):
+    """
+    Reverse the order of a deck of cards
+
+    deck = the vector of cards
+    n =  the number to cut
+    """
+    # print(len(deck))
+    # # data = deck[:n]
+    deck = [cards - deck[i] % cards for i in range(cards)]
+    # data = deck[::-1]
+    # print(len(data))
+
+    return deck
+
+
 def cut_n(deck, n):
+    """
+    Cut a deck of cards at the nth card
+
+    deck = the vector of cards
+    n =  the number to cut
+    """
+
+    return np.append(deck[n:], deck[:n])
+
+
+def cut_n2(deck, n, cards):
+    """
+    Cut a deck of cards at the nth card
+
+    deck = the vector of cards
+    n =  the number to cut
+    cards = number of cards in the deck
+    """
+
+    deck = [(deck[i] - n + 1) % cards for i in range(cards)]
     # print(deck[n:])
     # print(deck[:n])
-    data = np.append(deck[n:], deck[:n])
+    # data = np.append(deck[n:], deck[:n])
 
-    return data
+    return deck
 
 
 def increment_n(deck, n):
