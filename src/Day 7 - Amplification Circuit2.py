@@ -5,9 +5,9 @@ Created on Fri Dec  6 12:04:20 2019
 @author: Dan J Hamilton
 """
 
-from intcode.intcode_v5 import Computer
-from intcode.intcode_v5 import Program
-from intcode.intcode_v5 import Instruction
+from intcode.intcode_v4 import Computer
+from intcode.intcode_v4 import Program
+from intcode.intcode_v4 import Instruction
 
 
 # %% Programs Dictionary
@@ -110,17 +110,15 @@ programs_available_dictionary1 = {
 #     # Run code
 #     intcode.run_program()
 
-def print_vitals(memory, cpu, computers=[], program={}, instruction=[]):
-    if computers != []:
-        for i in computers:
-            print('\nComputer Name:', i.name)
-            print('Programs available:',i.get_programs_available())
-            print('Programs running:', i.programs_running)
-            print('Instruction Pointers:', i.instruction_pointers)
+def print_vitals(memory, cpu, program={}, instruction=[]):
+    print('\nComputer Name:', test.name)
+    print('Programs available:',test.get_programs_available())
+    print('Programs running:', test.programs_running)
+    print('Instruction Pointers:', test.instruction_pointers)
     # print(Program.programs['Amp']['binary'])
 
     # print('Memory code:', memory.code)
-        print('Memory:', memory.memory)
+    print('Memory:', memory.memory)
 
     if program != {}:
         print('Program Name:', program.name)
@@ -136,55 +134,17 @@ def print_vitals(memory, cpu, computers=[], program={}, instruction=[]):
     print('\n')
 
 
-def TEST(owner_name, library):
-    owner_name = owner_name
+def TEST(library):
     test = Computer(library)
     memory, cpu = test.boot()
     # ampA, memory, instruction, cpu = test.boot()
     print_vitals(memory, cpu)
 
     # Create Program
-    # ampA = Program('Amp')
+    ampA = Program('Amp')
     # ampA.read_binary('Amp')
-    # ampA.code = ampA.read_binary(Program.programs['Amp']['binary'])
+    ampA.code = ampA.read_binary(Program.programs['Amp']['binary'])
     # ampA = Program(test.programs['Amp'])
-
-
-def programs_to_load():
-    program_keys = get_programs_available()
-    print_string = program_menu(program_keys)
-
-    print(f"{print_string}")
-
-    program_index = int(input('What shall we do today?\n' +
-                              '(Please enter a number): '))
-
-    # # Create Program(s)
-    program_id = program_keys[program_index]
-    print(program_id)
-    print(programs_available[program_id])
-    program = Program(programs_available[program_id])
-    # # ampA.read_binary('Amp')
-    program.code = program.read_binary()
-    programs_running.append(program_keys[program_index])
-    instruction_pointers.append(0)
-    # # ampA = Program(test.programs['Amp'])
-
-    return program
-
-
-def program_menu(owner_name, name, program_list):
-    print_string = "Hello, " + owner_name + ". "
-    print_string += ("I am " + name
-                     + ".  I am capable of doing the following:")
-
-    for i in range(len(program_list)):
-        if program_list[i] == "None":
-            continue
-
-        print_string += "\n  " + str(i) + ". " + program_list[i]  # + "\n"
-
-    return print_string
 
 
 # %% Development Environment
@@ -201,9 +161,8 @@ def program_menu(owner_name, name, program_list):
 
 
 # Create TEST
-test = TEST('Sam', programs_available_dictionary1)
-AmpA = Computer(programs_available_dictionary1)
-memory, cpu = AmpA.boot()
+test = Computer(programs_available_dictionary1)
+memory, cpu = test.boot()
 # ampA, memory, instruction, cpu = test.boot()
 print_vitals(memory, cpu)
 
@@ -211,7 +170,7 @@ print_vitals(memory, cpu)
 # print(Program.programs['Amp']['binary'])
 
 # Select a program to run
-which_program = programs_to_load()
+which_program = test.load_program(test.name)
 
 
 # Create Program
