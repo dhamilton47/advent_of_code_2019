@@ -12,13 +12,13 @@ from intcode.intcode_v4 import Instruction
 
 # %% Programs Dictionary
 
-programs_available_dictionary = {
+programs_available_dictionary1 = {
     'Amp': {'name': 'Amplifier Controller',
             'binary': '../data/adventofcode_2019_day_7_input1.txt'},
     'None': {'name': '',
               'binary': ''}, }
 
-programs_available_dictionary1 = {
+programs_available_dictionary = {
     'Gravity Assist': {'name': 'Gravity Assist',
                        'copies': ['GravAsst'],
                        'binary': '../data/adventofcode_2019_day_2_input.txt'},
@@ -27,7 +27,7 @@ programs_available_dictionary1 = {
                     'copies': ['Diagnostics'],
                     'binary': '../data/adventofcode_2019_day_5_input.txt'},
 
-    'Thrusters': {'name': 'Amplifier Controller  Software',
+    'Thrusters': {'name': 'Amplifier Controller Software',
                   'copies': ['ampA', 'ampB', 'ampC', 'ampD'],
                   'binary': '../data/adventofcode_2019_day_7_input1.txt'},
 
@@ -71,67 +71,48 @@ programs_available_dictionary1 = {
     'None': {'name': '',
              'copies': [],
              'binary': ''}, }
-# # %% Import the "program" data (as a string)
-
-# def read_program(txtfile):
-#     f = open(txtfile, "r")
-#     if f.mode == 'r':
-#         contents = f.read()
-#     f.close()
-
-#     return contents
-
-
-# # %% Transform the "program" from a string to a list of integers
-
-# def transform_program(contents):
-#     memory = list(contents.split(","))
-#     memory_length = len(memory)
-#     for i in range(memory_length):
-#         memory[i] = int(memory[i])
-
-#     return memory
 
 
 # %%
 
-# def TEST(self_initialize=True, noun=0, verb=0):
-
-#     txtfile = "../data/adventofcode_2019_day_5_input.txt" \
-#         if self_initialize else "../data/adventofcode_2019_day_2_input.txt"
-
-#     # Create IntCode instance
-#     intcode = IntCode()
-#     intcode.load_program(txtfile)
-#     # if not(self_initialize):
-#     #     intcode.noun = noun
-#     #     intcode.verb = verb
-
-#     # Run code
-#     intcode.run_program()
-
 def print_vitals(memory, cpu, program={}, instruction=[]):
-    print('\nComputer Name:', test.name)
-    print('Programs available:',test.get_programs_available())
-    print('Programs running:', test.programs_running)
-    print('Instruction Pointers:', test.instruction_pointers)
+    print('\nComputer Properties:')
+    print('  Computer Name:', test.name)
+    print('  Programs available:', test.programs_available())
+    print('  Program loaded:', test.program_loaded)
+    print('  Instruction Pointer:', test.ip)
     # print(Program.programs['Amp']['binary'])
 
     # print('Memory code:', memory.code)
-    print('Memory:', memory.memory)
+    print('\nMemory Properties:')
+    print('  Memory:', memory.register)
 
     if program != {}:
-        print('Program Name:', program.name)
-        print('Program Text File:', program.binary)
-        print('Program Code:', program.code)
+        print('\nProgram Properties:')
+        print('  Program Name:', program.name)
+        print('  Program Binary:', program.binary)
+        print('  Program Code:', program.code)
 
     if instruction != []:
-        print('Raw OpCode:', instruction.raw_opcode)
-        print('OpCode:', instruction.opcode)
-        print('Parameters:', instruction.parameters)
-        print('Modes:', instruction.modes)
+        print('\nInstruction Properties:')
+        print('  Raw OpCode:', instruction.raw_opcode)
+        print('  OpCode:', instruction.opcode)
+        print('  Parameters:', instruction.parameters)
+        print('  Modes:', instruction.modes)
 
     print('\n')
+
+
+def print_instruction():
+    # print('IP:', IP)
+    # while IP < program_lenth:
+    # instruction = ampA.get_instruction(0)
+    # print(instruction)
+    # print('Length =', instruction.instruction_length)
+    # print('OpCode =', instruction.opcode)
+    # print('Parameters =', instruction.parameters)
+    # print('Modes =', instruction.parameter_modes)
+    pass
 
 
 def TEST(library):
@@ -141,9 +122,9 @@ def TEST(library):
     print_vitals(memory, cpu)
 
     # Create Program
-    ampA = Program('Amp')
+    # ampA = Program('Amp')
     # ampA.read_binary('Amp')
-    ampA.code = ampA.read_binary(Program.programs['Amp']['binary'])
+    # ampA.code = ampA.read_binary(Program.programs['Amp']['binary'])
     # ampA = Program(test.programs['Amp'])
 
 
@@ -161,38 +142,44 @@ def TEST(library):
 
 
 # Create TEST
-test = Computer(programs_available_dictionary1)
+test = Computer(programs_available_dictionary)
 memory, cpu = test.boot()
-# ampA, memory, instruction, cpu = test.boot()
 print_vitals(memory, cpu)
 
-# print('Computer Name:', test.name)
-# print(Program.programs['Amp']['binary'])
+# Select a program to run & flash memory
+program = test.load_program(test.name)
+memory.register = memory.flash(program.code)
+print_vitals(memory, cpu, program)
 
-# Select a program to run
-which_program = test.load_program(test.name)
+# Execute program
+# instruction = test.instruction_next(memory, test.ip)
+# test.ip += instruction[-1]
+# print(test.ip)
+opcode = 0
+# opcode = instruction[0]
+
+while opcode != 99:
+    # print(memory.address(ip))
+    instruction = test.instruction_next(memory, test.ip)
+    # test.instruction_execute(instruction)
+    # instruction = test.instruction_next(memory, test.ip)
+
+    test.ip += instruction[-1]
+    print(instruction)
+    opcode = instruction[0]
+    # opcode = 99
 
 
-# Create Program
-# ampA = Program('Amp')
-# ampA.read_binary('Amp')
-# ampA.code = ampA.read_binary(Program.programs['Amp']['binary'])
-# ampA = Program(test.programs['Amp'])
+# While Instruction loop
 
-print_vitals(memory, cpu, which_program)
-# print('Program Name:', ampA.name)
-# print('Program Text File:', ampA.binary)
-# print('Program Code:', ampA.code)
-# print('Memory code:', memory.code)
-# print('Memory:', memory.memory)
-# print('Instruction Pointer:', ampA.instruction_pointer)
-# print('Raw OpCode:', instruction.raw_opcode)
-# print('OpCode:', instruction.opcode)
-# print('Parameters:', instruction.parameters)
-# print('Modes:', instruction.modes)
-# print('Memory Size:', memory.memory_size)
+#     Get input
 
-# ampA.get_instruction(ampA.instruction_pointer)
+#     Print output
+
+# Cleanup
+
+# Repeat the above if more than one computer in play
+
 
 # TEST(programs_available_dictionary)
 
@@ -205,95 +192,35 @@ print_vitals(memory, cpu, which_program)
 # cpu = CPU()
 # io = IO_AoC19()
 
-# Install program
-# program = intcode.load_program1(intcode.program_number)
-# print(program)
-# print('Program Name:', program.name)
-# print('Program Text File:', program.program_txtfile)
-# print('Program Code', program.code)
-# print('Memory name:', memory.name)
-# print('Memory:', memory.memory)
-# print('Memory Size:', memory.memory_size)
-
-# Initialize memory for program
-
-
-
-# program = intcode.load_program(thermal_radiators, thermal_radiators_textfile)
 # ampA = Program(thermal_radiators, thermal_radiators_textfile)
-# print(ampA.program_names, ampA.programs)
-# program = ampA.read_program(thermal_radiators)
-# ampA.initialize_memory()
-# ampA.programs[0].initialize_memory()
-# ampA.memory[0] = ampA.programs[0].initialize_memory()
-# print(ampA.programs[0], ampA.programs[0].memory_size[0], ampA.programs[0].memory[0])
-# IP = ampA.instruction_pointer
-# print('IP:', IP)
-# while IP < program_lenth:
-# instruction = ampA.get_instruction(0)
-# print(instruction)
-# print('Length =', instruction.instruction_length)
-# print('OpCode =', instruction.opcode)
-# print('Parameters =', instruction.parameters)
-# print('Modes =', instruction.parameter_modes)
-
-# instruction = ampA.get_instruction(2)
-# print(instruction)
-# print('Length =', instruction.instruction_length)
-# print('OpCode =', instruction.opcode)
-# print('Parameters =', instruction.parameters)
-# print('Modes =', instruction.parameter_modes)
-
-# instruction = ampA.get_instruction(6)
-# print(instruction)
-# print('Length =', instruction.instruction_length)
-# print('OpCode =', instruction.opcode)
-# print('Parameters =', instruction.parameters)
-# print('Modes =', instruction.parameter_modes)
-
-# run_instruction = Instruction(instruction)
-#instruction = ampA.get_instruction(2)
-#print(instruction)
-#instruction = ampA.get_instruction(10)
-#print(instruction)
-# ampA.execute_instruction(instruction)
-#     ampA.prt0()
-#     IP = ampA.instruction_pointer
-
-# IP = ampA.instruction_pointer
-# print('Instruction pointer = {}'.format(IP))
-# instruction = ampA.get_instruction(IP)
-# print('Instruction = {}'.format(instruction))
-# # ampA.decode_opcode()
-# ampA.execute_instruction(instruction)
-
-# IP = ampA.instruction_pointer
-# print('Instruction pointer = {}'.format(IP))
-
+# ampA.run_program()
 # ampA.get_input('Enter phase number: ')
 # ampA.get_input('Enter input signal: ')
-
 # ampA_output_signal.get_output()
-# ampA.load_program(txtfile5)
-# ampA.read_program(txtfile7)
-# ampA.transform_program()
-# a = ampA.run_program()
 
 # ampB = IntCode(readable_program)
-# b = ampB.run_program()
-# ampB.read_program(txtfile5)
+# ampB.run_program()
+# ampB.get_input('Enter phase number: ')
+# ampB.get_input('Enter input signal: ')
+# ampB_output_signal.get_output()
 
 # ampC = IntCode(readable_program)
-# c = ampC.run_program()
-# ampC.read_program(txtfile5)
+# ampC.run_program()
+# ampC.get_input('Enter phase number: ')
+# ampC.get_input('Enter input signal: ')
+# ampC_output_signal.get_output()
 
 # ampD = IntCode(readable_program)
-# d = ampD.run_program()
-# ampD.read_program(txtfile5)
+# ampD.run_program()
+# ampD.get_input('Enter phase number: ')
+# ampD.get_input('Enter input signal: ')
+# ampD_output_signal.get_output()
 
 # ampE = IntCode(readable_program)
-# e = ampE.run_program()
-# ampE.read_program(txtfile5)
+# ampE.run_program()
+# ampE.get_input('Enter phase number: ')
+# ampE.get_input('Enter input signal: ')
+# ampE_output_signal.get_output()
 
 # %%
 
