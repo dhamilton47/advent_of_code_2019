@@ -47,16 +47,15 @@ Computer(library = dictionary of information regarding programs)
 
 
 **Verbs:**
-- boot(self)
-- instruction_next(self, memory, pointer)
-- program_install(self, program_keys, program_index)
-- program_load(self, computer_name)
-- program_menu(self, program_list)
-- programs_available(self)
+- boot()
+- instruction_next(memory, pointer)
+- program_load()
+- program_menu(program_list)
+- programs_available()
 
 -(not implemented yet)_
-- get_input(self, program_id):
-- return_output(self, program_id, *args):
+- get_input(program_id):
+- return_output(program_id, *args):
 
 
 ### OS_AoC19 Class _(Conceptual stage)_
@@ -68,8 +67,8 @@ Computer(library = dictionary of information regarding programs)
 
 
 **Verbs:**
-- opcode_switch(self, instruction)
-- execute_instruction(self, instruction, message='')
+- opcode_switch(instruction)
+- execute_instruction(instruction, message='')
 
 
 ### Stack Class _(Conceptual stage)_
