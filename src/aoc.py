@@ -23,7 +23,7 @@ programs_available_dictionary = {
                        'copies': ['GravAsst'],
                        'binary': '../data/adventofcode_2019_day_2_input.txt'},
 
-    'Diagnostics': {'name': 'Diagnostic Program',
+    'System Diagnostics': {'name': 'Diagnostic Program',
                     'copies': ['Diagnostics'],
                     'binary': '../data/adventofcode_2019_day_5_input.txt'},
 
