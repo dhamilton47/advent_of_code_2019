@@ -29,18 +29,17 @@ import aoc
 #     Properties
 #         name
 #         programs_available
-#         programs_running
-#         instruction_pointers
+#         program_running
+#         ip (instruction pointer)
 
 #     Methods
 #         boot
 #         instruction_next
-#         instruction_execute
 #         program_install
 #         program_load
 #         program_menu
 #         programs_available
-#         initialize_memory
+
 #         input
 #         output
 
@@ -147,16 +146,7 @@ class Computer:
     # def instruction_execute(self):
     #     pass
 
-    def program_install(self, program_keys, program_index):
-        program_id = program_keys[program_index]
-        program = Program(self.programs_available_dictionary[program_id])
-        program.code = program.read_binary()
-        self.program_loaded = program_keys[program_index]
-        self.ip = 0
-
-        return program
-
-    def program_load(self, computer_name):
+    def program_load(self):
         """
         Control the flow to:
             Ask which program to run on this computer
@@ -165,9 +155,12 @@ class Computer:
 
         program_keys = self.programs_available()
         program_index = self.program_menu(program_keys)
-        program = self.program_install(program_keys, program_index)
 
-        return program
+        self.program_loaded = \
+            self.programs_available_dictionary[program_keys[program_index]]
+        self.ip = 0
+
+        return Program(self.program_loaded)
 
     def program_menu(self, program_list):
         """
@@ -178,9 +171,9 @@ class Computer:
                        programs_available_dictionary
         """
 
-        print_string = "Hello, Dan. "
+        print_string = "\n\nHello, Dan.\n\n"
         print_string += ("My name is " + self.name
-                         + ".  I am capable of doing the following:")
+                         + ".\n\nI am capable of doing the following:")
 
         for i in range(len(program_list)):
             if program_list[i] == "None":
@@ -209,6 +202,10 @@ class Computer:
 # %% Program Class
 
 class Program:
+    """
+    This class retrieves a program's information from the programs
+    available dictionary.
+    """
     def __init__(self, programID):
         self.programID = programID
         self.name = self.programID['name']
@@ -234,64 +231,6 @@ class Program:
             code.append(int(raw_program[i]))
 
         return code
-
-    # def load_program(self):
-    #     pass
-
-    # def initialize_memory(self):
-    #     pass
-
-    # def load_program(self, program_info):
-    #     code = Program(program_info)
-    #     return code
-
-    # def initialize_memory(self):
-    #     memory_bank = Memory(self.code)
-
-    #     return memory_bank
-
-    # def get_input(self):
-    #     pass
-
-    # def get_instruction(self, ip, memory):
-    #     return Instruction(ip, memory)
-    #     # raw_opcode = self.memory(self.instruction_pointer)
-
-    # def run_instruction(self, opcode):
-    #     if opcode == 1:
-    #         # Send to CPU
-    #         self.cpu(self.parameters)
-    #         self.opcode1(parameters)
-    #     elif opcode == 2:
-    #         # Send to CPU
-    #         self.opcode2(parameters)
-    #     elif opcode == 3:
-    #         # Send to I/O
-    #         self.opcode3(parameters)
-    #     elif opcode == 4:
-    #         # Send to I/O
-    #         self.opcode4(parameters)
-    #     elif opcode == 5:
-    #         # Send to CPU
-    #         self.opcode5(parameters)
-    #     elif opcode == 6:
-    #         # Send to CPU
-    #         self.opcode6(parameters)
-    #     elif opcode == 7:
-    #         # Send to CPU
-    #         self.opcode7(parameters)
-    #     elif opcode == 8:
-    #         # Send to CPU
-    #         self.opcode8(parameters)
-    #     elif opcode == 99:
-    #         # Terminate Program Execution
-    #         self.opcode99()
-    #     else:
-    #         print(str(100 * memory[ip] + memory[ip + 1]), 'program alarm')
-    #         # print(str(100 * self.memory[self.instruction_pointer]
-    #         #           + self.memory[self.instruction_pointer + 1]),
-    #         #       'program alarm')
-    #         self.instruction_pointer += 4
 
 
 # %% Instruction Class
@@ -408,6 +347,32 @@ class CPU:
     def multiply(self, i, j):
         return i * j
 
+# %% OpCode 3 - ask for input
+
+    def opcode3(self, io, parameters, input_source):
+        answer = int(input('Which System ID are we testing? '))
+        memory.register[par[0]['address']] = answer
+# #        self.prt0()
+
+# #        self.memory[parameters[0]] = self.get_input(message)
+#         if input_source == 'keyboard':
+#             self.memory[parameters[0]] = \
+#                 int(input('Which System ID are we testing? '))
+# #        print(self.instruction_length)
+#         self.instruction_pointer += self.get_instruction_length(code=3)
+# #        self.instruction_pointer += self.instruction_length
+        pass
+
+
+# %% OpCode 4 - output a result
+
+    def opcode4(self, parameters):
+        print('Diagnostic Code = {:,d}'.format(par[0]['value']))
+#         p1 = self.memory[self.address(0)]
+#         if p1:
+#             print('Diagnostic Code = {:,d}'.format(p1))
+#         self.instruction_pointer += self.instruction_length
+
 #         self.opcode = opcode
 #         self.decode_opcode(self.instruction_pointer)
 # #        self.decode_opcode()
@@ -415,6 +380,7 @@ class CPU:
 #             response = self.get_input(message)
 # #        print(instruction[0], instruction[1:], opcode)
 #         self.opcode_switch(instruction[0], instruction[1:], opcode)
+        pass
 
 # # %% OpCode 1 - add two values
 
@@ -507,4 +473,3 @@ class CPU:
 #     def opcode_generic(self, i):
 #         p = self.memory[self.address(i)]
 #         return p
-
