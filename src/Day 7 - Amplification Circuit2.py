@@ -6,10 +6,11 @@ Created on Fri Dec  6 12:04:20 2019
 """
 
 from intcode.intcode_v4 import Computer
-from intcode.intcode_v4 import Program
-from intcode.intcode_v4 import Instruction
+# from intcode.intcode_v4 import Program
+# from intcode.intcode_v4 import Instruction
 
 import aoc
+
 
 # %%
 
@@ -19,9 +20,7 @@ def print_vitals(memory, cpu, program={}, instruction=[]):
     print('  Programs available:', test.programs_available())
     print('  Program loaded:', test.program_loaded)
     print('  Instruction Pointer:', test.ip)
-    # print(Program.programs['Amp']['binary'])
 
-    # print('Memory code:', memory.code)
     print('\nMemory Properties:')
     print('  Register:', memory.register)
 
@@ -32,6 +31,7 @@ def print_vitals(memory, cpu, program={}, instruction=[]):
         print('  Program Code:', program.code)
 
     print('\n')
+
 
 def print_vitals_for_TEST(computer, memory, cpu, program={}):
     print('\nComputer Properties:')
@@ -50,6 +50,7 @@ def print_vitals_for_TEST(computer, memory, cpu, program={}):
         print('  Program Code:', program.code)
 
     print('\n')
+
 
 def print_instruction():
     # print('IP:', IP)
@@ -70,7 +71,7 @@ def TEST(library=aoc.programs_available_dictionary):
     # Select a program to run & flash memory
     program = test.program_load(test.name)
     memory.register = memory.flash(program.code)
-    print_vitals_for_TEST(test, memory, cpu, program)
+    # print_vitals_for_TEST(test, memory, cpu, program)
 
     # Execute program
     opcode = 0
@@ -80,7 +81,7 @@ def TEST(library=aoc.programs_available_dictionary):
         # cpu.instruction_execute(instruction)
 
         test.ip += instruction['length']
-        print(instruction)
+        # print(instruction)
         opcode = instruction['opcode']
 
     # ampA = Program('Amp')
@@ -91,16 +92,7 @@ def TEST(library=aoc.programs_available_dictionary):
 
 # %% Development Environment
 
-# Programs
-# amplifier_controller = "../data/adventofcode_2019_day_7_input1.txt"
-# thermal_radiators = "thermal_radiators"
-# thermal_radiators_textfile = "../data/adventofcode_2019_day_5_input.txt"
-
-# program = read_program(txtfile7)
-# readable_program = transform_program(program)
-
 # phases = permutations()
-
 
 # Create TEST
 test = Computer(aoc.programs_available_dictionary)
@@ -110,17 +102,17 @@ memory, cpu = test.boot()
 # Select a program to run & flash memory
 program = test.program_load(test.name)
 memory.register = memory.flash(program.code)
-print_vitals(memory, cpu, program)
+# print_vitals(memory, cpu, program)
 
 # Execute program
 opcode = 0
 
 while opcode != 99:
     instruction = test.instruction_next(memory, test.ip)
-    # cpu.instruction_execute(instruction)
+    instruction = cpu.instruction_execute(memory, test.ip, instruction)
 
     test.ip += instruction['length']
-    print(instruction)
+    # print(instruction)
     opcode = instruction['opcode']
 
 
