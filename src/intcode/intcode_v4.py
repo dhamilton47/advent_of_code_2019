@@ -5,6 +5,8 @@ Created on Sun Dec  22 15:49:41 2019
 @author: Dan J Hamilton
 """
 
+
+import sys
 # from memory import Memory
 # from program import Program
 
@@ -137,6 +139,7 @@ class Computer:
         return memory, cpu
 
     def instruction_next(self, memory, pointer):
+        # print(pointer)
         instruction = Instruction(memory, pointer)
 
         return instruction.instruction
@@ -344,7 +347,7 @@ class Memory:
         if i is None:
             return 'None'
 
-       return self.register[i]
+        return self.register[i]
 
 
 # %% CPU Class
@@ -358,8 +361,53 @@ class CPU:
 #     def read_stack(self):
 #         executable = stack.pop()
 
-#     def instruction_execute(self, instruction, message=''):
-#         opcode = self.get_opcode(instruction[0])
+    def instruction_execute(self, memory, ip, inst):
+        opcode = inst['opcode']
+        par = inst['parameters']
+        # print(par)
+        # length = inst['length']
+
+        if opcode == 1:
+            memory.register[par[2]['address']] = \
+                self.add(par[0]['value'], par[1]['value'])
+        elif opcode == 2:
+            memory.register[par[2]['address']] = \
+                self.multiply(par[0]['value'], par[1]['value'])
+        elif opcode == 3:
+            answer = int(input('Which System ID are we testing? '))
+            memory.register[par[0]['address']] = answer
+            # memory[par[0]['address']] = \
+            #     int(input('Which System ID are we testing? '))
+        elif opcode == 4:
+            print('Diagnostic Code = {:,d}'.format(par[0]['value']))
+        elif opcode == 5:
+            if par[0]['value']:
+                inst['length'] = par[1]['value'] - ip
+        elif opcode == 6:
+            if par[0]['value'] == 0:
+                inst['length'] = par[1]['value'] - ip
+        elif opcode == 7:
+            memory.register[par[2]['address']] = \
+                1 if par[0]['value'] < par[1]['value'] else 0
+        elif opcode == 8:
+            memory.register[par[2]['address']] = \
+                1 if par[0]['value'] == par[1]['value'] else 0
+        elif opcode == 99:
+            # Terminate Program Execution
+            return inst
+        else:
+            print(str(100 * memory.address(ip) + memory.address(ip + 1)),
+                  'program alarm')
+            sys.exit()
+
+        return inst
+
+    def add(self, i, j):
+        return i + j
+
+    def multiply(self, i, j):
+        return i * j
+
 #         self.opcode = opcode
 #         self.decode_opcode(self.instruction_pointer)
 # #        self.decode_opcode()
@@ -368,100 +416,95 @@ class CPU:
 # #        print(instruction[0], instruction[1:], opcode)
 #         self.opcode_switch(instruction[0], instruction[1:], opcode)
 
-# %% OpCode 1 - add two values
+# # %% OpCode 1 - add two values
 
-    def opcode1(self, parameters):
-        p1 = self.memory[self.address(0)]
-        p2 = self.memory[self.address(1)]
-        self.memory[parameters[2]] = self.add(p1, p2)
-        self.instruction_pointer += self.instruction_length
+#     def opcode1(self, parameters):
+#         p1 = self.memory[self.address(0)]
+#         p2 = self.memory[self.address(1)]
+#         self.memory[parameters[2]] = self.add(p1, p2)
+#         self.instruction_pointer += self.instruction_length
 
-# %% OpCode 2 - multiply two values
+# # %% OpCode 2 - multiply two values
 
-    def opcode2(self, parameters):
-        p1 = self.memory[self.address(0)]
-        p2 = self.memory[self.address(1)]
-        self.memory[parameters[2]] = self.multiply(p1, p2)
-        self.instruction_pointer += self.instruction_length
+#     def opcode2(self, parameters):
+#         p1 = self.memory[self.address(0)]
+#         p2 = self.memory[self.address(1)]
+#         self.memory[parameters[2]] = self.multiply(p1, p2)
+#         self.instruction_pointer += self.instruction_length
 
-# %% OpCode 3 - ask for input
+# # %% OpCode 3 - ask for input
 
-    def opcode3(self, parameters, input_source):
-#        self.prt0()
+#     def opcode3(self, parameters, input_source):
+# #        self.prt0()
 
-#        self.memory[parameters[0]] = self.get_input(message)
-        if input_source == 'keyboard':
-            self.memory[parameters[0]] = \
-                int(input('Which System ID are we testing? '))
-#        print(self.instruction_length)
-        self.instruction_pointer += self.get_instruction_length(code=3)
-#        self.instruction_pointer += self.instruction_length
+# #        self.memory[parameters[0]] = self.get_input(message)
+#         if input_source == 'keyboard':
+#             self.memory[parameters[0]] = \
+#                 int(input('Which System ID are we testing? '))
+# #        print(self.instruction_length)
+#         self.instruction_pointer += self.get_instruction_length(code=3)
+# #        self.instruction_pointer += self.instruction_length
 
 
-# %% OpCode 4 - output a result
+# # %% OpCode 4 - output a result
 
-    def opcode4(self, parameters):
-        p1 = self.memory[self.address(0)]
-        if p1:
-            print('Diagnostic Code = {:,d}'.format(p1))
-        self.instruction_pointer += self.instruction_length
+#     def opcode4(self, parameters):
+#         p1 = self.memory[self.address(0)]
+#         if p1:
+#             print('Diagnostic Code = {:,d}'.format(p1))
+#         self.instruction_pointer += self.instruction_length
 
-# %% OpCode 5 - jump-if-true
+# # %% OpCode 5 - jump-if-true
 
-    def opcode5(self, parameters):
-        p1 = self.memory[self.address(0)]
-        p2 = self.memory[self.address(1)]
-        if p1:
-            self.instruction_pointer = p2
-        else:
-            self.instruction_pointer += self.instruction_length
+#     def opcode5(self, parameters):
+#         p1 = self.memory[self.address(0)]
+#         p2 = self.memory[self.address(1)]
+#         if p1:
+#             self.instruction_pointer = p2
+#         else:
+#             self.instruction_pointer += self.instruction_length
 
-# %% OpCode 6 - jump-if-false
+# # %% OpCode 6 - jump-if-false
 
-    def opcode6(self, parameters):
-        p1 = self.memory[self.address(0)]
-        p2 = self.memory[self.address(1)]
-        if not(p1):
-            self.instruction_pointer = p2
-        else:
-            self.instruction_pointer += self.instruction_length
+#     def opcode6(self, parameters):
+#         p1 = self.memory[self.address(0)]
+#         p2 = self.memory[self.address(1)]
+#         if not(p1):
+#             self.instruction_pointer = p2
+#         else:
+#             self.instruction_pointer += self.instruction_length
 
-# %% OpCode 7 - less than
+# # %% OpCode 7 - less than
 
-    def opcode7(self, parameters):
-        p1 = self.memory[self.address(0)]
-        p2 = self.memory[self.address(1)]
-        self.memory[parameters[2]] = 1 if p1 < p2 else 0
-        self.instruction_pointer += self.instruction_length
+#     def opcode7(self, parameters):
+#         p1 = self.memory[self.address(0)]
+#         p2 = self.memory[self.address(1)]
+#         self.memory[parameters[2]] = 1 if p1 < p2 else 0
+#         self.instruction_pointer += self.instruction_length
 
-# %% OpCode 8 - equals
+# # %% OpCode 8 - equals
 
-    def opcode8(self, parameters):
-        p1 = self.memory[self.address(0)]
-        p2 = self.memory[self.address(1)]
-        self.memory[parameters[2]] = 1 if p1 == p2 else 0
-        self.instruction_pointer += self.instruction_length
+#     def opcode8(self, parameters):
+#         p1 = self.memory[self.address(0)]
+#         p2 = self.memory[self.address(1)]
+#         self.memory[parameters[2]] = 1 if p1 == p2 else 0
+#         self.instruction_pointer += self.instruction_length
 
-# %% OpCode 99 - terminate program
+# # %% OpCode 99 - terminate program
 
-    def opcode99(self):
-        if self.memory[1] == 12 and self.memory[2] == 2:
-            print('Day 2 - Part 1 - Output = {:,d}'.format(self.memory[0]))
-        if self.memory[0] == 19690720:
-            print('Day 2 - Part 2 - 100 * noun + verb = {}'
-                  .format(100 * self.memory[1] + self.memory[2]))
-            print('Day 2 - Part 2 - Check = {}'.format(self.memory[0]))
+#     def opcode99(self):
+#         if self.memory[1] == 12 and self.memory[2] == 2:
+#             print('Day 2 - Part 1 - Output = {:,d}'.format(self.memory[0]))
+#         if self.memory[0] == 19690720:
+#             print('Day 2 - Part 2 - 100 * noun + verb = {}'
+#                   .format(100 * self.memory[1] + self.memory[2]))
+#             print('Day 2 - Part 2 - Check = {}'.format(self.memory[0]))
 
-        self.instruction_pointer = len(self.memory)
+#         self.instruction_pointer = len(self.memory)
 
-# %% OpCode general form
+# # %% OpCode general form
 
-    def opcode_generic(self, i):
-        p = self.memory[self.address(i)]
-        return p
+#     def opcode_generic(self, i):
+#         p = self.memory[self.address(i)]
+#         return p
 
-    def add(i, j):
-        return i + j
-
-    def multiply(i, j):
-        return i * j
