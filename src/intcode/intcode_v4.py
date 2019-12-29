@@ -34,9 +34,10 @@ import aoc
 #         boot
 #         instruction_next
 #         instruction_execute
-#         load_program
+#         program_install
+#         program_load
+#         program_menu
 #         programs_available
-#         programs_menu
 #         initialize_memory
 #         input
 #         output
@@ -137,45 +138,38 @@ class Computer:
 
     def instruction_next(self, memory, pointer):
         instruction = Instruction(memory, pointer)
+
         return instruction.instruction
-        # return 0, []
 
-    def instruction_execute(self):
-        pass
+    # def instruction_execute(self):
+    #     pass
 
-    def load_program(self, computer_name):
-        """
-        Control the flow to:
-            Ask which program to run on this computer
-            Load the program
-            Flash this computer's memory
-        """
-        program_keys = self.programs_available()
-        print_string = self.program_menu(program_keys)
-
-        print(f"{print_string}")
-
-        program_index = int(input('What shall we do today?\n' +
-                                  '(Please enter a number): '))
-
+    def program_install(self, program_keys, program_index):
         program_id = program_keys[program_index]
         program = Program(self.programs_available_dictionary[program_id])
         program.code = program.read_binary()
         self.program_loaded = program_keys[program_index]
         self.ip = 0
 
-        # self.memory.flash(program.code)
-
         return program
 
-    def programs_available(self):
-        """ Return the programs_available_dictionary's keys """
-        return list(self.programs_available_dictionary.keys())
+    def program_load(self, computer_name):
+        """
+        Control the flow to:
+            Ask which program to run on this computer
+            Load the program
+        """
+
+        program_keys = self.programs_available()
+        program_index = self.program_menu(program_keys)
+        program = self.program_install(program_keys, program_index)
+
+        return program
 
     def program_menu(self, program_list):
         """
         Create the text to display for the user to make a choice
-        of which program to run.
+        of which program to run.  Ask for that choice and return it.
 
         program_list = the dictionary keys from the
                        programs_available_dictionary
@@ -191,10 +185,16 @@ class Computer:
 
             print_string += "\n  " + f"{i:2d}" + ". " + program_list[i]
 
-        return print_string
+        print(f"{print_string}")
 
-    def flash_memory():
-        pass
+        return int(input('What shall we do today?\n(Please enter a number): '))
+
+    def programs_available(self):
+        """ Return the programs_available_dictionary's keys """
+        return list(self.programs_available_dictionary.keys())
+
+    # def flash_memory():
+    #     pass
 
     def get_input():
         pass
@@ -211,9 +211,11 @@ class Program:
         self.name = self.programID['name']
         self.binary = self.programID['binary']
         self.code = self.read_binary()
-        # self.instruction_pointer = 0
 
     def read_binary(self, program_binary=None):
+        """
+        Read and parse the text file associated with the named program
+        """
         if program_binary is not None:
             self.binary = program_binary
 
@@ -291,61 +293,38 @@ class Program:
 
 # %% Instruction Class
 
-
 class Instruction:
     def __init__(self, memory, ip=None, dictionary=aoc.opcode_dictionary):
-        # self.instruction_dict = dictionary
         self.raw_opcode = memory.address(ip)
         self.opcode = dictionary[self.raw_opcode]['opcode']
         self.modes = dictionary[self.raw_opcode]['modes']
         self.parameters = dictionary[self.raw_opcode]['parameters']
         self.length = dictionary[self.raw_opcode]['length']
         self.instruction = {'opcode': self.opcode,
-                            'parameters': self.decode_instruction(memory,
-                                                             self.opcode,
-                                                             self.length,
-                                                             ip),
+                            'parameters': self.decode_parameters(
+                                memory,
+                                self.length,
+                                ip),
                             'length': self.length}
-        # self.instruction = [self.opcode,
-        #                     self.parameters,
-        #                     self.modes,
-        #                     self.length]
 
-    def decode_instruction(self, memory, opcode, length, ip):
-        # instruction = {
-        #     'opcode': opcode,
-        #     'parameters': {},
-        #     'length': length}
+    def decode_parameters(self, memory, length, ip):
         if length == 1:
-            return []
+            return {}
 
         parameters = {}
 
-        for index in range(self.length - 1):
-            adr = self.address1(memory, index, ip)
-            val = memory.address(index)
+        for index in range(length - 1):
+            if self.modes[index] == 'position':
+                adr = memory.address((ip + 1) + index)
+            else:
+                adr = (ip + 1) + index
+
+            val = memory.address(adr)
 
             parameters[index] = {'address': adr, 'value': val}
 
-        # instruction['parameters'] = parameters
-
         return parameters
 
-    def address(self):
-        pass
-
-    def address1(self, memory, i, ip):
-        print(i, self.modes)
-        if self.modes[i] == 'position':
-            return memory.address(ip + i)
-        else:
-            return instruction_pointer + 1 + i
-
-    def value(self):
-        # p1 = mem[adr1]
-        # p2 = mem[adr2]
-
-        pass
 
 # %% Memory Class
 
@@ -364,11 +343,8 @@ class Memory:
     def address(self, i):
         if i is None:
             return 'None'
-        return self.register[i]
-        # if self.parameter_modes[i] == 'position':
-        #     return self.parameters[i]
-        # else:
-        #     return self.instruction_pointer + 1 + i
+
+       return self.register[i]
 
 
 # %% CPU Class
@@ -382,7 +358,7 @@ class CPU:
 #     def read_stack(self):
 #         executable = stack.pop()
 
-#     def execute_instruction(self, instruction, message=''):
+#     def instruction_execute(self, instruction, message=''):
 #         opcode = self.get_opcode(instruction[0])
 #         self.opcode = opcode
 #         self.decode_opcode(self.instruction_pointer)
@@ -489,291 +465,3 @@ class CPU:
 
     def multiply(i, j):
         return i * j
-
-
-# # %% Programs Dictionary
-
-# programs_available_dictionary = {
-#     'Amp': {'name': 'Amplifier Controller',
-#             'binary': '../data/adventofcode_2019_day_7_input1.txt'},
-#     'None': {'name': '',
-#              'binary': ''}, }
-
-# %% OpCode Dictionary
-
-# opcode_dictionary = {
-#             1: {'opcode': 1,
-#                 'length': 4,
-#                 'function': 'add',
-#                 'parameters': [0, 0, 0],
-#                 'modes': ['position',
-#                           'position',
-#                           'position']},
-#             101: {'opcode': 1,
-#                   'length': 4,
-#                   'function': 'add',
-#                   'parameters': [0, 0, 0],
-#                   'modes': ['immediate',
-#                             'position',
-#                             'position']},
-#             1001: {'opcode': 1,
-#                    'length': 4,
-#                    'function': 'add',
-#                    'parameters': [0, 0, 0],
-#                    'modes': ['position',
-#                              'immediate',
-#                              'position']},
-#             1101: {'opcode': 1,
-#                    'length': 4,
-#                    'function': 'add',
-#                    'parameters': [0, 0, 0],
-#                    'modes': ['immediate',
-#                              'immediate',
-#                              'position']},
-#             10001: {'opcode': 1,
-#                     'length': 4,
-#                     'function': 'add',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['position',
-#                               'position',
-#                               'immediate']},
-#             10101: {'opcode': 1,
-#                     'length': 4,
-#                     'function': 'add',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['immediate',
-#                               'position',
-#                               'immediate']},
-#             11101: {'opcode': 1,
-#                     'length': 4,
-#                     'function': 'add',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['immediate',
-#                               'immediate',
-#                               'immediate']},
-#             2: {'opcode': 2,
-#                 'length': 4,
-#                 'function': 'multiply',
-#                 'parameters': [0, 0, 0],
-#                 'modes': ['position',
-#                           'position',
-#                           'position']},
-#             102: {'opcode': 2,
-#                   'length': 4,
-#                   'function': 'multiply',
-#                   'parameters': [0, 0, 0],
-#                   'modes': ['immediate',
-#                             'position',
-#                             'position']},
-#             1002: {'opcode': 2,
-#                    'length': 4,
-#                    'function': 'multiply',
-#                    'parameters': [0, 0, 0],
-#                    'modes': ['position',
-#                              'immediate',
-#                              'position']},
-#             1102: {'opcode': 2,
-#                    'length': 4,
-#                    'function': 'multiply',
-#                    'parameters': [0, 0, 0],
-#                    'modes': ['immediate',
-#                              'immediate',
-#                              'position']},
-#             10002: {'opcode': 2,
-#                     'length': 4,
-#                     'function': 'multiply',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['position',
-#                               'position',
-#                               'immediate']},
-#             10102: {'opcode': 2,
-#                     'length': 4,
-#                     'function': 'multiply',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['immediate',
-#                               'position',
-#                               'immediate']},
-#             11102: {'opcode': 2,
-#                     'length': 4,
-#                     'function': 'multiply',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['immediate',
-#                               'immediate',
-#                               'immediate']},
-#             3: {'opcode': 3,
-#                 'length': 2,
-#                 'function': 'input',
-#                 'parameters': [0],
-#                 'modes': ['position']},
-#             103: {'opcode': 3,
-#                   'length': 2,
-#                   'function': 'input',
-#                   'parameters': [0],
-#                   'modes': ['immediate']},
-#             4: {'opcode': 4,
-#                 'length': 2,
-#                 'function': 'output',
-#                 'parameters': [0],
-#                 'modes': ['position']},
-#             104: {'opcode': 4,
-#                   'length': 2,
-#                   'function': 'input',
-#                   'parameters': [0],
-#                   'modes': ['immediate']},
-#             5: {'opcode': 5,
-#                 'length': 3,
-#                 'function': 'jump-if-true',
-#                 'parameters': [0, 0],
-#                 'modes': ['position',
-#                           'position']},
-#             105: {'opcode': 5,
-#                   'length': 3,
-#                   'function': 'jump-if-true',
-#                   'parameters': [0, 0],
-#                   'modes': ['immediate',
-#                             'position']},
-#             1005: {'opcode': 5,
-#                    'length': 3,
-#                    'function': 'jump-if-true',
-#                    'parameters': [0, 0],
-#                    'modes': ['position',
-#                              'immediate']},
-#             1105: {'opcode': 5,
-#                    'length': 3,
-#                    'function': 'jump-if-true',
-#                    'parameters': [0, 0],
-#                    'modes': ['immediate',
-#                              'immediate']},
-#             6: {'opcode': 6,
-#                 'length': 3,
-#                 'function': 'jump-if-false',
-#                 'parameters': [0, 0],
-#                 'modes': ['position',
-#                           'position']},
-#             106: {'opcode': 6,
-#                   'length': 3,
-#                   'function': 'jump-if-false',
-#                   'parameters': [0, 0],
-#                   'modes': ['immediate',
-#                             'position']},
-#             1006: {'opcode': 6,
-#                    'length': 3,
-#                    'function': 'jump-if-false',
-#                    'parameters': [0, 0],
-#                    'modes': ['position',
-#                              'immediate']},
-#             1106: {'opcode': 6,
-#                    'length': 3,
-#                    'function': 'jump-if-false',
-#                    'parameters': [0, 0],
-#                    'modes': ['immediate',
-#                              'immediate']},
-#             7: {'opcode': 7,
-#                 'length': 4,
-#                 'function': 'less than',
-#                 'parameters': [0, 0, 0],
-#                 'modes': ['position',
-#                           'position',
-#                           'position']},
-#             107: {'opcode': 7,
-#                   'length': 4,
-#                   'function': 'less than',
-#                   'parameters': [0, 0, 0],
-#                   'modes': ['immediate',
-#                             'position',
-#                             'position']},
-#             1007: {'opcode': 7,
-#                    'length': 4,
-#                    'function': 'less than',
-#                    'parameters': [0, 0, 0],
-#                    'modes': ['position',
-#                              'immediate',
-#                              'position']},
-#             1107: {'opcode': 7,
-#                    'length': 4,
-#                    'function': 'less than',
-#                    'parameters': [0, 0, 0],
-#                    'modes': ['immediate',
-#                              'immediate',
-#                              'position']},
-#             10007: {'opcode': 7,
-#                     'length': 4,
-#                     'function': 'less than',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['position',
-#                               'position',
-#                               'immediate']},
-#             10107: {'opcode': 7,
-#                     'length': 4,
-#                     'function': 'less than',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['immediate',
-#                               'position',
-#                               'immediate']},
-#             11107: {'opcode': 7,
-#                     'length': 4,
-#                     'function': 'less than',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['immediate',
-#                               'immediate',
-#                               'immediate']},
-#             8: {'opcode': 8,
-#                 'length': 4,
-#                 'function': 'equals',
-#                 'parameters': [0, 0, 0],
-#                 'modes': ['position',
-#                           'position',
-#                           'position']},
-#             108: {'opcode': 8,
-#                   'length': 4,
-#                   'function': 'equals',
-#                   'parameters': [0, 0, 0],
-#                   'modes': ['immediate',
-#                             'position',
-#                             'position']},
-#             1008: {'opcode': 8,
-#                    'length': 4,
-#                    'function': 'equals',
-#                    'parameters': [0, 0, 0],
-#                    'modes': ['position',
-#                              'immediate',
-#                              'position']},
-#             1108: {'opcode': 8,
-#                    'length': 4,
-#                    'function': 'equals',
-#                    'parameters': [0, 0, 0],
-#                    'modes': ['immediate',
-#                              'immediate',
-#                              'position']},
-#             10008: {'opcode': 8,
-#                     'length': 4,
-#                     'function': 'equals',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['position',
-#                               'position',
-#                               'immediate']},
-#             10108: {'opcode': 8,
-#                     'length': 4,
-#                     'function': 'equals',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['immediate',
-#                               'position',
-#                               'immediate']},
-#             11108: {'opcode': 8,
-#                     'length': 4,
-#                     'function': 'equals',
-#                     'parameters': [0, 0, 0],
-#                     'modes': ['immediate',
-#                               'immediate',
-#                               'immediate']},
-#             99: {'opcode': 99,
-#                  'length': 1,
-#                  'function': 'exit',
-#                  'parameters': [],
-#                  'modes': []},
-#             'None': {'opcode': 'None',
-#                      'length': 0,
-#                      'function': 'none',
-#                      'parameters': 'None',
-#                      'modes': 'None'},
-#             }
