@@ -9,69 +9,7 @@ from intcode.intcode_v4 import Computer
 from intcode.intcode_v4 import Program
 from intcode.intcode_v4 import Instruction
 
-
-# %% Programs Dictionary
-
-programs_available_dictionary1 = {
-    'Amp': {'name': 'Amplifier Controller',
-            'binary': '../data/adventofcode_2019_day_7_input1.txt'},
-    'None': {'name': '',
-              'binary': ''}, }
-
-programs_available_dictionary = {
-    'Gravity Assist': {'name': 'Gravity Assist',
-                       'copies': ['GravAsst'],
-                       'binary': '../data/adventofcode_2019_day_2_input.txt'},
-
-    'Diagnostics': {'name': 'Diagnostic Program',
-                    'copies': ['Diagnostics'],
-                    'binary': '../data/adventofcode_2019_day_5_input.txt'},
-
-    'Thrusters': {'name': 'Amplifier Controller Software',
-                  'copies': ['ampA', 'ampB', 'ampC', 'ampD'],
-                  'binary': '../data/adventofcode_2019_day_7_input1.txt'},
-
-    'BOOST': {'name': 'Basic Operation Of System Test',
-              'copies': ['BOOST'],
-              'binary': '../data/adventofcode_2019_day_9_input.txt'},
-
-    'Registration Identifier': {'name': 'Emergency Hull Painting',
-                                'copies': ['Registration'],
-                                'binary': '../data/' +
-                                'adventofcode_2019_day_11_input.txt'},
-
-    'Arcade Cabinet': {'name': 'Arcade Game',
-                       'copies': ['Arcade'],
-                       'binary': '../data/adventofcode_2019_day_13_input.txt'},
-
-    'Oxygen System': {'name': 'Remote Repair Program',
-                      'copies': ['Oxygen'],
-                      'binary': '../data/adventofcode_2019_day_15_input.txt'},
-
-    'ASCII': {'name': 'Aft Scaffolding Control and Information Interface',
-              'copies': ['ASCII'],
-              'binary': '../data/adventofcode_2019_day_17_input.txt'},
-
-    'Tractor Beam': {'name': 'Drone Control',
-                     'copies': ['TractorBeam'],
-                     'binary': '../data/adventofcode_2019_day_19_input.txt'},
-
-    'Springdroid': {'name': 'springscript',
-                    'copies': ['Springdroid'],
-                    'binary': '../data/adventofcode_2019_day_21_input.txt'},
-
-    'Ship Network': {'name': 'Network Interface Controller',
-                     'copies': ['NIC'],
-                     'binary': '../data/adventofcode_2019_day_23_input.txt'},
-
-    'Search Droid': {'name': 'Droid Communications',
-                     'copies': ['Search'],
-                     'binary': '../data/adventofcode_2019_day_25_input.txt'},
-
-    'None': {'name': '',
-             'copies': [],
-             'binary': ''}, }
-
+import aoc
 
 # %%
 
@@ -85,7 +23,7 @@ def print_vitals(memory, cpu, program={}, instruction=[]):
 
     # print('Memory code:', memory.code)
     print('\nMemory Properties:')
-    print('  Memory:', memory.register)
+    print('  Register:', memory.register)
 
     if program != {}:
         print('\nProgram Properties:')
@@ -93,15 +31,25 @@ def print_vitals(memory, cpu, program={}, instruction=[]):
         print('  Program Binary:', program.binary)
         print('  Program Code:', program.code)
 
-    if instruction != []:
-        print('\nInstruction Properties:')
-        print('  Raw OpCode:', instruction.raw_opcode)
-        print('  OpCode:', instruction.opcode)
-        print('  Parameters:', instruction.parameters)
-        print('  Modes:', instruction.modes)
-
     print('\n')
 
+def print_vitals_for_TEST(computer, memory, cpu, program={}):
+    print('\nComputer Properties:')
+    print('  Computer Name:', computer.name)
+    print('  Programs available:', computer.programs_available())
+    print('  Program loaded:', computer.program_loaded)
+    print('  Instruction Pointer:', computer.ip)
+
+    print('\nMemory Properties:')
+    print('  Register:', memory.register)
+
+    if program != {}:
+        print('\nProgram Properties:')
+        print('  Program Name:', program.name)
+        print('  Program Binary:', program.binary)
+        print('  Program Code:', program.code)
+
+    print('\n')
 
 def print_instruction():
     # print('IP:', IP)
@@ -115,13 +63,26 @@ def print_instruction():
     pass
 
 
-def TEST(library):
+def TEST(library=aoc.programs_available_dictionary):
     test = Computer(library)
     memory, cpu = test.boot()
-    # ampA, memory, instruction, cpu = test.boot()
-    print_vitals(memory, cpu)
 
-    # Create Program
+    # Select a program to run & flash memory
+    program = test.program_load(test.name)
+    memory.register = memory.flash(program.code)
+    print_vitals_for_TEST(test, memory, cpu, program)
+
+    # Execute program
+    opcode = 0
+
+    while opcode != 99:
+        instruction = test.instruction_next(memory, test.ip)
+        # cpu.instruction_execute(instruction)
+
+        test.ip += instruction['length']
+        print(instruction)
+        opcode = instruction['opcode']
+
     # ampA = Program('Amp')
     # ampA.read_binary('Amp')
     # ampA.code = ampA.read_binary(Program.programs['Amp']['binary'])
@@ -142,32 +103,25 @@ def TEST(library):
 
 
 # Create TEST
-test = Computer(programs_available_dictionary)
+test = Computer(aoc.programs_available_dictionary)
 memory, cpu = test.boot()
-print_vitals(memory, cpu)
+# print_vitals(memory, cpu)
 
 # Select a program to run & flash memory
-program = test.load_program(test.name)
+program = test.program_load(test.name)
 memory.register = memory.flash(program.code)
 print_vitals(memory, cpu, program)
 
 # Execute program
-# instruction = test.instruction_next(memory, test.ip)
-# test.ip += instruction[-1]
-# print(test.ip)
 opcode = 0
-# opcode = instruction[0]
 
 while opcode != 99:
-    # print(memory.address(ip))
     instruction = test.instruction_next(memory, test.ip)
-    # test.instruction_execute(instruction)
-    # instruction = test.instruction_next(memory, test.ip)
+    # cpu.instruction_execute(instruction)
 
-    test.ip += instruction[-1]
+    test.ip += instruction['length']
     print(instruction)
-    opcode = instruction[0]
-    # opcode = 99
+    opcode = instruction['opcode']
 
 
 # While Instruction loop
@@ -181,8 +135,7 @@ while opcode != 99:
 # Repeat the above if more than one computer in play
 
 
-# TEST(programs_available_dictionary)
-
+# TEST()
 
 # Create Computer
 # intcode = IntCode(1)
