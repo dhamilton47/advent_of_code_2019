@@ -90,6 +90,140 @@ def TEST(library=aoc.programs_available_dictionary):
     # ampA = Program(test.programs['Amp'])
 
 
+def day2_part1():
+    number_of_computers = 1
+    message_out1 = 'Day 2, Part 1 - Value at position 0 ='
+    pass
+
+
+def day2_part2():
+    number_of_computers = 1
+    message_out2 = 'Day 2, Part 2 - 100 * noun + verb ='
+    pass
+
+
+def day5_part1():
+    number_of_computers = 1
+    message_in = 'Which System ID are we testing? '
+    message_out1 = 'Day 5, Part 1 - Diagnostic code ='
+
+    # Create TEST
+    test = Computer(aoc.programs_available_dictionary)
+    memory, cpu = test.boot()
+    # print_vitals(memory, cpu)
+
+    # Select a program to run & flash memory
+    program = test.program_load(test.name)
+    memory.register = memory.flash(program.code)
+    # print_vitals(memory, cpu, program)
+
+    # Execute program
+    opcode = 0
+
+    while opcode != 99:
+        instruction = test.instruction_next(memory, test.ip)
+        instruction = cpu.instruction_execute(memory, test.ip, instruction)
+
+        test.ip += instruction['length']
+        # print(instruction)
+        opcode = instruction['opcode']
+    pass
+
+
+def day5_part2():
+    number_of_computers = 1
+    message_in = 'Which System ID are we testing? '
+    message_out2 = 'Day 5, Part 2 - Diagnostic code ='
+
+    # Create TEST
+    test = Computer(aoc.programs_available_dictionary)
+    memory, cpu = test.boot()
+    # print_vitals(memory, cpu)
+
+    # Select a program to run & flash memory
+    program = test.program_load(test.name)
+    memory.register = memory.flash(program.code)
+    # print_vitals(memory, cpu, program)
+
+    # Execute program
+    opcode = 0
+
+    while opcode != 99:
+        instruction = test.instruction_next(memory, test.ip)
+        instruction = cpu.instruction_execute(memory, test.ip, instruction)
+
+        test.ip += instruction['length']
+        # print(instruction)
+        opcode = instruction['opcode']
+    pass
+
+
+def day7_part1():
+    number_of_computers = 5
+    arrangement = 'sequential'
+
+    message_in_ampA_phase = 'AmpA phase = '
+    message_in_ampA_signal = 'AmpA input signal = '
+    message_out_ampA = 'AmpA output signal = '
+
+    message_in_ampB_phase = 'AmpB phase = '
+    message_in_ampB_signal = 'AmpB input signal = '
+    message_out_ampB = 'AmpB output signal = '
+
+    message_in_ampC_phase = 'AmpC phase = '
+    message_in_ampC_signal = 'AmpC input signal = '
+    message_out_ampC = 'AmpC output signal = '
+
+    message_in_ampD_phase = 'AmpD phase = '
+    message_in_ampD_signal = 'AmpD input signal = '
+    message_out_ampD = 'AmpD output signal = '
+
+    message_in_ampE_phase = 'AmpE phase = '
+    message_in_ampE_signal = 'AmpE input signal = '
+    message_out_ampE = 'AmpE output signal = '
+
+    message_out = 'Day 7, Part 1 - Largest output signal ='
+    pass
+
+
+def day7_part2():
+    number_of_computers = 5
+    arrangement = 'parallel'
+
+    message_in_ampA_phase = 'AmpA phase = '
+    message_in_ampA_signal = 'AmpA input signal = '
+    message_out_ampA = 'AmpA output signal = '
+
+    message_in_ampB_phase = 'AmpB phase = '
+    message_in_ampB_signal = 'AmpB input signal = '
+    message_out_ampB = 'AmpB output signal = '
+
+    message_in_ampC_phase = 'AmpC phase = '
+    message_in_ampC_signal = 'AmpC input signal = '
+    message_out_ampC = 'AmpC output signal = '
+
+    message_in_ampD_phase = 'AmpD phase = '
+    message_in_ampD_signal = 'AmpD input signal = '
+    message_out_ampD = 'AmpD output signal = '
+
+    message_in_ampE_phase = 'AmpE phase = '
+    message_in_ampE_signal = 'AmpE input signal = '
+    message_out_ampE = 'AmpE output signal = '
+
+    message_out = 'Day 7, Part 2 - Largest output signal ='
+    pass
+
+
+def day9_part1():
+    number_of_computers = 1
+    pass
+
+
+def day9_part2():
+    number_of_computers = 1
+    pass
+
+
 # %% Development Environment
 
 # phases = permutations()
@@ -100,7 +234,7 @@ memory, cpu = test.boot()
 # print_vitals(memory, cpu)
 
 # Select a program to run & flash memory
-program = test.program_load(test.name)
+program = test.program_load()  # test.name)
 memory.register = memory.flash(program.code)
 # print_vitals(memory, cpu, program)
 
