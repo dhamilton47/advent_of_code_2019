@@ -35,7 +35,6 @@ import aoc
 #     Methods
 #         boot
 #         instruction_next
-#         program_install
 #         program_load
 #         program_menu
 #         programs_available
@@ -132,6 +131,7 @@ class Computer:
         """
         Initialize sub-classes the computer utilizes.
         """
+
         memory = Memory()
         cpu = CPU()
 
@@ -187,6 +187,7 @@ class Computer:
 
     def programs_available(self):
         """ Return the programs_available_dictionary's keys """
+
         return list(self.programs_available_dictionary.keys())
 
     # def flash_memory():
@@ -206,6 +207,7 @@ class Program:
     This class retrieves a program's information from the programs
     available dictionary.
     """
+
     def __init__(self, programID):
         self.programID = programID
         self.name = self.programID['name']
@@ -216,6 +218,7 @@ class Program:
         """
         Read and parse the text file associated with the named program
         """
+
         if program_binary is not None:
             self.binary = program_binary
 
