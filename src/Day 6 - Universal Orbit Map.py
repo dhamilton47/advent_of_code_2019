@@ -6,14 +6,7 @@ Created on Sat Dec  7 02:57:25 2019
 """
 
 
-# %% Import the "orbit" data (as a string)
-def read_program(txtfile):
-    f = open(txtfile, "r")
-    if f.mode == 'r':
-        contents = f.read()
-    f.close()
-
-    return contents
+import aoc
 
 
 # %% Transform the "orbit" from a string to a list
@@ -69,10 +62,10 @@ def day6_part1(lst, print_path=False):
 
 # %% Set up
 
-txtfile = "../data/adventofcode_2019_day_6_input.txt"
+txtfile = "../data/AoC2019_day_6_input.txt"
 # txtfile1 = "../data/adventofcode_2019_day_6_test.txt"
 
-contents = read_program(txtfile)
+contents = aoc.read_program(txtfile)
 orbits = transform_program(contents)
 
 total = day6_part1(orbits)

@@ -8,15 +8,7 @@ Created on Fri Dec  6 12:04:20 2019
 
 import functools
 
-
-# %% Import the "XXXX" data (as a string)
-def read_program(txtfile):
-    f = open(txtfile, "r")
-    if f.mode == 'r':
-        contents = f.read()
-    f.close()
-
-    return contents
+import aoc
 
 
 # %% Transform the "XXXX" from a string to a list
@@ -160,8 +152,8 @@ def day16_part2(phases, base_signal, data_len, final_shift):
 
 # %% Production Environment
 
-txtfile = "../data/adventofcode_2019_day_16_input.txt"
-base_signal = read_program(txtfile)
+txtfile = "../data/AoC2019_day_16_input.txt"
+base_signal = aoc.read_program(txtfile)
 final_shift = int(base_signal[:7])
 base_signal = transform_input(base_signal)
 data_len = len(base_signal)

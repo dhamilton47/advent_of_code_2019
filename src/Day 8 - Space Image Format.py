@@ -5,6 +5,10 @@ Created on Fri Dec 13 11:56:26 2019
 @author: Dan J Hamilton
 """
 
+
+import aoc
+
+
 # %% Day 8, Part 1
 
 # Need to enter a BIOS password to the Mars Rover
@@ -51,16 +55,6 @@ Created on Fri Dec 13 11:56:26 2019
 
 # %%
 
-
-def read_program(txtfile):
-    f = open(txtfile, "r")
-    if f.mode == 'r':
-        contents = f.read()
-    f.close()
-
-    return contents
-
-
 def transform_program(contents, count, length):
     layers_index = [0]
     for i in range(count):
@@ -95,7 +89,7 @@ def lowest_count_index_finder(digits, count, images, target):
 
 def preprocess_transmission(x, y, txtfile):
     # load transmission information
-    transmission_received = read_program(txtfile)
+    transmission_received = aoc.read_program(txtfile)
 
     # Process transmission dimensions
     digits_per_image_layer = x * y
@@ -205,8 +199,8 @@ def day8_part2(x, y, txtfile):
 # %% Develpment Environment
 
 # # load transmission information
-# txtfile = '../data/adventofcode_2019_day_8_input.txt'
-# # transmission_received = read_program(txtfile)
+# txtfile = '../data/AoC2019_day_8_input.txt'
+# # transmission_received = aoc.read_program(txtfile)
 
 # # Process transmission data
 # x = 25
@@ -274,7 +268,7 @@ def day8_part2(x, y, txtfile):
 
 # %% Production Environment
 
-txtfile = '../data/adventofcode_2019_day_8_input.txt'
+txtfile = '../data/AoC2019_day_8_input.txt'
 
 day8_part1(25, 6, txtfile, '0', '1', '2')
 print()

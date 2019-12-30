@@ -12,8 +12,8 @@ import seaborn as sns
 pd.plotting.register_matplotlib_converters()
 # %matplotlib inline
 
-x_text = "../data/adventofcode_2019_day_3_wire_1_input.txt"
-y_text = "../data/adventofcode_2019_day_3_wire_2_input.txt"
+x_text = "../data/AoC2019_day_3_wire_1_input.txt"
+y_text = "../data/AoC2019_day_3_wire_2_input.txt"
 
 
 # %% Read in the wire directives

@@ -12,17 +12,7 @@ Created on Fri Dec  6 12:04:20 2019
 import pandas as pd
 import math
 
-
-# %% Import the data (as a matrix)
-
-
-def read_program(txtfile):
-    f = open(txtfile, "r")
-    if f.mode == 'r':
-        contents = f.read()
-    f.close()
-
-    return contents
+import aoc
 
 
 # %% Transform the "XXXX" from a string to a list
@@ -186,7 +176,7 @@ def asteroids_seen_from_new_base(remaining_asteroids, base):
 
 def best_base(txtfile):
     # Preprocess data
-    contents = read_program(txtfile)
+    contents = aoc.read_program(txtfile)
     table, height, width = transform_program(contents)
 
     # Locate asteroids
@@ -205,7 +195,7 @@ def best_base(txtfile):
 
 def blast_rotation(txtfile):
     # Preprocess data
-    contents = read_program(txtfile)
+    contents = aoc.read_program(txtfile)
     table, height, width = transform_program(contents)
 
     # Locate asteroids
@@ -226,7 +216,7 @@ def blast_rotation(txtfile):
 
 # %% Development Environment
 # txtfile = "../data/adventofcode_2019_day_10_input.txt"
-# contents = read_program(txtfile)
+# contents = aoc.read_program(txtfile)
 # table, height, width = transform_program(contents)
 
 # asteroids = locate_asteroids(table, height, width)
@@ -260,6 +250,6 @@ def blast_rotation(txtfile):
 # %% Production Environment
 
 
-txtfile = "../data/adventofcode_2019_day_10_input.txt"
+txtfile = "../data/AoC2019_day_10_input.txt"
 answer = best_base(txtfile)
 answer2 = blast_rotation(txtfile)
