@@ -48,8 +48,6 @@ class CPU:
         opcode = inst['opcode']
         par = inst['parameters']
         ip = computer.ip
-        # print(par)
-        # length = inst['length']
 
         if opcode == 1:
             memory.register[par[2]['address']] = \

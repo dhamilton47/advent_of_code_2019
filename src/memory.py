@@ -39,6 +39,3 @@ class Memory:
             return 'None'
 
         return self.register[i]
-
-
-

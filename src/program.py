@@ -68,5 +68,3 @@ class Program:
             return program['message_out']
 
         return None
-
-
