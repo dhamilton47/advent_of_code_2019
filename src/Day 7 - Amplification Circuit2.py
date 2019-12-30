@@ -69,16 +69,16 @@ def TEST(library=aoc.programs_available_dictionary):
     memory, cpu = test.boot()
 
     # Select a program to run & flash memory
-    program = test.program_load(test.name)
-    memory.register = memory.flash(program.code)
+    program = test.program_load()
+    memory.register = memory.flash(program)
     # print_vitals_for_TEST(test, memory, cpu, program)
 
     # Execute program
     opcode = 0
 
     while opcode != 99:
-        instruction = test.instruction_next(memory, test.ip)
-        # cpu.instruction_execute(instruction)
+        instruction = test.instruction_next(memory)
+        instruction = cpu.instruction_execute(memory, test, instruction)
 
         test.ip += instruction['length']
         # print(instruction)
@@ -113,16 +113,16 @@ def day5_part1():
     # print_vitals(memory, cpu)
 
     # Select a program to run & flash memory
-    program = test.program_load(test.name)
-    memory.register = memory.flash(program.code)
+    program = test.program_load()
+    memory.register = memory.flash(program)
     # print_vitals(memory, cpu, program)
 
     # Execute program
     opcode = 0
 
     while opcode != 99:
-        instruction = test.instruction_next(memory, test.ip)
-        instruction = cpu.instruction_execute(memory, test.ip, instruction)
+        instruction = test.instruction_next(memory)
+        instruction = cpu.instruction_execute(memory, test, instruction)
 
         test.ip += instruction['length']
         # print(instruction)
@@ -141,16 +141,16 @@ def day5_part2():
     # print_vitals(memory, cpu)
 
     # Select a program to run & flash memory
-    program = test.program_load(test.name)
-    memory.register = memory.flash(program.code)
+    program = test.program_load()
+    memory.register = memory.flash(program)
     # print_vitals(memory, cpu, program)
 
     # Execute program
     opcode = 0
 
     while opcode != 99:
-        instruction = test.instruction_next(memory, test.ip)
-        instruction = cpu.instruction_execute(memory, test.ip, instruction)
+        instruction = test.instruction_next(memory)
+        instruction = cpu.instruction_execute(memory, test, instruction)
 
         test.ip += instruction['length']
         # print(instruction)
@@ -235,15 +235,15 @@ memory, cpu = test.boot()
 
 # Select a program to run & flash memory
 program = test.program_load()  # test.name)
-memory.register = memory.flash(program.code)
+memory.register = memory.flash(program)
 # print_vitals(memory, cpu, program)
 
 # Execute program
 opcode = 0
 
 while opcode != 99:
-    instruction = test.instruction_next(memory, test.ip)
-    instruction = cpu.instruction_execute(memory, test.ip, instruction)
+    instruction = test.instruction_next(memory)
+    instruction = cpu.instruction_execute(memory, test, instruction)
 
     test.ip += instruction['length']
     # print(instruction)
