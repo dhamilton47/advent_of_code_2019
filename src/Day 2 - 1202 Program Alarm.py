@@ -18,16 +18,6 @@ def main(txtfile, instruction_length=4):
             IntCode(memory)
 
 
-# # %%
-# def read_intcode(txtfile):
-#     f = open(txtfile, "r")
-#     if f.mode == 'r':
-#         contents = f.read()
-#     f.close()
-
-#     return contents
-
-
 # %%
 def set_memory(x):
     memory = list(x.split(","))
