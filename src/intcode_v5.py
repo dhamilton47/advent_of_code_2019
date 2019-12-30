@@ -15,6 +15,7 @@ from cpu import CPU
 from io_aoc import IO
 from memory import Memory
 from instruction import Instruction
+from stack import Stack
 
 
 # %% Define the IntCode class
@@ -82,6 +83,8 @@ class Computer:
         self.ip = None
         self.programs_loaded = {}
         self.ips = {}
+        self.instruction = None
+        self.stack = None
 
     # def boot1(self, programID='None'):
     #     # program = Program()
@@ -101,8 +104,9 @@ class Computer:
         self.cpu = CPU()
         self.io = IO()
         self.memory = Memory()
+        self.stack = Stack()
 
-        return self.cpu, self.io, self.memory
+        return self.cpu, self.io, self.memory, self.stack
 
     def instruction_next(self, memory, pointer=None):
         if pointer is None:
@@ -124,12 +128,20 @@ class Computer:
         program_to_load = \
             self.programs_available_dictionary[program_keys[program_index]]
 
-        self.program_loaded = Program(program_to_load)
-        self.ip = 0
-        self.programs_loaded[self.program_loaded.name] = self.program_loaded
-        self.ips[self.program_loaded.name] = 0
+        print(f"IntCode: program copies to load = {program_to_load['copies']}\n")
+        for item in program_to_load['copies']:
+            print(f"IntCode: copy to load = {item}\n")
+            program_loaded = Program(program_to_load)
+            print(f"IntCode: copy loaded: {program_loaded}\n")
+            # self.ip = 0
+            # self.program_loaded = Program(program_to_load)
+            # self.ip = 0
+            self.programs_loaded[item] = program_loaded
+            self.ips[item] = 0
+            # self.programs_loaded[program_loaded.name] = program_loaded
+            # self.ips[program_loaded.name] = 0
 
-        return self.program_loaded
+        return self.programs_loaded
 
     def program_menu(self, program_list):
         """

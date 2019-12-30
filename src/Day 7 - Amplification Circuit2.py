@@ -9,8 +9,19 @@ from intcode_v5 import Computer
 
 import aoc
 
+# Day 7, Part 1 needs:
+#     Multiple programs running on the computer
+#     Buffer(s) or stack to add instruction command control
+#     Inputs coming from the stack
+#     Outputs placed on the stack
+#     Inputs:
+#         Phase setting
+#         Signal
+
+# Day 7, Part 2 needs:
 
 # %%
+
 
 def print_vitals(memory, cpu, program={}, instruction=[]):
     print('\nComputer Properties:')
@@ -100,60 +111,27 @@ def day2_part2():
     pass
 
 
-def day5_part1():
-    number_of_computers = 1
-    message_in = 'Which System ID are we testing? '
-    message_out1 = 'Day 5, Part 1 - Diagnostic code ='
-
+def day5():
     # Create TEST
     test = Computer(aoc.programs_available_dictionary)
-    memory, cpu = test.boot()
-    # print_vitals(memory, cpu)
+    cpu, io, memory = test.boot()
 
-    # Select a program to run & flash memory
     program = test.program_load()
     memory.register = memory.flash(program)
-    # print_vitals(memory, cpu, program)
 
     # Execute program
     opcode = 0
 
     while opcode != 99:
         instruction = test.instruction_next(memory)
-        instruction = cpu.instruction_execute(test, memory, instruction)
+        instruction = cpu.instruction_execute(test,
+                                              program,
+                                              memory,
+                                              instruction)
 
         test.ip += instruction['length']
-        # print(instruction)
+
         opcode = instruction['opcode']
-    pass
-
-
-def day5_part2():
-    number_of_computers = 1
-    message_in = 'Which System ID are we testing? '
-    message_out2 = 'Day 5, Part 2 - Diagnostic code ='
-
-    # Create TEST
-    test = Computer(aoc.programs_available_dictionary)
-    memory, cpu = test.boot()
-    # print_vitals(memory, cpu)
-
-    # Select a program to run & flash memory
-    program = test.program_load()
-    memory.register = memory.flash(program)
-    # print_vitals(memory, cpu, program)
-
-    # Execute program
-    opcode = 0
-
-    while opcode != 99:
-        instruction = test.instruction_next(memory)
-        instruction = cpu.instruction_execute(test, memory, instruction)
-
-        test.ip += instruction['length']
-        # print(instruction)
-        opcode = instruction['opcode']
-    pass
 
 
 def day7_part1():
@@ -232,8 +210,9 @@ cpu, io, memory = test.boot()
 # print_vitals(memory, cpu)
 
 # Select a program to run & flash memory
-program = test.program_load()  # test.name)
-memory.register = memory.flash(program)
+amp = test.program_load()
+# print(f"top level: {amp}\n")
+memory.register = memory.flash(amp)
 # print_vitals(memory, cpu, program)
 
 # Execute program
@@ -241,7 +220,11 @@ opcode = 0
 
 while opcode != 99:
     instruction = test.instruction_next(memory)
-    instruction = cpu.instruction_execute(test, program, memory, io, instruction)
+    instruction = cpu.instruction_execute(test,
+                                          amp,
+                                          memory,
+                                          io,
+                                          instruction)
 
     test.ip += instruction['length']
     # print(instruction)
