@@ -7,8 +7,7 @@ Created on Sun Dec  22 15:49:41 2019
 
 
 import sys
-# from memory import Memory
-# from program import Program
+# import os
 
 import aoc
 
@@ -137,8 +136,10 @@ class Computer:
 
         return memory, cpu
 
-    def instruction_next(self, memory, pointer):
-        # print(pointer)
+    def instruction_next(self, memory, pointer=None):
+        if pointer is None:
+            pointer = self.ip
+
         instruction = Instruction(memory, pointer)
 
         return instruction.instruction
@@ -208,11 +209,18 @@ class Program:
     available dictionary.
     """
 
-    def __init__(self, programID):
-        self.programID = programID
-        self.name = self.programID['name']
-        self.binary = self.programID['binary']
+    def __init__(self, program):
+        self.program = program
+        self.name = self.program['name']
+        self.binary = self.program['binary']
         self.code = self.read_binary()
+        self.copies = program['copies']
+        self.input_sources = self.input_source(program)
+        self.messages_in = self.message_in(program)
+        self.messages_out = self.message_out(program)
+        # self.input_sources = ''
+        # self.messages_in = []
+        # self.messages_out = []
 
     def read_binary(self, program_binary=None):
         """
@@ -234,6 +242,24 @@ class Program:
             code.append(int(raw_program[i]))
 
         return code
+
+    def input_source(self, program):
+        if 'input_source' in program.keys():
+            return program['input_source']
+
+        return None
+
+    def message_in(self, program):
+        if 'message_in' in program.keys():
+            return program['message_in']
+
+        return None
+
+    def message_out(self, program):
+        if 'message_out' in program.keys():
+            return program['message_out']
+
+        return None
 
 
 # %% Instruction Class
@@ -274,11 +300,16 @@ class Instruction:
 # %% Memory Class
 
 class Memory:
-    def __init__(self, code=[]):
-        self.register = self.flash(code)
+    def __init__(self, program=None):
+        self.register = self.flash(program)
 
-    def flash(self, code):
+    def flash(self, program):
         mem_dict = {}
+
+        if program is None:
+            return {}
+
+        code = program.code
 
         for i in range(len(code)):
             mem_dict[i] = code[i]
@@ -295,7 +326,7 @@ class Memory:
 # %% CPU Class
 
 class CPU:
-    def __init__(self, instruction=[]):
+    def __init__(self, instruction=None):
         self.instruction = instruction
         self.name = 'The Little Train That Could'
 
@@ -303,9 +334,14 @@ class CPU:
 #     def read_stack(self):
 #         executable = stack.pop()
 
-    def instruction_execute(self, memory, ip, inst):
+    def instruction_execute(self, memory, computer, instruction):
+        if instruction is None:
+            return instruction
+
+        inst = instruction
         opcode = inst['opcode']
         par = inst['parameters']
+        ip = computer.ip
         # print(par)
         # length = inst['length']
 
