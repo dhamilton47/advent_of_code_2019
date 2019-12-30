@@ -11,6 +11,10 @@ import sys
 
 import aoc
 from program import Program
+from cpu import CPU
+from io_aoc import IO
+from memory import Memory
+from instruction import Instruction
 
 
 # %% Define the IntCode class
