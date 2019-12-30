@@ -7,9 +7,6 @@ Created on Fri Dec  6 12:04:20 2019
 
 from intcode_v5 import Computer
 
-# from intcode.intcode_v4 import Program
-# from intcode.intcode_v4 import Instruction
-
 import aoc
 
 

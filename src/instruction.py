@@ -11,13 +11,15 @@ import aoc
 
 # class Instruction
 #     Properties
-#         instruction
-#         instruction_length
 #         raw_opcode
-#         instruction_dict
 #         opcode
 #         modes
 #         parameters
+#         length
+#         instruction
+#
+#     Methods
+#         decode_parameters
 
 
 # %% Instruction Class

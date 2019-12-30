@@ -13,18 +13,9 @@ import sys
 #     Properties
 #         instruction
 #         name
-
+#
 #     Methods
-#         opcode1
-#         opcode2
-#         opcode3
-#         opcode4
-#         opcode5
-#         opcode6
-#         opcode7
-#         opcode8
-#         opcode99
-#         opcode_generic
+#         instruction_execute
 #         add
 #         multiply
 

@@ -6,6 +6,26 @@ Created on Sun Dec 29 23:59:09 2019
 """
 
 
+# class Program
+#     Properties
+#         name
+#         description
+#         binary
+#         code
+#         copies
+#         input_sources
+#         messages_in
+#         messages_out
+#         messages_in_calls
+#         messages_out_calls
+#
+#     Methods
+#         read_binary
+#         input_source
+#         message_in
+#         message_out
+
+
 # %% Program Class
 
 class Program:

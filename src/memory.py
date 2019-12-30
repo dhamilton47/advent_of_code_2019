@@ -9,7 +9,7 @@ Created on Mon Dec 30 00:05:46 2019
 #     Properties
 #         buffer
 #         register
-
+#
 #     Methods
 #         flash
 #         address

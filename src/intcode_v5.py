@@ -32,9 +32,14 @@ from instruction import Instruction
 
 #     Properties
 #         name
-#         programs_available
-#         program_running
+#         cpu
+#         io
+#         memory
+#         programs_available_dictionary
+#         program_loaded
 #         ip (instruction pointer)
+#         programs_loaded
+#         ips (instruction pointer)
 
 #     Methods
 #         boot

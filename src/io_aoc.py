@@ -6,6 +6,12 @@ Created on Mon Dec 30 00:05:25 2019
 """
 
 
+# class IO
+#     Methods
+#         get_input
+#         return_output
+
+
 # %% IO Class
 
 class IO:
