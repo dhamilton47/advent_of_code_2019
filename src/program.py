@@ -10,13 +10,14 @@ Created on Sun Dec 29 23:59:09 2019
 
 class Program:
     """
-    This class retrieves a program's information from the programs
-    available dictionary.
+    This class retrieves a program's information from the available
+    programs dictionary.
     """
 
     def __init__(self, program):
         self.program = program
         self.name = self.program['name']
+        self.description = self.program['description']
         self.binary = self.program['binary']
         self.code = self.read_binary()
         self.copies = program['copies']
