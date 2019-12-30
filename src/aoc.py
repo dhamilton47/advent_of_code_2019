@@ -34,7 +34,16 @@ programs_available_dictionary = {
          'binary': '../data/AoC2019_day_5_input.txt',
          'input_source': 'keyboard',
          'message_in': ['Which System ID are we testing? '],
-         'message_out': ['Day 5, Part 1 - Diagnostic code =',
+         'message_out': ['Diagnostic test =',
+                         'Diagnostic test =',
+                         'Diagnostic test =',
+                         'Diagnostic test =',
+                         'Diagnostic test =',
+                         'Diagnostic test =',
+                         'Diagnostic test =',
+                         'Diagnostic test =',
+                         'Diagnostic test =',
+                         'Day 5, Part 1 - Diagnostic code =',
                          'Day 5, Part 2 - Diagnostic code =']},
 
     'Amp':

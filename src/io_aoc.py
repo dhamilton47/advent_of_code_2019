@@ -28,6 +28,8 @@ class IO:
         elif program.input_sources == 'stack':
             pass
 
-    def return_output(self):
-        pass
-
+    def return_output(self, program, instruction):
+        message = program.messages_out[program.messages_out_calls]
+        value = instruction['parameters'][0]['value']
+        print(f"{message} {value}")
+        program.messages_out_calls += 1

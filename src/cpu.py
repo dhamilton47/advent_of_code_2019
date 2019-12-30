@@ -57,13 +57,9 @@ class CPU:
                 self.multiply(par[0]['value'], par[1]['value'])
         elif opcode == 3:
             answer = io.get_input(program)
-            # print(answer)
-            # answer = int(input('Which System ID are we testing? '))
             memory.register[par[0]['address']] = answer
-            # memory[par[0]['address']] = \
-            #     int(input('Which System ID are we testing? '))
         elif opcode == 4:
-            print('Diagnostic Code = {:,d}'.format(par[0]['value']))
+            io.return_output(program, instruction)
         elif opcode == 5:
             if par[0]['value']:
                 inst['length'] = par[1]['value'] - ip
@@ -91,30 +87,3 @@ class CPU:
 
     def multiply(self, i, j):
         return i * j
-
-# %% OpCode 3 - ask for input
-
-    def opcode3(self, io, parameters, input_source):
-        answer = int(input('Which System ID are we testing? '))
-        memory.register[par[0]['address']] = answer
-# #        self.prt0()
-
-# #        self.memory[parameters[0]] = self.get_input(message)
-#         if input_source == 'keyboard':
-#             self.memory[parameters[0]] = \
-#                 int(input('Which System ID are we testing? '))
-# #        print(self.instruction_length)
-#         self.instruction_pointer += self.get_instruction_length(code=3)
-# #        self.instruction_pointer += self.instruction_length
-        pass
-
-
-# %% OpCode 4 - output a result
-
-    def opcode4(self, parameters):
-        print('Diagnostic Code = {:,d}'.format(par[0]['value']))
-#         p1 = self.memory[self.address(0)]
-#         if p1:
-#             print('Diagnostic Code = {:,d}'.format(p1))
-#         self.instruction_pointer += self.instruction_length
-

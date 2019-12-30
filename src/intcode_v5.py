@@ -157,14 +157,8 @@ class Computer:
     # def flash_memory():
     #     pass
 
-    def get_input():
-        pass
+    # def get_input():
+    #     pass
 
-    def print_output():
-        pass
-
-
-
-#     def opcode_generic(self, i):
-#         p = self.memory[self.address(i)]
-#         return p
+    # def print_output():
+    #     pass
