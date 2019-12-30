@@ -15,10 +15,10 @@ class Program:
     """
 
     def __init__(self, program):
-        self.program = program
-        self.name = self.program['name']
-        self.description = self.program['description']
-        self.binary = self.program['binary']
+        # self.program = program
+        self.name = program['name']
+        self.description = program['description']
+        self.binary = program['binary']
         self.code = self.read_binary()
         self.copies = program['copies']
         self.input_sources = self.input_source(program)

@@ -20,7 +20,7 @@ def read_program(txtfile):
 
 programs_available_dictionary = {
     'Gravity Assist':
-        {'name': 'Gravity Assist',
+        {'name': 'GravAsst',
          'description': 'Gravity Assist Program',
          'copies': ['GravAsst'],
          'binary': '../data/AoC2019_day_2_input.txt',
@@ -28,8 +28,8 @@ programs_available_dictionary = {
                          'Day 2, Part 2 - 100 * noun + verb =']},
 
     'System Diagnostics':
-        {'name': 'Diagnostic Program',
-         'description': 'Diagnostic Program',
+        {'name': 'Diagnostics',
+         'description': 'Spacecraft System Diagnostic Program',
          'copies': ['Diagnostics'],
          'binary': '../data/AoC2019_day_5_input.txt',
          'input_source': 'keyboard',
@@ -38,7 +38,7 @@ programs_available_dictionary = {
                          'Day 5, Part 2 - Diagnostic code =']},
 
     'Amp':
-        {'name': 'Amplifier Controller Software',
+        {'name': 'Amps',
          'description': 'Amplifier Controller Software',
          'copies': ['ampA', 'ampB', 'ampC', 'ampD'],
          'binary': '../data/adventofcode_2019_day_7_input1.txt',
@@ -47,37 +47,37 @@ programs_available_dictionary = {
          'message_out': []},
 
     'BOOST':
-        {'name': 'Basic Operation Of System Test',
+        {'name': 'BOOST',
          'description': 'Basic Operation Of System Test Program',
          'copies': ['BOOST'],
          'binary': '../data/AoC2019_day_9_input.txt'},
 
     'Registration Identifier':
-        {'name': 'Emergency Hull Painting',
+        {'name': 'Registration',
          'description': 'Emergency Hull Painting Robot Software',
          'copies': ['Registration'],
          'binary': '../data/AoC2019_day_11_input.txt'},
 
     'Arcade Cabinet':
-        {'name': 'Arcade Cabinet',
-         'description': 'Breakout Software',
-         'copies': ['Arcade'],
+        {'name': 'Game',
+         'description': 'Arcade Cabinet Video Game Software',
+         'copies': ['Breakout'],
          'binary': '../data/AoC2019_day_13_input.txt'},
 
     'Oxygen System':
-        {'name': 'Remote Repair Program',
+        {'name': 'Repair Program',
          'description': 'Repair Droid Remote Control Program',
          'copies': ['Oxygen'],
          'binary': '../data/AoC2019_day_15_input.txt'},
 
     'ASCII':
-        {'name': 'Aft Scaffolding Control and Information Interface',
+        {'name': 'ASCII',
          'description': 'Aft Scaffolding Control and Information Interface',
          'copies': ['ASCII'],
          'binary': '../data/AoC2019_day_17_input.txt'},
 
     'Tractor Beam':
-        {'name': 'Drone Control',
+        {'name': 'TractorBeam',
          'description': 'Drone Control Program',
          'copies': ['TractorBeam'],
          'binary': '../data/AoC2019_day_19_input.txt'},
@@ -89,7 +89,7 @@ programs_available_dictionary = {
          'binary': '../data/AoC2019_day_21_input.txt'},
 
     'Ship Network':
-        {'name': 'Network Interface Controller',
+        {'name': 'NIC',
          'description': 'Network Interface Controller (NIC) Software',
          'copies': ['NIC'],
          'binary': '../data/AoC2019_day_23_input.txt'},

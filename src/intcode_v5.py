@@ -75,6 +75,8 @@ class Computer:
         self.programs_available_dictionary = library
         self.program_loaded = None
         self.ip = None
+        self.programs_loaded = {}
+        self.ips = {}
 
     # def boot1(self, programID='None'):
     #     # program = Program()
