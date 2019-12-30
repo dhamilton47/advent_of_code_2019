@@ -5,7 +5,8 @@ Created on Fri Dec  6 12:04:20 2019
 @author: Dan J Hamilton
 """
 
-from intcode.intcode_v4 import Computer
+from intcode_v5 import Computer
+
 # from intcode.intcode_v4 import Program
 # from intcode.intcode_v4 import Instruction
 
@@ -66,7 +67,7 @@ def print_instruction():
 
 def TEST(library=aoc.programs_available_dictionary):
     test = Computer(library)
-    memory, cpu = test.boot()
+    memory, cpu, io = test.boot()
 
     # Select a program to run & flash memory
     program = test.program_load()
@@ -78,7 +79,7 @@ def TEST(library=aoc.programs_available_dictionary):
 
     while opcode != 99:
         instruction = test.instruction_next(memory)
-        instruction = cpu.instruction_execute(memory, test, instruction)
+        instruction = cpu.instruction_execute(test, memory, instruction)
 
         test.ip += instruction['length']
         # print(instruction)
@@ -122,7 +123,7 @@ def day5_part1():
 
     while opcode != 99:
         instruction = test.instruction_next(memory)
-        instruction = cpu.instruction_execute(memory, test, instruction)
+        instruction = cpu.instruction_execute(test, memory, instruction)
 
         test.ip += instruction['length']
         # print(instruction)
@@ -150,7 +151,7 @@ def day5_part2():
 
     while opcode != 99:
         instruction = test.instruction_next(memory)
-        instruction = cpu.instruction_execute(memory, test, instruction)
+        instruction = cpu.instruction_execute(test, memory, instruction)
 
         test.ip += instruction['length']
         # print(instruction)
@@ -230,7 +231,7 @@ def day9_part2():
 
 # Create TEST
 test = Computer(aoc.programs_available_dictionary)
-memory, cpu = test.boot()
+cpu, io, memory = test.boot()
 # print_vitals(memory, cpu)
 
 # Select a program to run & flash memory
@@ -243,7 +244,7 @@ opcode = 0
 
 while opcode != 99:
     instruction = test.instruction_next(memory)
-    instruction = cpu.instruction_execute(memory, test, instruction)
+    instruction = cpu.instruction_execute(test, program, memory, io, instruction)
 
     test.ip += instruction['length']
     # print(instruction)

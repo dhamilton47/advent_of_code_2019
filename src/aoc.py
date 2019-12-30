@@ -28,15 +28,15 @@ programs_available_dictionary = {
     'System Diagnostics': {'name': 'Diagnostic Program',
                            'copies': ['Diagnostics'],
                            'binary': '../data/AoC2019_day_5_input.txt',
-                           # 'input_source': 'keybord',
-                           # 'message_in': ['Which System ID are we testing? '],
-                           # 'message_out': ['Day 5, Part 1 - Diagnostic code =',
-                           #                 'Day 5, Part 2 - Diagnostic code =']
-                           },
+                            'input_source': 'keyboard',
+                            'message_in': ['Which System ID are we testing? '],
+                            'message_out': ['Day 5, Part 1 - Diagnostic code =',
+                                            'Day 5, Part 2 - Diagnostic code =']
+                            },
 
     'Amp': {'name': 'Amplifier Controller Software',
             'copies': ['ampA', 'ampB', 'ampC', 'ampD'],
-            'binary': '../data/AoC2019_day_7_input1.txt',
+            'binary': '../data/adventofcode_2019_day_7_input1.txt',
             'input_source': 'stack',
             'message_in': [],
             'message_out': []},
