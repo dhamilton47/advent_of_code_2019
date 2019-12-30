@@ -46,54 +46,6 @@ from instruction import Instruction
 #         input
 #         output
 
-# class Program
-#     Properties
-#         programID
-#         name
-#         binary
-#         code
-
-#     Methods
-#         read_binary
-
-# class Instruction
-#     Properties
-#         instruction
-#         instruction_length
-#         raw_opcode
-#         instruction_dict
-#         opcode
-#         modes
-#         parameters
-
-# class Memory
-#     Properties
-#         buffer
-#         register
-
-#     Methods
-#         flash
-#         address
-
-# class CPU
-#     Properties
-#         instruction
-#         name
-
-#     Methods
-#         opcode1
-#         opcode2
-#         opcode3
-#         opcode4
-#         opcode5
-#         opcode6
-#         opcode7
-#         opcode8
-#         opcode99
-#         opcode_generic
-#         add
-#         multiply
-
 
 class Computer:
     """
@@ -165,12 +117,13 @@ class Computer:
 
         program_keys = self.programs_available()
         program_index = self.program_menu(program_keys)
-
-        self.program_loaded = \
+        program_to_load = \
             self.programs_available_dictionary[program_keys[program_index]]
+
+        self.program_loaded = Program(program_to_load)
         self.ip = 0
 
-        return Program(self.program_loaded)
+        return self.program_loaded
 
     def program_menu(self, program_list):
         """
@@ -458,7 +411,7 @@ class Computer:
 #             response = self.get_input(message)
 # #        print(instruction[0], instruction[1:], opcode)
 #         self.opcode_switch(instruction[0], instruction[1:], opcode)
-        pass
+        # pass
 
 # # %% OpCode 1 - add two values
 
