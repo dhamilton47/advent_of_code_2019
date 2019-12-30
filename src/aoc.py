@@ -19,67 +19,92 @@ def read_program(txtfile):
 # %% Program Dictionary
 
 programs_available_dictionary = {
-    'Gravity Assist': {'name': 'Gravity Assist',
-                       'copies': ['GravAsst'],
-                       'binary': '../data/AoC2019_day_2_input.txt',
-                       'message_out': ['Day 2, Part 1 - Value at position 0 =',
-                                       'Day 2, Part 2 - 100 * noun + verb =']},
+    'Gravity Assist':
+        {'name': 'Gravity Assist',
+         'description': 'Gravity Assist Program',
+         'copies': ['GravAsst'],
+         'binary': '../data/AoC2019_day_2_input.txt',
+         'message_out': ['Day 2, Part 1 - Value at position 0 =',
+                         'Day 2, Part 2 - 100 * noun + verb =']},
 
-    'System Diagnostics': {'name': 'Diagnostic Program',
-                           'copies': ['Diagnostics'],
-                           'binary': '../data/AoC2019_day_5_input.txt',
-                            'input_source': 'keyboard',
-                            'message_in': ['Which System ID are we testing? '],
-                            'message_out': ['Day 5, Part 1 - Diagnostic code =',
-                                            'Day 5, Part 2 - Diagnostic code =']
-                            },
+    'System Diagnostics':
+        {'name': 'Diagnostic Program',
+         'description': 'Diagnostic Program',
+         'copies': ['Diagnostics'],
+         'binary': '../data/AoC2019_day_5_input.txt',
+         'input_source': 'keyboard',
+         'message_in': ['Which System ID are we testing? '],
+         'message_out': ['Day 5, Part 1 - Diagnostic code =',
+                         'Day 5, Part 2 - Diagnostic code =']},
 
-    'Amp': {'name': 'Amplifier Controller Software',
-            'copies': ['ampA', 'ampB', 'ampC', 'ampD'],
-            'binary': '../data/adventofcode_2019_day_7_input1.txt',
-            'input_source': 'stack',
-            'message_in': [],
-            'message_out': []},
+    'Amp':
+        {'name': 'Amplifier Controller Software',
+         'description': 'Amplifier Controller Software',
+         'copies': ['ampA', 'ampB', 'ampC', 'ampD'],
+         'binary': '../data/adventofcode_2019_day_7_input1.txt',
+         'input_source': 'stack',
+         'message_in': [],
+         'message_out': []},
 
-    'BOOST': {'name': 'Basic Operation Of System Test',
-              'copies': ['BOOST'],
-              'binary': '../data/AoC2019_day_9_input.txt'},
+    'BOOST':
+        {'name': 'Basic Operation Of System Test',
+         'description': 'Basic Operation Of System Test Program',
+         'copies': ['BOOST'],
+         'binary': '../data/AoC2019_day_9_input.txt'},
 
-    'Registration Identifier': {'name': 'Emergency Hull Painting',
-                                'copies': ['Registration'],
-                                'binary': '../data/AoC2019_day_11_input.txt'},
+    'Registration Identifier':
+        {'name': 'Emergency Hull Painting',
+         'description': 'Emergency Hull Painting Robot Software',
+         'copies': ['Registration'],
+         'binary': '../data/AoC2019_day_11_input.txt'},
 
-    'Arcade Cabinet': {'name': 'Arcade Game',
-                       'copies': ['Arcade'],
-                       'binary': '../data/AoC2019_day_13_input.txt'},
+    'Arcade Cabinet':
+        {'name': 'Arcade Cabinet',
+         'description': 'Breakout Software',
+         'copies': ['Arcade'],
+         'binary': '../data/AoC2019_day_13_input.txt'},
 
-    'Oxygen System': {'name': 'Remote Repair Program',
-                      'copies': ['Oxygen'],
-                      'binary': '../data/AoC2019_day_15_input.txt'},
+    'Oxygen System':
+        {'name': 'Remote Repair Program',
+         'description': 'Repair Droid Remote Control Program',
+         'copies': ['Oxygen'],
+         'binary': '../data/AoC2019_day_15_input.txt'},
 
-    'ASCII': {'name': 'Aft Scaffolding Control and Information Interface',
-              'copies': ['ASCII'],
-              'binary': '../data/AoC2019_day_17_input.txt'},
+    'ASCII':
+        {'name': 'Aft Scaffolding Control and Information Interface',
+         'description': 'Aft Scaffolding Control and Information Interface',
+         'copies': ['ASCII'],
+         'binary': '../data/AoC2019_day_17_input.txt'},
 
-    'Tractor Beam': {'name': 'Drone Control',
-                     'copies': ['TractorBeam'],
-                     'binary': '../data/AoC2019_day_19_input.txt'},
+    'Tractor Beam':
+        {'name': 'Drone Control',
+         'description': 'Drone Control Program',
+         'copies': ['TractorBeam'],
+         'binary': '../data/AoC2019_day_19_input.txt'},
 
-    'Springdroid': {'name': 'springscript',
-                    'copies': ['Springdroid'],
-                    'binary': '../data/AoC2019_day_21_input.txt'},
+    'Springdroid':
+        {'name': 'springscript',
+         'description': 'ASCII-capable Springscript Translation Program',
+         'copies': ['Springdroid'],
+         'binary': '../data/AoC2019_day_21_input.txt'},
 
-    'Ship Network': {'name': 'Network Interface Controller',
-                     'copies': ['NIC'],
-                     'binary': '../data/AoC2019_day_23_input.txt'},
+    'Ship Network':
+        {'name': 'Network Interface Controller',
+         'description': 'Network Interface Controller (NIC) Software',
+         'copies': ['NIC'],
+         'binary': '../data/AoC2019_day_23_input.txt'},
 
-    'Search Droid': {'name': 'Droid Communications',
-                     'copies': ['Search'],
-                     'binary': '../data/AoC2019_day_25_input.txt'},
+    'Search Droid':
+        {'name': 'Droid Communications',
+         'description': 'ASCII-capable Droid Communications Program',
+         'copies': ['Search'],
+         'binary': '../data/AoC2019_day_25_input.txt'},
 
-    'None': {'name': '',
-             'copies': [],
-             'binary': ''}, }
+    'None':
+        {'name': '',
+         'copies': [],
+         'binary': ''},
+        }
 
 # %% OpCode Dictionary
 
