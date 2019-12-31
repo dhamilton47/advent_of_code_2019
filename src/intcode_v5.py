@@ -22,14 +22,17 @@ from stack import Stack
 
 # class Computer
 #     Sub Classes
-#         class Program
-#         class Memory
-#         class Instruction
-#         class IO
-#         class CPU
+#         class Program - code loaded to memory for execution
+#         class Memory - refers to CPU cache/memory (RAM), not ROM
+#         class Instruction - retrieved by the computer from each program and
+#                placed on the stack for execution
+#         class IO - get data from user (keyboard) or from registers.
+#                Place on stack.  Return data to user or place into a register.
+#         class CPU - executes opreations from the stack
 #         class OS
 #             class Instruction
 #         class Stack
+#         class Register - ?
 
 #     Properties
 #         name
@@ -79,12 +82,17 @@ class Computer:
         self.io = None
         self.memory = None
         self.programs_available_dictionary = library
-        self.program_loaded = None
-        self.ip = None
+        # self.program_loaded = None
+        # self.ip = None
         self.programs_loaded = {}
         self.ips = {}
-        self.instruction = None
-        self.stack = None
+        self.ips_last= {}
+        self.instruction = {}
+        self.registers = {}
+        self.stack = {}
+        self.instruction_bits = {}
+        self.idle_bits = {}
+
 
     # def boot1(self, programID='None'):
     #     # program = Program()
@@ -108,11 +116,14 @@ class Computer:
 
         return self.cpu, self.io, self.memory, self.stack
 
-    def instruction_next(self, memory, pointer=None):
+    def instruction_next(self, memory, program, pointer=None):
+        print(program)
+        print(pointer)
+        print(self.ips[program])
         if pointer is None:
-            pointer = self.ip
+            pointer = self.ips[program]
 
-        instruction = Instruction(memory, pointer)
+        instruction = Instruction(program, memory, pointer)
 
         return instruction.instruction
 
@@ -128,16 +139,17 @@ class Computer:
         program_to_load = \
             self.programs_available_dictionary[program_keys[program_index]]
 
-        print(f"IntCode: program copies to load = {program_to_load['copies']}\n")
+        # print(f"IntCode: program copies to load = {program_to_load['copies']}\n")
         for item in program_to_load['copies']:
-            print(f"IntCode: copy to load = {item}\n")
+            # print(f"IntCode: copy to load = {item}\n")
             program_loaded = Program(program_to_load)
-            print(f"IntCode: copy loaded: {program_loaded}\n")
+            # print(f"IntCode: copy loaded: {program_loaded}\n")
             # self.ip = 0
             # self.program_loaded = Program(program_to_load)
             # self.ip = 0
             self.programs_loaded[item] = program_loaded
             self.ips[item] = 0
+            self.ips_last[item] = 0
             # self.programs_loaded[program_loaded.name] = program_loaded
             # self.ips[program_loaded.name] = 0
 

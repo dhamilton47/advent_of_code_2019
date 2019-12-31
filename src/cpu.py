@@ -22,6 +22,9 @@ import sys
 
 # %% CPU Class
 
+# Need to change such that cpu interfaces with stack only.
+# Need to see how this will work with IO
+
 class CPU:
     def __init__(self, instruction=None):
         self.instruction = instruction

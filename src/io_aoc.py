@@ -15,12 +15,7 @@ Created on Mon Dec 30 00:05:25 2019
 # %% IO Class
 
 class IO:
-    # def __init__(self, program=None):
-    #     self.input_source = program['input_sources']
-    #     self.messages_in = program['messages_in']
-    #     self.messages_out = program['messages_out']
-    #     self.messages_in_calls = program['messages_out_calls']
-    #     self.messages_out_calls = program['messages_out_calls']
+# Need to know location to get, output information
 
     def get_input(self, program):
         # print(program.input_sources)

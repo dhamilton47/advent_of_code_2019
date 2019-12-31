@@ -75,7 +75,7 @@ def print_instruction():
 
 def TEST(library=aoc.programs_available_dictionary):
     test = Computer(library)
-    memory, cpu, io = test.boot()
+    memory, cpu, io, stack = test.boot()
 
     # Select a program to run & flash memory
     program = test.program_load()
@@ -206,29 +206,36 @@ def day9_part2():
 
 # Create TEST
 test = Computer(aoc.programs_available_dictionary)
-cpu, io, memory = test.boot()
+cpu, io, memory, stack = test.boot()
 # print_vitals(memory, cpu)
 
 # Select a program to run & flash memory
-amp = test.program_load()
+test.program_load()
+# test.
+# amp = test.program_load()
 # print(f"top level: {amp}\n")
-memory.register = memory.flash(amp)
+# memory.register = memory.flash(amp)
 # print_vitals(memory, cpu, program)
 
 # Execute program
-opcode = 0
+# opcode = 0
 
-while opcode != 99:
-    instruction = test.instruction_next(memory)
-    instruction = cpu.instruction_execute(test,
-                                          amp,
-                                          memory,
-                                          io,
-                                          instruction)
+# while opcode != 99:
+    # Check if instruction_next needed for any of the running programs
+# for item in test.ips.items():
+#     print(item[1], test.ips_last[item[0]])
+#     if item[1] == test.ips_last[item[0]]:
+#         instruction[item[0]] = test.instruction_next(memory, item[0])
 
-    test.ip += instruction['length']
-    # print(instruction)
-    opcode = instruction['opcode']
+    # instruction = cpu.instruction_execute(test,
+    #                                       amp,
+    #                                       memory,
+    #                                       io,
+    #                                       instruction)
+
+    # test.ip += instruction['length']
+    # # print(instruction)
+    # opcode = instruction['opcode']
 
 
 # While Instruction loop

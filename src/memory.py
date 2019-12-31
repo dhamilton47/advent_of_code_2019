@@ -27,10 +27,10 @@ class Memory:
         if program is None:
             return {}
 
-        print(f"Program at Memory: {program}")
+        # print(f"Program at Memory: {program}")
         for item in program:
-            print(f"item = {item}\n")
-            print(f"item.code = {program[item].code}\n")
+            # print(f"item = {item}\n")
+            # print(f"item.code = {program[item].code}\n")
             code = program[item].code
 
             for i in range(len(code)):
@@ -40,9 +40,9 @@ class Memory:
 
         return self.register
 
-    def address(self, i):
-        if i is None:
+    def address(self, program, ip):
+        if ip is None:
             return 'None'
 
         # TODO:  form is self.register[program][index]
-        return self.register[i]
+        return self.register[program][ip]
