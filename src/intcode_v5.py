@@ -6,10 +6,10 @@ Created on Sun Dec  22 15:49:41 2019
 """
 
 
-import sys
+# import sys
 # import os
 
-import aoc
+# import aoc
 from program import Program
 from cpu import CPU
 from io_aoc import IO
@@ -20,61 +20,44 @@ from stack import Stack
 
 # %% Define the IntCode class
 
-# class Computer
-#     Sub Classes
-#         class Program - code loaded to memory for execution
-#         class Memory - refers to CPU cache/memory (RAM), not ROM
-#         class Instruction - retrieved by the computer from each program and
-#                placed on the stack for execution
-#         class IO - get data from user (keyboard) or from registers.
-#                Place on stack.  Return data to user or place into a register.
-#         class CPU - executes opreations from the stack
-#         class OS
-#             class Instruction
-#         class Stack
-#         class Register - ?
-
-#     Properties
-#         name
-#         cpu
-#         io
-#         memory
-#         programs_available_dictionary
-#         program_loaded
-#         ip (instruction pointer)
-#         programs_loaded
-#         ips (instruction pointer)
-
-#     Methods
-#         boot
-#         instruction_next
-#         program_load
-#         program_menu
-#         programs_available
-
-#         input
-#         output
-
-
 class Computer:
     """
     class Computer(library = dictionary of information regarding programs)
         Sub Classes
-            class Program
-            class Memory
-            class Instruction
-            class IO
-            class CPU
+            class Program - code loaded to memory for execution
+            class Memory - refers to CPU cache/memory (RAM), not ROM
+            class Instruction - retrieved by the computer from each program and
+                    placed on the stack for execution
+            class IO - get data from user (keyboard) or from registers.
+                    Place on stack.  Return data to user or place into
+                    a register.
+            class CPU - executes opreations from the stack
             class OS
                 class Instruction
             class Stack
+            class Register - ?
 
         Properties
-            ...
+            name
+            cpu
+            io
+            memory
+            programs_available_dictionary
+            program_loaded
+            ip (instruction pointer)
+            programs_loaded
+            ips (instruction pointer)
 
         Methods
-            ...
-    """
+            boot
+            instruction_next
+            program_load
+            program_menu
+            programs_available
+
+            input
+            output
+    # """
 
     def __init__(self, library):
         self.name = 'HAL'
@@ -86,23 +69,12 @@ class Computer:
         # self.ip = None
         self.programs_loaded = {}
         self.ips = {}
-        self.ips_last= {}
-        self.instruction = {}
+        self.ips_last = {}
+        self.instructions = {}
         self.registers = {}
         self.stack = {}
         self.instruction_bits = {}
         self.idle_bits = {}
-
-
-    # def boot1(self, programID='None'):
-    #     # program = Program()
-    #     program = Program(programID)
-    #     memory = Memory()
-    #     instruction = Instruction(memory, opcode_dictionary)
-    #     cpu = CPU()
-
-    #     return memory, cpu
-    #     # return program, memory, instruction, cpu
 
     def boot(self):
         """
@@ -114,18 +86,18 @@ class Computer:
         self.memory = Memory()
         self.stack = Stack()
 
-        return self.cpu, self.io, self.memory, self.stack
+        # return self.cpu, self.io, self.memory, self.stack
 
-    def instruction_next(self, memory, program, pointer=None):
-        print(program)
-        print(pointer)
-        print(self.ips[program])
-        if pointer is None:
-            pointer = self.ips[program]
+    def instruction_next(self):
+        if self.programs_loaded == {}:
+            return {}
 
-        instruction = Instruction(program, memory, pointer)
-
-        return instruction.instruction
+        for item in self.ips.items():
+            if item[1] == self.ips_last[item[0]]:
+                self.instructions[item[0]] = \
+                    Instruction(item[0],
+                                self.memory,
+                                self.ips[item[0]])
 
     def program_load(self):
         """
@@ -139,21 +111,14 @@ class Computer:
         program_to_load = \
             self.programs_available_dictionary[program_keys[program_index]]
 
-        # print(f"IntCode: program copies to load = {program_to_load['copies']}\n")
         for item in program_to_load['copies']:
-            # print(f"IntCode: copy to load = {item}\n")
             program_loaded = Program(program_to_load)
-            # print(f"IntCode: copy loaded: {program_loaded}\n")
-            # self.ip = 0
-            # self.program_loaded = Program(program_to_load)
-            # self.ip = 0
+
             self.programs_loaded[item] = program_loaded
             self.ips[item] = 0
             self.ips_last[item] = 0
-            # self.programs_loaded[program_loaded.name] = program_loaded
-            # self.ips[program_loaded.name] = 0
 
-        return self.programs_loaded
+        # return self.programs_loaded
 
     def program_menu(self, program_list):
         """
@@ -183,8 +148,8 @@ class Computer:
 
         return list(self.programs_available_dictionary.keys())
 
-    # def flash_memory():
-    #     pass
+    def flash_memory(self):
+        self.memory.bank = self.memory.flash(self.programs_loaded)
 
     # def get_input():
     #     pass
