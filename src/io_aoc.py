@@ -15,22 +15,33 @@ Created on Mon Dec 30 00:05:25 2019
 # %% IO Class
 
 class IO:
-# Need to know location to get, output information
+    # Need to know location to get/output information
 
-    def get_input(self, program):
+    def get_input(self, computer, program_name):
         # print(program.input_sources)
-        if program.input_sources == 'keyboard':
+        program = computer.programs_loaded[program_name]
+        io_in = program_name.io_in
+        message_number = program.messages_in_calls
+        message_in = program.messages_in[message_number]
+        if io_in == 'keyboard':
             # print(program.messages_in[program.messages_in_calls])
             # print(program['messages_in']['messages_in_calls'])
-            answer = int(input(program.messages_in[program.messages_in_calls]))
+            return int(input(message_in))
             # print(answer)
-            program.messages_in_calls += 1
-            return answer
-        elif program.input_sources == 'stack':
-            pass
+
+        elif io_in == 'buffer':
+            buffer = computer.buffers[program_name]
+            return buffer.input1
+
+        program.messages_in_calls += 1
 
     def return_output(self, program, instruction):
-        message = program.messages_out[program.messages_out_calls]
-        value = instruction['parameters'][0]['value']
-        print(f"{message} {value}")
+        if program.io_out == 'monitor':
+            message = program.messages_out[program.messages_out_calls]
+            value = instruction['parameters'][0]['value']
+            print(f"{message} {value}")
+
+        elif program.io_out == 'buffer':
+            pass
+
         program.messages_out_calls += 1

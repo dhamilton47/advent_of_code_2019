@@ -10,11 +10,12 @@ Created on Sun Dec  22 15:49:41 2019
 # import os
 
 # import aoc
-from program import Program
 from cpu import CPU
 from io_aoc import IO
-from memory import Memory
 from instruction import Instruction
+from memory import Memory
+from program import Program
+from register import Register
 from stack import Stack
 
 
@@ -46,6 +47,7 @@ class Computer:
             program_loaded
             ip (instruction pointer)
             programs_loaded
+            programs_loaded_keys
             ips (instruction pointer)
 
         Methods
@@ -61,20 +63,21 @@ class Computer:
 
     def __init__(self, library):
         self.name = 'HAL'
+
+        self.buffers = {}
         self.cpu = None
+        self.idle_bits = {}
+        self.instruction_bits = {}
+        self.instructions = {}
         self.io = None
-        self.memory = None
-        self.programs_available_dictionary = library
-        # self.program_loaded = None
-        # self.ip = None
-        self.programs_loaded = {}
         self.ips = {}
         self.ips_last = {}
-        self.instructions = {}
-        self.registers = {}
+        self.memory = None
+        self.process_order = None
+        self.programs_available_dictionary = library
+        self.programs_loaded = {}
+        self.programs_loaded_keys = []
         self.stack = {}
-        self.instruction_bits = {}
-        self.idle_bits = {}
 
     def boot(self):
         """
@@ -93,11 +96,49 @@ class Computer:
             return {}
 
         for item in self.ips.items():
-            if item[1] == self.ips_last[item[0]]:
+            if item[1] == 0:
+            # if item[1] == self.ips_last[item[0]]:
                 self.instructions[item[0]] = \
                     Instruction(item[0],
                                 self.memory,
                                 self.ips[item[0]])
+            elif item[1] != self.ips_last[item[0]]:
+                self.instructions[item[0]] = \
+                    Instruction(item[0],
+                                self.memory,
+                                self.ips[item[0]])
+            else:
+                continue
+
+
+    def process(self):
+        """
+        the instance of a computer program that is being executed
+        """
+        pass
+
+    def process_scheduler(self):
+        """
+        the activity of the process manager that handles the removal
+        of the running process from the CPU and the selection of
+        another process on the basis of a particular strategy
+        """
+        progs = self.programs_loaded
+        # print(progs)
+        num = self.programs_loaded_keys[0]
+        # print(num)
+        if len(progs) == 0:
+            return {}
+        elif len(progs) == 1:
+            self.process_order = 'sequential'
+        else:
+            # print(progs[num].process_order)
+            if progs[num].process_order == 'sequential':
+                self.process_order = 'sequential'
+            elif progs[num].process_order == 'parallel':
+                self.process_order = 'parallel'
+            else:
+                raise ValueError('No processing order specified.')
 
     def program_load(self):
         """
@@ -113,8 +154,16 @@ class Computer:
 
         for item in program_to_load['copies']:
             program_loaded = Program(program_to_load)
+            registers = {}
+            registers['input1'] = None
+            registers['input2'] = None
+            registers['output'] = None
+            registers['state'] = False
+
+            self.buffers[item] = registers
 
             self.programs_loaded[item] = program_loaded
+            self.programs_loaded_keys.append(item)
             self.ips[item] = 0
             self.ips_last[item] = 0
 

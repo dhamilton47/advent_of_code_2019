@@ -207,23 +207,25 @@ def TEST(library=aoc.programs_available_dictionary):
 # Create TEST
 test = Computer(aoc.programs_available_dictionary)
 test.boot()
-# cpu, io, memory, stack = test.boot()
-# print_vitals(memory, cpu)
 
 # Select a program to run & flash memory
 test.program_load()
 test.flash_memory()
-# amp = test.program_load()
-# print(f"top level: {amp}\n")
-# memory.bank = memory.flash(amp)
-# print_vitals(memory, cpu, program)
 
 # Execute program
 # opcode = 0
 
 # while opcode != 99:
+# when multiple copies of a program are running, how are they executed:
+#     1. in a fixed sequence, or
+#     2. in a variable (event) driven sequence
 # Check if instruction_next needed for any of the running programs
+test.process_scheduler()
+# test.process()
+
 test.instruction_next()
+
+# Determine next instruction to process and execute it.
 
 # for item in test.ips.items():
 #     print(item[1], test.ips_last[item[0]])

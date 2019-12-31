@@ -46,6 +46,7 @@ class Program:
         self.messages_out = self.message_out(program)
         self.messages_in_calls = 0
         self.messages_out_calls = 0
+        self.process_order = self.processing(program)
         # self.input_sources = ''
         # self.messages_in = []
         # self.messages_out = []
@@ -86,5 +87,12 @@ class Program:
     def message_out(self, program):
         if 'message_out' in program.keys():
             return program['message_out']
+
+        return None
+
+    def processing(self, program):
+        # print(program.keys())
+        if 'process_order' in program.keys():
+            return program['process_order']
 
         return None
