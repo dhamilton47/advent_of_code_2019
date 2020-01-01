@@ -16,14 +16,21 @@ Created on Tue Dec 31 13:49:40 2019
 # %% Memory Class
 
 class Register:
-    def __init__(self, purpose, value=None, state=0):
-        # self.program_name = program_name
-        self.purpose = purpose
-        self.value = value
-        self.state = state
+    """
+        0: State,
+        1: Input 1,
+        2: Input 2,
+        3: Output,
+        4: Input counter,
+        5: Output counter,
+    """
 
-    # def __init__(self, program_name, purpose, value=None, state=0):
-    #     self.program_name = program_name
-    #     self.purpose = purpose
-    #     self.value = value
-    #     self.state = state
+    def __init__(self):
+        self.register = {
+            0: True,
+            1: None,
+            2: None,
+            3: None,
+            4: 0,
+            5: 0,
+        }

@@ -28,12 +28,13 @@ class IO:
             # print(program['messages_in']['messages_in_calls'])
             return int(input(message_in))
             # print(answer)
+            program.messages_in_calls += 1
 
         elif io_in == 'buffer':
-            buffer = computer.buffers[program_name]
-            return buffer.input1
-
-        program.messages_in_calls += 1
+            buffer = computer.buffers[program_name].register
+            value = buffer[buffer[4]]
+            computer.buffers[program_name].register[4] += 1
+            return value
 
     def return_output(self, program, instruction):
         if program.io_out == 'monitor':

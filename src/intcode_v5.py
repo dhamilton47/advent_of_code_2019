@@ -66,8 +66,8 @@ class Computer:
 
         self.buffers = {}
         self.cpu = None
-        self.idle_bits = {}
-        self.instruction_bits = {}
+        # self.idle_bits = {}
+        # self.instruction_bits = {}
         self.instructions = {}
         self.io = None
         self.ips = {}
@@ -97,7 +97,7 @@ class Computer:
 
         for item in self.ips.items():
             if item[1] == 0:
-            # if item[1] == self.ips_last[item[0]]:
+                # if item[1] == self.ips_last[item[0]]:
                 self.instructions[item[0]] = \
                     Instruction(item[0],
                                 self.memory,
@@ -109,7 +109,6 @@ class Computer:
                                 self.ips[item[0]])
             else:
                 continue
-
 
     def process(self):
         """
@@ -154,13 +153,16 @@ class Computer:
 
         for item in program_to_load['copies']:
             program_loaded = Program(program_to_load)
-            registers = {}
-            registers['input1'] = None
-            registers['input2'] = None
-            registers['output'] = None
-            registers['state'] = False
+            # registers = {}
+            # registers[0] = False
+            # registers[1] = None
+            # registers[2] = None
+            # registers[3] = None
+            # registers[4] = 0
+            # registers[5] = 0
 
-            self.buffers[item] = registers
+            self.buffers[item] = Register()
+            # self.buffers[item] = registers
 
             self.programs_loaded[item] = program_loaded
             self.programs_loaded_keys.append(item)
