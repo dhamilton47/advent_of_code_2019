@@ -8,7 +8,7 @@ Created on Mon Dec 30 00:05:46 2019
 # class Memory
 #     Properties
 #         buffer
-#         register
+#         bank
 #
 #     Methods
 #         flash
@@ -18,24 +18,38 @@ Created on Mon Dec 30 00:05:46 2019
 # %% Memory Class
 
 class Memory:
-    def __init__(self, program=None):
-        self.register = self.flash(program)
+    """
+    Memory is equivalent to RAM.  It stores a copy of each loaded Program.
+    These copies are then used to create the Instructions for a Program.
+
+    A bank is the memory associated with a specific Program's code.
+    """
+
+    def __init__(self, program={}):
+        self.bank = self.flash(program)
 
     def flash(self, program):
+        """
+        A Program's coded is added to Memory when the Porgram is loaded.
+        """
         mem_dict = {}
 
-        if program is None:
+        if program == {}:
             return {}
 
-        code = program.code
+        for item in program:
+            code = program[item].code
 
-        for i in range(len(code)):
-            mem_dict[i] = code[i]
+            for address in range(len(code)):
+                mem_dict[address] = code[address]
 
-        return mem_dict
+            self.bank[item] = mem_dict
 
-    def address(self, i):
-        if i is None:
+        return self.bank
+
+    def value(self, program_name, address):
+        """ Return the value stored at a particular memory address. """
+        if address is None:
             return 'None'
 
-        return self.register[i]
+        return self.bank[program_name][address]
