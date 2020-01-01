@@ -36,16 +36,20 @@ class Program:
 
     def __init__(self, program):
         # self.program = program
-        self.name = program['name']
-        self.description = program['description']
         self.binary = program['binary']
         self.code = self.read_binary()
         self.copies = program['copies']
-        self.input_sources = self.input_source(program)
+        self.description = program['description']
+        # self.input_sources = self.input_source(program)
+        self.io_in = self.io_source_in(program)
+        self.io_out = self.io_source_out(program)
+        self.io_in_count = 0
+        self.io_out_count = 0
         self.messages_in = self.message_in(program)
         self.messages_out = self.message_out(program)
         self.messages_in_calls = 0
         self.messages_out_calls = 0
+        self.name = program['name']
         self.process_order = self.processing(program)
         # self.input_sources = ''
         # self.messages_in = []
@@ -75,6 +79,18 @@ class Program:
     def input_source(self, program):
         if 'input_source' in program.keys():
             return program['input_source']
+
+        return None
+
+    def io_source_in(self, program):
+        if 'io_in' in program.keys():
+            return program['io_in']
+
+        return None
+
+    def io_source_out(self, program):
+        if 'io_out' in program.keys():
+            return program['io_out']
 
         return None
 

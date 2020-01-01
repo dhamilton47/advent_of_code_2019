@@ -13,6 +13,7 @@ Created on Sun Dec  22 15:49:41 2019
 from cpu import CPU
 from io_aoc import IO
 from instruction import Instruction
+from instruction import Instruction1
 from memory import Memory
 from program import Program
 from register import Register
@@ -24,7 +25,7 @@ from stack import Stack
 class Computer:
     """
     class Computer(library = dictionary of information regarding programs)
-        Sub Classes
+        Inner Classes
             class Program - code loaded to memory for execution
             class Memory - refers to CPU cache/memory (RAM), not ROM
             class Instruction - retrieved by the computer from each program and
@@ -73,11 +74,14 @@ class Computer:
         self.ips = {}
         self.ips_last = {}
         self.memory = None
+        self.process_active = None
         self.process_order = None
         self.programs_available_dictionary = library
+        self.programs_available_keys = list(library.keys())
         self.programs_loaded = {}
         self.programs_loaded_keys = []
-        self.stack = {}
+        self.stack = []
+        # self.stack = {}
 
     def boot(self):
         """
@@ -87,9 +91,7 @@ class Computer:
         self.cpu = CPU()
         self.io = IO()
         self.memory = Memory()
-        self.stack = Stack()
-
-        # return self.cpu, self.io, self.memory, self.stack
+        # self.stack = Stack()
 
     def instruction_next(self):
         if self.programs_loaded == {}:
@@ -110,11 +112,47 @@ class Computer:
             else:
                 continue
 
-    def process(self):
+    def instruction_next1(self):
+        program_name = self.process_active
+
+        if program_name == []:
+            return {}
+
+        pointer = self.ips[program_name]
+
+
+        instruction = Instruction1(self)
+
+        return instruction.instruction
+
+    def process_run(self):
         """
         the instance of a computer program that is being executed
         """
-        pass
+        while self.stack != []:
+            self.process_active = self.stack.pop(0)
+            if self.buffers[self.process_active].register[0]:
+
+                # Execute program
+                opcode = 0
+
+                while opcode != 99:
+                    instruction = self.instruction_next1()
+                    print(f"\nInstruction (in Computer Module): {instruction}")
+                    instruction = self.cpu.instruction_execute1(self, instruction)
+                    self.ips_last[self.process_active] = \
+                        self.ips[self.process_active]
+                    self.ips[self.process_active] += instruction['length']
+                    opcode = instruction['opcode']
+
+            if not self.buffers[self.process_active].register[0]:
+                value = self.buffers[self.process_active].register[3]
+                print(f"Buffer [{self.process_active}] = "
+                      f"{list(self.buffers[self.process_active].register.values())}")
+                # self.process_active = self.stack.pop(0)
+                if self.stack != []:
+                    self.buffers[self.stack[0]].register[0] = True
+                    self.buffers[self.stack[0]].register[2] = value
 
     def process_scheduler(self):
         """
@@ -130,10 +168,13 @@ class Computer:
             return {}
         elif len(progs) == 1:
             self.process_order = 'sequential'
+            self.stack.append(num)
         else:
             # print(progs[num].process_order)
             if progs[num].process_order == 'sequential':
                 self.process_order = 'sequential'
+                for item in self.programs_loaded_keys:
+                    self.stack.append(item)
             elif progs[num].process_order == 'parallel':
                 self.process_order = 'parallel'
             else:
@@ -146,23 +187,16 @@ class Computer:
             Load the program
         """
 
-        program_keys = self.programs_available()
+        program_keys = self.programs_available_keys
+        # program_keys = self.programs_available()
         program_index = self.program_menu(program_keys)
         program_to_load = \
             self.programs_available_dictionary[program_keys[program_index]]
 
         for item in program_to_load['copies']:
             program_loaded = Program(program_to_load)
-            # registers = {}
-            # registers[0] = False
-            # registers[1] = None
-            # registers[2] = None
-            # registers[3] = None
-            # registers[4] = 0
-            # registers[5] = 0
 
             self.buffers[item] = Register()
-            # self.buffers[item] = registers
 
             self.programs_loaded[item] = program_loaded
             self.programs_loaded_keys.append(item)
@@ -194,16 +228,10 @@ class Computer:
 
         return int(input('What shall we do today?\n(Please enter a number): '))
 
-    def programs_available(self):
-        """ Return the programs_available_dictionary's keys """
+    # def programs_available(self):
+    #     """ Return the programs_available_dictionary's keys """
 
-        return list(self.programs_available_dictionary.keys())
+    #     return list(self.programs_available_dictionary.keys())
 
     def flash_memory(self):
         self.memory.bank = self.memory.flash(self.programs_loaded)
-
-    # def get_input():
-    #     pass
-
-    # def print_output():
-    #     pass

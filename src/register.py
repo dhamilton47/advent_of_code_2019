@@ -27,10 +27,10 @@ class Register:
 
     def __init__(self):
         self.register = {
-            0: True,
+            0: False,
             1: None,
             2: None,
             3: None,
-            4: 0,
-            5: 0,
+            4: 1,
+            5: 3,
         }

@@ -54,15 +54,16 @@ programs_available_dictionary = {
 
     'Amp':
         {
-            'binary': '../data/adventofcode_2019_day_7_input1.txt',
+            'binary': '../data/adventofcode_2019_day_7_input3.txt',
             'copies': ['ampA', 'ampB', 'ampC', 'ampD', 'ampE'],
             'description': 'Amplifier Controller Software',
-            'io_in': 'buffer',
+            'io_in': ['buffer', 'buffer'],
+            'io_out': ['buffer', 'monitor'],
             'message_in': ['Enter phase: ',
                            'Enter input signal: '],
-            'message_out': ['Output signal: '],
+            'message_out': ['Output signal: ',
+                            'Max thruster signal ='],
             'name': 'Amps',
-            'io_out': 'buffer',
             'process_order': 'sequential',
         },
 
