@@ -8,35 +8,44 @@ Created on Tue Dec 31 14:50:44 2019
 
 # %%
 
-def build_phase_choices(a, i):
-    x = []
-    for y in range(len(a)):
-        if a[y] != i:
-            x.append(a[y])
+def build_phase_choices(array, used_element):
+    """
+    Generate the remaining elements for the permuations as element is used.
+    """
+    remaining_elements = []
+    for value in array:
+        if value != used_element:
+            remaining_elements.append(value)
 
-    return x
+    return remaining_elements
 
 
 # %% Create 5P5 (permutations)
 
 def phase_generator():
+    """ Generate the permutations of initial set. """
     phase0 = [0, 1, 2, 3, 4]
     phases = []
-    for index, i in enumerate(phase0):
+    for index, element_1 in enumerate(phase0):
         phase1 = build_phase_choices(phase0, phase0[index])
-        for index, j in enumerate(phase1):
-            phase2 = build_phase_choices(phase1, phase1[index])
-            for index, k in enumerate(phase2):
-                phase3 = build_phase_choices(phase2, phase2[index])
-                for index, l in enumerate(phase3):
-                    phase4 = build_phase_choices(phase3, phase3[index])
-                    m = phase4[0]
-                    phases.append([i, j, k, l, m])
+        for index1, element_2 in enumerate(phase1):
+            phase2 = build_phase_choices(phase1, phase1[index1])
+            for index2, element_3 in enumerate(phase2):
+                phase3 = build_phase_choices(phase2, phase2[index2])
+                for index3, element_4 in enumerate(phase3):
+                    phase4 = build_phase_choices(phase3, phase3[index3])
+                    element_5 = phase4[0]
+                    phases.append([element_1,
+                                   element_2,
+                                   element_3,
+                                   element_4,
+                                   element_5])
 
     return phases
 
 
 def phase_load(computer, data, index):
+    """ Load each set of phase codes into the IntCode computer as required. """
     name = computer.programs_loaded_keys
     number = len(name)
     for i in range(number):
