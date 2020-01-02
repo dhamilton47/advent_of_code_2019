@@ -32,6 +32,7 @@ class Memory:
         """
         A Program's coded is added to Memory when the Porgram is loaded.
         """
+
         mem_dict = {}
 
         if program == {}:
@@ -40,8 +41,10 @@ class Memory:
         for item in program:
             code = program[item].code
 
-            for address in range(len(code)):
-                mem_dict[address] = code[address]
+            for address, value in enumerate(code):
+                mem_dict[address] = value
+            # for address in range(len(code)):
+            #     mem_dict[address] = code[address]
 
             self.bank[item] = mem_dict
 
@@ -49,6 +52,7 @@ class Memory:
 
     def value(self, program_name, address):
         """ Return the value stored at a particular memory address. """
+
         if address is None:
             return 'None'
 
