@@ -5,136 +5,108 @@ Created on Fri Dec  6 12:04:20 2019
 @author: Dan J Hamilton
 """
 
-from intcode.intcode_v2 import IntCode
-# from memory import Memory
+from computer_v1 import Computer
 
+import aoc
+import phases
+# from phase_generator import phase_generator
 
-# %% Import the "program" data (as a string)
-
-def read_program(txtfile):
-    f = open(txtfile, "r")
-    if f.mode == 'r':
-        contents = f.read()
-    f.close()
-
-    return contents
-
-
-# %% Transform the "program" from a string to a list of integers
-
-def transform_program(contents):
-    memory = list(contents.split(","))
-    memory_length = len(memory)
-    for i in range(memory_length):
-        memory[i] = int(memory[i])
-
-    return memory
-
+# Day 7, Part 1 needs:
+#     Multiple programs running on the computer
+#     Buffer(s) or stack to add instruction command control
+#     Inputs coming from the stack
+#     Outputs placed on the stack
+#     Inputs:
+#         Phase setting
+#         Signal
 
 # %%
 
-def build_phase_choices(a, i):
-    x = []
-    for y in range(len(a)):
-        if a[y] != i:
-            x.append(a[y])
 
-    return x
+def TEST(library=aoc.PROGRAMS_AVAILABLE_DICTIONARY):
+    computer = Computer(library)
+    computer.boot()
 
+    # Select a program to run & flash memory
+    computer.program_load()
 
-# %% Create 5P5 (permutations)
+    if 'Diagnostics' in computer.programs_loaded_keys:
+        computer.buffers['Diagnostics'].register[0] = True
+        computer.flash_memory()
 
-def permutations():
-    phase0 = [0, 1, 2, 3, 4]
-    phases = []
-    for index, i in enumerate(phase0):
-        phase1 = build_phase_choices(phase0, phase0[index])
-        for index, j in enumerate(phase1):
-            phase2 = build_phase_choices(phase1, phase1[index])
-            for index, k in enumerate(phase2):
-                phase3 = build_phase_choices(phase2, phase2[index])
-                for index, l in enumerate(phase3):
-                    phase4 = build_phase_choices(phase3, phase3[index])
-                    m = phase4[0]
-                    phases.append([i, j, k, l, m])
+        computer.process_scheduler()
+        computer.process_run()
 
-    return phases
+    if 'ampA' in computer.programs_loaded_keys:
+        phase_input = phases.phase_generator()
+        print(f"Number of phase combinations to run = {len(phase_input)}")
 
+        for index in range(len(phase_input)):
+            # index = 29
+            computer.program_reload(computer.programs_available_dictionary['Amp'])
+            computer.flash_memory()
 
-# %%
+            # if 'ampA' in computer.programs_loaded_keys:
+            phases.phase_load(computer, phase_input, index)
+            print(phase_input[index])
+            # if 'ampA' in computer.programs_loaded_keys:
+            computer.buffers['ampA'].register[0] = True
+            computer.buffers['ampA'].register[2] = 0
 
-def TEST(self_initialize=True, noun=0, verb=0):
-
-    txtfile = "../data/adventofcode_2019_day_5_input.txt" \
-        if self_initialize else "../data/adventofcode_2019_day_2_input.txt"
-
-    # Create IntCode instance
-    intcode = IntCode()
-    intcode.load_program(txtfile)
-    # if not(self_initialize):
-    #     intcode.noun = noun
-    #     intcode.verb = verb
-
-    # Run code
-    intcode.run_program()
+            computer.process_scheduler()
+            computer.process_run()
 
 
 # %% Development Environment
 
-txtfile7 = "../data/adventofcode_2019_day_7_input.txt"
-txtfile5 = "../data/adventofcode_2019_day_5_input.txt"
-# program = read_program(txtfile7)
-# readable_program = transform_program(program)
+# Create TEST
+computer = Computer(aoc.PROGRAMS_AVAILABLE_DICTIONARY)
+computer.boot()
 
-phases = permutations()
+# Select a program to run & flash memory
+computer.program_load()
+# computer.flash_memory()
 
-ampA = IntCode()
-program = ampA.read_program(txtfile5)
+if 'Diagnostics' in computer.programs_loaded_keys:
+    computer.buffers['Diagnostics'].register[0] = True
+    computer.flash_memory()
 
-program_lenth = ampA.memory_size
-IP = ampA.instruction_pointer
+    computer.process_scheduler()
+    computer.process_run()
 
-while IP < program_lenth:
-    instruction = ampA.get_instruction(IP)
-    ampA.execute_instruction(instruction)
-    ampA.prt0()
-    IP = ampA.instruction_pointer
+if 'ampA' in computer.programs_loaded_keys:
+    phase_input = phases.phase_generator()
+    print(f"Number of phase combinations to run = {len(phase_input)}")
 
-# IP = ampA.instruction_pointer
-# print('Instruction pointer = {}'.format(IP))
-# instruction = ampA.get_instruction(IP)
-# print('Instruction = {}'.format(instruction))
-# # ampA.decode_opcode()
-# ampA.execute_instruction(instruction)
+    for index in range(len(phase_input)):
+        # index = 29
+        computer.program_reload(computer.programs_available_dictionary['Amp'])
+        computer.flash_memory()
 
-# IP = ampA.instruction_pointer
-# print('Instruction pointer = {}'.format(IP))
+        # if 'ampA' in computer.programs_loaded_keys:
+        phases.phase_load(computer, phase_input, index)
+        print(phase_input[index])
+        # if 'ampA' in computer.programs_loaded_keys:
+        computer.buffers['ampA'].register[0] = True
+        computer.buffers['ampA'].register[2] = 0
 
-# ampA.get_input('Enter phase number: ')
-# ampA.get_input('Enter input signal: ')
+# when multiple copies of a program are running, how are they executed:
+#     1. in a fixed sequence, or
+#     2. in a variable (event) driven sequence
+# Check if instruction_next needed for any of the running programs
 
-# ampA_output_signal.get_output()
-# ampA.load_program(txtfile5)
-# ampA.read_program(txtfile7)
-# ampA.transform_program()
-# a = ampA.run_program()
+        computer.process_scheduler()
+        computer.process_run()
 
-# ampB = IntCode(readable_program)
-# b = ampB.run_program()
-# ampB.read_program(txtfile5)
 
-# ampC = IntCode(readable_program)
-# c = ampC.run_program()
-# ampC.read_program(txtfile5)
+# test.instruction_next()
 
-# ampD = IntCode(readable_program)
-# d = ampD.run_program()
-# ampD.read_program(txtfile5)
+# Determine next instruction to process and execute it.
 
-# ampE = IntCode(readable_program)
-# e = ampE.run_program()
-# ampE.read_program(txtfile5)
 
 # %% Production Environment (LOL)
 
 # TEST()
+
+# if __name__ == "__main__":
+#     TEST()

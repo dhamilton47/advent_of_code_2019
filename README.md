@@ -130,7 +130,7 @@ Program(programID)
 
 ### Instruction Class _(as currently implemented)_
 **Nouns:**
-Instruction(memory, ip=None, dictionary=aoc.opcode_dictionary)
+Instruction()
 
 
 **Adjectives:**
@@ -145,6 +145,7 @@ Instruction(memory, ip=None, dictionary=aoc.opcode_dictionary)
 
 
 **Verbs:**
+- __init__(memory, ip=None, dictionary=aoc.opcode_dictionary)
 - decode_parameters(self, memory, length, ip)
 
 
@@ -154,7 +155,7 @@ Memory(code=[])
 
 
 **Adjectives:**
-- register = flash(code)
+- bank = flash(code)
 
 
 **Verbs:**
