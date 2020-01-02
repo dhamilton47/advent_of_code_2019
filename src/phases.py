@@ -46,7 +46,7 @@ def phase_generator():
 
 def phase_load(computer, data, index):
     """ Load each set of phase codes into the IntCode computer as required. """
-    name = computer.programs_loaded_keys
+    name = computer.program_copies_loaded
     number = len(name)
     for i in range(number):
         computer.buffers[name[i]].register[1] = data[index][i]

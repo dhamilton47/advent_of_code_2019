@@ -33,49 +33,50 @@ class Computer:
                     a register.
             class CPU - executes opreations from the stack
             class OS
-                class Instruction
-            class Stack
+            class Stack - ?
             class Register - ?
 
         Properties
-            name
+            buffers
+            computer_name
             cpu
             io
-            memory
-            programs_available_dictionary
-            program_loaded
-            ip (instruction pointer)
-            programs_loaded
-            programs_loaded_keys
             ips (instruction pointer)
+            # ips_last (instruction pointer)
+            library
+            memory
+            process_active
+            process_order
+            program_copies_loaded
+            programs_loaded
+            stack
 
         Methods
             boot
+            flash_memory
             instruction_next
+            process_run
+            process_scheduler
             program_load
             program_menu
-            programs_available
-
-            input
-            output
+            program_reload
+            # programs_available
     # """
 
     def __init__(self, library):
-        self.name = 'HAL'
+        self.computer_name = 'HAL'
 
         self.buffers = {}
         self.cpu = None
-        self.instructions = {}
         self.io = None
         self.ips = {}
-        self.ips_last = {}
+        self.library = library
         self.memory = None
         self.process_active = None
         self.process_order = None
-        self.programs_available_dictionary = library
-        self.programs_available_keys = list(library.keys())
+        self.program_name = {}
         self.programs_loaded = {}
-        self.programs_loaded_keys = []
+        self.program_copies_loaded = []
         self.stack = []
 
     def boot(self):
@@ -86,6 +87,10 @@ class Computer:
         self.cpu = CPU()
         self.io = IO()
         self.memory = Memory()
+
+    def flash_memory(self):
+        """ Load the Program(s) code into a Memory bank for execution """
+        self.memory.bank = self.memory.flash(self.programs_loaded)
 
     def instruction_next(self):
         """
@@ -104,8 +109,13 @@ class Computer:
         """
         the instance of a computer program that is being executed
         """
+
+        thruster_max = 0
+
         while self.stack != []:
             self.process_active = self.stack.pop(0)
+            # print(f"Stack = {self.stack}")
+            # print(f"Program copies loaded = {self.program_copies_loaded}")
             if self.buffers[self.process_active].register[0]:
 
                 # Execute program
@@ -113,10 +123,10 @@ class Computer:
                 # print(f"\nRunning process {self.process_active}")
                 while opcode != 99:
                     instruction = self.instruction_next()
-                    # print(f"\nInstruction (in Computer Module): {instruction}")
-                    instruction = self.cpu.instruction_execute(self, instruction)
-                    self.ips_last[self.process_active] = \
-                        self.ips[self.process_active]
+                    # print(f"\nInstruction (in Computer Module): "
+                    #       f"{instruction}")
+                    instruction = \
+                        self.cpu.instruction_execute(self, instruction)
                     self.ips[self.process_active] += instruction['length']
                     opcode = instruction['opcode']
 
@@ -124,12 +134,17 @@ class Computer:
                 value = self.buffers[self.process_active].register[3]
                 # print(f"Buffer [{self.process_active}] = "
                 #       f"{list(self.buffers[self.process_active].register.values())}")
-                # self.process_active = self.stack.pop(0)
                 if self.stack != []:
                     self.buffers[self.stack[0]].register[0] = True
                     self.buffers[self.stack[0]].register[2] = value
-        if self.process_active == 'ampE':
+        # if self.program_name == "Amp":
+        #     thruster_max = thruster_max if thruster_max > \
+        #         self.buffers[self.process_active].register[3] \
+        #         else self.buffers[self.process_active].register[3]
+
+        if self.program_name == 'Amp':
             print(f"Max thruster signal = "
+                  # f"{thruster_max}")
                   f"{self.buffers[self.process_active].register[3]}")
 
     def process_scheduler(self):
@@ -138,26 +153,10 @@ class Computer:
         of the running process from the CPU and the selection of
         another process on the basis of a particular strategy
         """
-        progs = self.programs_loaded
-        # print(progs)
-        num = self.programs_loaded_keys[0]
-        # print(num)
-        if len(progs) == 0:
-            return {}
+        if len(self.program_copies_loaded) == 0:
+            self.stack = {}
 
-        if len(progs) == 1:
-            self.process_order = 'sequential'
-            self.stack.append(num)
-        else:
-            # print(progs[num].process_order)
-            if progs[num].process_order == 'sequential':
-                self.process_order = 'sequential'
-                for item in self.programs_loaded_keys:
-                    self.stack.append(item)
-            elif progs[num].process_order == 'parallel':
-                self.process_order = 'parallel'
-            else:
-                raise ValueError('No processing order specified.')
+        self.stack = self.program_copies_loaded.copy()
 
     def program_load(self):
         """
@@ -166,11 +165,11 @@ class Computer:
             Load the program
         """
 
-        program_keys = self.programs_available_keys
-        # program_keys = self.programs_available()
+        program_keys = list(self.library.keys())
         program_index = self.program_menu(program_keys)
-        program_to_load = \
-            self.programs_available_dictionary[program_keys[program_index]]
+        program_to_load = self.library[program_keys[program_index]]
+
+        self.program_name = program_to_load['name']
 
         # print(program_to_load)
         for item in program_to_load['copies']:
@@ -179,24 +178,8 @@ class Computer:
             self.buffers[item] = Register()
 
             self.programs_loaded[item] = program_loaded
-            self.programs_loaded_keys.append(item)
+            self.program_copies_loaded.append(item)
             self.ips[item] = 0
-            self.ips_last[item] = 0
-
-    def program_reload(self, program_to_load):
-        """
-        When running multiple times, parts of the Program load process
-        need to be re-initialized.
-        """
-
-        for item in self.programs_loaded_keys:
-            program_loaded = Program(program_to_load)
-            self.buffers[item] = Register()
-
-            self.programs_loaded[item] = program_loaded
-            # self.programs_loaded_keys.append(item)
-            self.ips[item] = 0
-            self.ips_last[item] = 0
 
     def program_menu(self, program_list):
         """
@@ -208,14 +191,14 @@ class Computer:
         """
 
         print_string = "\n\nHello, Dan.\n\n"
-        print_string += ("My name is " + self.name
+        print_string += ("My name is " + self.computer_name
                          + ".\n\nI am capable of doing the following:")
 
-        for i in range(len(program_list)):
-            if program_list[i] == "None":
+        for index, value in enumerate(program_list):
+            if value == "None":
                 continue
 
-            print_string += "\n  " + f"{i:2d}" + ". " + program_list[i]
+            print_string += "\n  " + f"{index:2d}" + ". " + value
 
         print(f"{print_string}")
 
@@ -226,6 +209,17 @@ class Computer:
 
     #     return list(self.programs_available_dictionary.keys())
 
-    def flash_memory(self):
-        """ Load the Program(s) code into a Memory bank for execution """
-        self.memory.bank = self.memory.flash(self.programs_loaded)
+    def program_reload(self, program_to_load):
+        """
+        When running multiple times, parts of the Program load process
+        need to be re-initialized.
+        """
+        # print(f"Program copies loaded = {self.program_copies_loaded}")
+        self.stack = self.program_copies_loaded.copy()
+
+        for item in self.program_copies_loaded:
+            program_loaded = Program(program_to_load)
+
+            self.buffers[item] = Register()
+            self.programs_loaded[item] = program_loaded
+            self.ips[item] = 0

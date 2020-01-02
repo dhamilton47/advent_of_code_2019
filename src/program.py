@@ -37,14 +37,13 @@ class Program:
     def __init__(self, program):
         self.binary = program['binary']
         self.code = self.read_binary()
-        self.copies = program['copies']
         self.description = program['description']
-        self.io_in = self.verify(program, 'io_in')
-        self.io_out = self.verify(program, 'io_out')
+        self.io_in = (self.verify(program, 'io_in'),
+                      self.verify(program, 'messages_in'))
+        self.io_out = (self.verify(program, 'io_out'),
+                       self.verify(program, 'messages_out'))
         self.io_in_count = 0
         self.io_out_count = 0
-        self.messages_in = self.verify(program, 'messages_in')
-        self.messages_out = self.verify(program, 'messages_out')
         self.name = program['name']
         self.process_order = self.verify(program, 'process_order')
 

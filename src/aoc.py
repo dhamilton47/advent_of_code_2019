@@ -73,8 +73,8 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
                             'Enter input signal: '],
             'messages_out': ['Output signal: ',
                              'Max thruster signal ='],
-            'name': 'Amps',
-            'process_order': 'sequential',
+            'name': 'Amp',
+            # 'process_order': 'sequential',
         },
 
     'BOOST':
