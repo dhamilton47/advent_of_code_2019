@@ -13,11 +13,9 @@ Created on Sun Dec  22 15:49:41 2019
 from cpu import CPU
 from io_aoc import IO
 from instruction import Instruction
-from instruction import Instruction1
 from memory import Memory
 from program import Program
 from register import Register
-from stack import Stack
 
 
 # %% Define the IntCode class
@@ -67,8 +65,6 @@ class Computer:
 
         self.buffers = {}
         self.cpu = None
-        # self.idle_bits = {}
-        # self.instruction_bits = {}
         self.instructions = {}
         self.io = None
         self.ips = {}
@@ -81,7 +77,6 @@ class Computer:
         self.programs_loaded = {}
         self.programs_loaded_keys = []
         self.stack = []
-        # self.stack = {}
 
     def boot(self):
         """
@@ -91,38 +86,18 @@ class Computer:
         self.cpu = CPU()
         self.io = IO()
         self.memory = Memory()
-        # self.stack = Stack()
 
     def instruction_next(self):
-        if self.programs_loaded == {}:
-            return {}
-
-        for item in self.ips.items():
-            if item[1] == 0:
-                # if item[1] == self.ips_last[item[0]]:
-                self.instructions[item[0]] = \
-                    Instruction(item[0],
-                                self.memory,
-                                self.ips[item[0]])
-            elif item[1] != self.ips_last[item[0]]:
-                self.instructions[item[0]] = \
-                    Instruction(item[0],
-                                self.memory,
-                                self.ips[item[0]])
-            else:
-                continue
-
-    def instruction_next1(self):
+        """
+        Grab the next Instruction to execute
+        """
         program_name = self.process_active
 
         if program_name == []:
             return {}
 
-        pointer = self.ips[program_name]
-
-
-        instruction = Instruction1(self)
-
+        instruction = Instruction(self)
+        # print(f"Instruction = {instruction}")
         return instruction.instruction
 
     def process_run(self):
@@ -135,11 +110,11 @@ class Computer:
 
                 # Execute program
                 opcode = 0
-
+                # print(f"\nRunning process {self.process_active}")
                 while opcode != 99:
-                    instruction = self.instruction_next1()
-                    print(f"\nInstruction (in Computer Module): {instruction}")
-                    instruction = self.cpu.instruction_execute1(self, instruction)
+                    instruction = self.instruction_next()
+                    # print(f"\nInstruction (in Computer Module): {instruction}")
+                    instruction = self.cpu.instruction_execute(self, instruction)
                     self.ips_last[self.process_active] = \
                         self.ips[self.process_active]
                     self.ips[self.process_active] += instruction['length']
@@ -147,12 +122,15 @@ class Computer:
 
             if not self.buffers[self.process_active].register[0]:
                 value = self.buffers[self.process_active].register[3]
-                print(f"Buffer [{self.process_active}] = "
-                      f"{list(self.buffers[self.process_active].register.values())}")
+                # print(f"Buffer [{self.process_active}] = "
+                #       f"{list(self.buffers[self.process_active].register.values())}")
                 # self.process_active = self.stack.pop(0)
                 if self.stack != []:
                     self.buffers[self.stack[0]].register[0] = True
                     self.buffers[self.stack[0]].register[2] = value
+        if self.process_active == 'ampE':
+            print(f"Max thruster signal = "
+                  f"{self.buffers[self.process_active].register[3]}")
 
     def process_scheduler(self):
         """
@@ -166,7 +144,8 @@ class Computer:
         # print(num)
         if len(progs) == 0:
             return {}
-        elif len(progs) == 1:
+
+        if len(progs) == 1:
             self.process_order = 'sequential'
             self.stack.append(num)
         else:
@@ -193,6 +172,7 @@ class Computer:
         program_to_load = \
             self.programs_available_dictionary[program_keys[program_index]]
 
+        # print(program_to_load)
         for item in program_to_load['copies']:
             program_loaded = Program(program_to_load)
 
@@ -203,7 +183,20 @@ class Computer:
             self.ips[item] = 0
             self.ips_last[item] = 0
 
-        # return self.programs_loaded
+    def program_reload(self, program_to_load):
+        """
+        When running multiple times, parts of the Program load process
+        need to be re-initialized.
+        """
+
+        for item in self.programs_loaded_keys:
+            program_loaded = Program(program_to_load)
+            self.buffers[item] = Register()
+
+            self.programs_loaded[item] = program_loaded
+            # self.programs_loaded_keys.append(item)
+            self.ips[item] = 0
+            self.ips_last[item] = 0
 
     def program_menu(self, program_list):
         """
@@ -234,4 +227,5 @@ class Computer:
     #     return list(self.programs_available_dictionary.keys())
 
     def flash_memory(self):
+        """ Load the Program(s) code into a Memory bank for execution """
         self.memory.bank = self.memory.flash(self.programs_loaded)
