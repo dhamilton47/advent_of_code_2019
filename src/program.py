@@ -8,22 +8,22 @@ Created on Sun Dec 29 23:59:09 2019
 
 # class Program
 #     Properties
-#         name
-#         description
 #         binary
 #         code
 #         copies
-#         input_sources
+#         description
+#         io_in
+#         io_out
+#         io_in_count
+#         io_out_sount
 #         messages_in
 #         messages_out
-#         messages_in_calls
-#         messages_out_calls
+#         name
+#         process_order
 #
 #     Methods
 #         read_binary
-#         input_source
-#         message_in
-#         message_out
+#         verify
 
 
 # %% Program Class
@@ -35,25 +35,18 @@ class Program:
     """
 
     def __init__(self, program):
-        # self.program = program
         self.binary = program['binary']
         self.code = self.read_binary()
         self.copies = program['copies']
         self.description = program['description']
-        # self.input_sources = self.input_source(program)
-        self.io_in = self.io_source_in(program)
-        self.io_out = self.io_source_out(program)
+        self.io_in = self.verify(program, 'io_in')
+        self.io_out = self.verify(program, 'io_out')
         self.io_in_count = 0
         self.io_out_count = 0
-        self.messages_in = self.message_in(program)
-        self.messages_out = self.message_out(program)
-        self.messages_in_calls = 0
-        self.messages_out_calls = 0
+        self.messages_in = self.verify(program, 'messages_in')
+        self.messages_out = self.verify(program, 'messages_out')
         self.name = program['name']
-        self.process_order = self.processing(program)
-        # self.input_sources = ''
-        # self.messages_in = []
-        # self.messages_out = []
+        self.process_order = self.verify(program, 'process_order')
 
     def read_binary(self, program_binary=None):
         """
@@ -63,10 +56,10 @@ class Program:
         if program_binary is not None:
             self.binary = program_binary
 
-        f = open(self.binary, "r")
-        if f.mode == 'r':
-            contents = f.read()
-            f.close()
+        file = open(self.binary, "r")
+        if file.mode == 'r':
+            contents = file.read()
+            file.close()
 
         code = []
         raw_program = list(contents.split(","))
@@ -76,39 +69,13 @@ class Program:
 
         return code
 
-    def input_source(self, program):
-        if 'input_source' in program.keys():
-            return program['input_source']
+    def verify(self, program, attribute):
+        """
+        Verify that the property is part of the program info, return
+        None if not.
+        """
 
-        return None
-
-    def io_source_in(self, program):
-        if 'io_in' in program.keys():
-            return program['io_in']
-
-        return None
-
-    def io_source_out(self, program):
-        if 'io_out' in program.keys():
-            return program['io_out']
-
-        return None
-
-    def message_in(self, program):
-        if 'message_in' in program.keys():
-            return program['message_in']
-
-        return None
-
-    def message_out(self, program):
-        if 'message_out' in program.keys():
-            return program['message_out']
-
-        return None
-
-    def processing(self, program):
-        # print(program.keys())
-        if 'process_order' in program.keys():
-            return program['process_order']
+        if attribute in program.keys():
+            return program[attribute]
 
         return None
