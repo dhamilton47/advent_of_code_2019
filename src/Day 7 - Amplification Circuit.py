@@ -59,9 +59,9 @@ def test(library=aoc.PROGRAMS_AVAILABLE_DICTIONARY):
             computer.process_scheduler()
             computer.process_run()
             thruster_max = thruster_max if thruster_max > \
-                self.buffers[self.process_active].register[3] \
-                else self.buffers[self.process_active].register[3]
-            print(self.buffers[self.process_active].register[3])
+                computer.buffers[computer.process_active].register[3] \
+                else computer.buffers[computer.process_active].register[3]
+            print(computer.buffers[computer.process_active].register[3])
             print('we got here')
         print(f"Maximum thruster signal = {thruster_max}")
 
@@ -89,6 +89,8 @@ if COMPUTER.program_name == 'Amp':
     print(f"Number of phase combinations to run = {len(PHASE_INPUT)}")
     COMPUTER.process_scheduler()
 
+    thruster_max = 0
+
     for index in range(len(PHASE_INPUT)):
         # index = 29
         COMPUTER.program_reload(COMPUTER.library['Amp'])
@@ -108,6 +110,13 @@ if COMPUTER.program_name == 'Amp':
 
         # COMPUTER.process_scheduler()
         COMPUTER.process_run()
+
+        thruster_max = thruster_max if thruster_max > \
+            computer.buffers[computer.process_active].register[3] \
+            else computer.buffers[computer.process_active].register[3]
+        # print(computer.buffers[computer.process_active].register[3])
+        # print('we got here')
+    print(f"Maximum thruster signal = {thruster_max}")
 
 
 # test.instruction_next()
