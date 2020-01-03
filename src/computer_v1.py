@@ -142,10 +142,10 @@ class Computer:
         #         self.buffers[self.process_active].register[3] \
         #         else self.buffers[self.process_active].register[3]
 
-        if self.program_name == 'Amp':
-            print(f"Max thruster signal = "
-                  # f"{thruster_max}")
-                  f"{self.buffers[self.process_active].register[3]}")
+        # if self.program_name == 'Amp':
+        #     print(f"Max thruster signal = "
+        #           # f"{thruster_max}")
+        #           f"{self.buffers[self.process_active].register[3]}")
 
     def process_scheduler(self):
         """
