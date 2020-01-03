@@ -120,7 +120,7 @@ class Computer:
 
                 # Execute program
                 opcode = 0
-                # print(f"\nRunning process {self.process_active}")
+                print(f"\nRunning process {self.process_active}")
                 while opcode != 99:
                     instruction = self.instruction_next()
                     # print(f"\nInstruction (in Computer Module): "

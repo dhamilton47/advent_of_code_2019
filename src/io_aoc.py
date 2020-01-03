@@ -62,14 +62,20 @@ class IO:
         Determine where to output results
         """
 
+        program_name = computer.program_name
         process_active = computer.process_active
         program = computer.programs_loaded[process_active]
 
         io_out_count = program.io_out_count
         io_outs, messages_out = program.io_out
 
-        io_out = io_outs[io_out_count]
-        message_out = messages_out[io_out_count]
+        # io_out = io_outs[io_out_count]
+        if program_name != 'BOOST':
+            io_out = io_outs[io_out_count]
+            message_out = messages_out[io_out_count]
+        else:
+            io_out = io_outs[0]
+            message_out = messages_out[0]
         # print(f"I/O out device: {io_out}")
 
         if io_out == 'monitor':
@@ -77,6 +83,7 @@ class IO:
             print(f"{message_out} {value}")
 
         elif io_out == 'buffer':
+            # if progam_name == 'Amp':
             buffer = computer.buffers[process_active].register
             computer.buffers[process_active].register[buffer[5]] = \
                 instruction['parameters'][0]['value']
@@ -84,6 +91,7 @@ class IO:
             #       f"{computer.buffers[process_active].register[buffer[5]]}\n")
             computer.buffers[process_active].register[5] += 1
             computer.buffers[process_active].register[0] = False
+            # else:
 
         else:
             raise ValueError('That device has not been attached.')

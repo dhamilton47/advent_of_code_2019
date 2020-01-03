@@ -35,6 +35,8 @@ class Program:
     """
 
     def __init__(self, program):
+        self.general_info = self.program_general_info(program)
+        self.specific_info = self.program_specific_info(program)
         self.binary = program['binary']
         self.code = self.read_binary()
         self.description = program['description']
@@ -46,6 +48,23 @@ class Program:
         self.io_out_count = 0
         self.name = program['name']
         self.process_order = self.verify(program, 'process_order')
+
+    def program_general_info(self, program):
+        self.name = program['name']
+        self.binary = program['binary']
+        self.code = self.read_binary()
+        self.description = program['description']
+        self.process_order = self.verify(program, 'process_order')
+        pass
+
+    def program_specific_info(self, program):
+        self.io_in = (self.verify(program, 'io_in'),
+                      self.verify(program, 'messages_in'))
+        self.io_out = (self.verify(program, 'io_out'),
+                       self.verify(program, 'messages_out'))
+        self.io_in_count = 0
+        self.io_out_count = 0
+        pass
 
     def read_binary(self, program_binary=None):
         """

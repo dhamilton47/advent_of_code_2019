@@ -13,9 +13,9 @@ import aoc
 #     Properties
 #         raw_opcode
 #         opcode
-#         modes
-#         parameters
 #         length
+#         parameters
+#         modes
 #         instruction
 #
 #     Methods
@@ -30,13 +30,15 @@ class Instruction:
     which the CPU is able to execute.
     """
 
-    def __init__(self, computer, dictionary=aoc.OPCODE_DICTIONARY):
+    def __init__(self, computer, op_dictionary=aoc.OPCODE_DICTIONARY,
+                 mode_dictionary=aoc.MODE_DICTIONARY):
         self.raw_opcode = computer.memory.value(
             computer.process_active, computer.ips[computer.process_active])
-        self.opcode = dictionary[self.raw_opcode]['opcode']
-        self.modes = dictionary[self.raw_opcode]['modes']
-        self.parameters = dictionary[self.raw_opcode]['parameters']
-        self.length = dictionary[self.raw_opcode]['length']
+        self.opcode = op_dictionary[self.raw_opcode % 100]['opcode']
+        self.length = op_dictionary[self.raw_opcode % 100]['length']
+        self.function = op_dictionary[self.raw_opcode % 100]['func']
+        self.parameters = op_dictionary[self.raw_opcode % 100]['params']
+        self.modes = mode_dictionary[self.raw_opcode // 100]['modes']
         self.instruction = {'opcode': self.opcode,
                             'parameters': self.decode_parameters(
                                 computer.process_active,
@@ -51,6 +53,10 @@ class Instruction:
         mutates the meaning of each parameter.  This information needs
         to be evaluated so that the parameters provide consistent
         structure for exectution.
+
+        mode value 0 = position
+        mode value 1 = immediate
+        mode value 2 = relative
         """
 
         if length == 1:
@@ -59,10 +65,15 @@ class Instruction:
         parameters = {}
 
         for index in range(length - 1):
-            if self.modes[index] == 'position':
+            if self.modes[index] == 0:
                 address = memory.value(program_name, (ip + 1) + index)
-            else:
+            elif self.modes[index] == 1:
                 address = (ip + 1) + index
+            elif self.modes[index] == 2:
+                address = memory.value(program_name, (ip + 1) + index) \
+                    + memory.base_offset
+            else:
+                raise ValueError("Parameter mode is undefined.")
 
             value = memory.value(program_name, address)
 

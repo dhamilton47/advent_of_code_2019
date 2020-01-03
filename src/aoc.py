@@ -45,7 +45,7 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
                        'monitor',
                        'monitor',
                        'monitor',
-                       'monitor',],
+                       'monitor', ],
             'messages_in': ['Which System ID are we testing? '],
             'messages_out': ['Diagnostic test =',
                              'Diagnostic test =',
@@ -82,6 +82,10 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_9_input.txt',
             'copies': ['BOOST'],
             'description': 'Basic Operation Of System Test Program',
+            'io_in': ['keyboard'],
+            'io_out': ['monitor'],
+            'messages_in': ['Enter test number: '],
+            'messages_out': ['BOOST keycode ='],
             'name': 'BOOST',
         },
 
@@ -160,412 +164,44 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
 # %% OpCode Dictionary
 
 OPCODE_DICTIONARY = {
-    1: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'position']
-        },
+    1: {'opcode': 1, 'length': 4, 'func': 'add', 'params': [0, 0, 0]},
+    2: {'opcode': 2, 'length': 4, 'func': 'multiply', 'params': [0, 0, 0]},
+    3: {'opcode': 3, 'length': 2, 'func': 'input', 'params': [0]},
+    4: {'opcode': 4, 'length': 2, 'func': 'output', 'params': [0]},
+    5: {'opcode': 5, 'length': 3, 'func': 'jump-if-true', 'params': [0, 0]},
+    6: {'opcode': 6, 'length': 3, 'func': 'jump-if-false', 'params': [0, 0]},
+    7: {'opcode': 7, 'length': 4, 'func': 'lt', 'params': [0, 0, 0]},
+    8: {'opcode': 8, 'length': 4, 'func': 'eq', 'params': [0, 0, 0]},
+    9: {'opcode': 9, 'length': 2, 'func': 'rebase', 'params': [0]},
+    99: {'opcode': 99, 'length': 1, 'func': 'exit', 'params': []},
+}
 
-    101: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'position']
-        },
-
-    1001: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'immediate',
-                  'position']
-        },
-
-    1101: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'position']
-        },
-
-
-    10001: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'immediate']
-        },
-
-    10101: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'immediate']
-        },
-
-    11101: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'immediate']
-        },
-
-    2: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'position']
-        },
-
-    102: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'position']
-        },
-
-    1002: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'immediate',
-                  'position']
-        },
-
-    1102: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'position']
-        },
-
-    10002: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'immediate']
-        },
-
-    10102: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'immediate']
-        },
-
-    11102: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'immediate']
-        },
-
-    3: {
-        'opcode': 3,
-        'length': 2,
-        'function': 'input',
-        'parameters': [0],
-        'modes': ['position']
-        },
-
-    103: {
-        'opcode': 3,
-        'length': 2,
-        'function': 'input',
-        'parameters': [0],
-        'modes': ['immediate']
-        },
-
-    4: {
-        'opcode': 4,
-        'length': 2,
-        'function': 'output',
-        'parameters': [0],
-        'modes': ['position']
-        },
-
-    104: {
-        'opcode': 4,
-        'length': 2,
-        'function': 'input',
-        'parameters': [0],
-        'modes': ['immediate']
-        },
-
-    5: {
-        'opcode': 5,
-        'length': 3,
-        'function': 'jump-if-true',
-        'parameters': [0, 0],
-        'modes': ['position',
-                  'position']
-        },
-
-    105: {
-        'opcode': 5,
-        'length': 3,
-        'function': 'jump-if-true',
-        'parameters': [0, 0],
-        'modes': ['immediate',
-                  'position']
-        },
-
-    1005: {
-        'opcode': 5,
-        'length': 3,
-        'function': 'jump-if-true',
-        'parameters': [0, 0],
-        'modes': ['position',
-                  'immediate']
-        },
-
-    1105: {
-        'opcode': 5,
-        'length': 3,
-        'function': 'jump-if-true',
-        'parameters': [0, 0],
-        'modes': ['immediate',
-                  'immediate']
-        },
-
-    6: {
-        'opcode': 6,
-        'length': 3,
-        'function': 'jump-if-false',
-        'parameters': [0, 0],
-        'modes': ['position',
-                  'position']
-        },
-
-    106: {
-        'opcode': 6,
-        'length': 3,
-        'function': 'jump-if-false',
-        'parameters': [0, 0],
-        'modes': ['immediate',
-                  'position']
-        },
-
-    1006: {
-        'opcode': 6,
-        'length': 3,
-        'function': 'jump-if-false',
-        'parameters': [0, 0],
-        'modes': ['position',
-                  'immediate']
-        },
-
-    1106: {
-        'opcode': 6,
-        'length': 3,
-        'function': 'jump-if-false',
-        'parameters': [0, 0],
-        'modes': ['immediate',
-                  'immediate']
-        },
-
-    7: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'position']
-        },
-
-    107: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'position']
-        },
-
-    1007: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'immediate',
-                  'position']
-        },
-
-    1107: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'position']
-        },
-
-    10007: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'immediate']
-        },
-
-    10107: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'immediate']
-        },
-
-    11107: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'immediate']
-        },
-
-    8: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'position']
-        },
-
-    108: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'position']
-        },
-
-    1008: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'immediate',
-                  'position']
-        },
-
-    1108: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'position']
-        },
-
-    10008: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'immediate']
-        },
-
-    10108: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'immediate']
-        },
-
-    11108: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'immediate']
-        },
-
-    9: {
-        'opcode': 9,
-        'length': 2,
-        'function': 'rebase',
-        'parameters': [0],
-        'modes': ['immediate', ]
-        },
-
-    99: {
-        'opcode': 99,
-        'length': 1,
-        'function': 'exit',
-        'parameters': [],
-        'modes': []
-        },
-
-    'None': {
-        'opcode': 'None',
-        'length': 0,
-        'function': 'none',
-        'parameters': 'None',
-        'modes': 'None'
-        },
+MODE_DICTIONARY = {
+      0: {'modes': [0, 0, 0]},
+      1: {'modes': [1, 0, 0]},
+      2: {'modes': [2, 0, 0]},
+     10: {'modes': [0, 1, 0]},
+     11: {'modes': [1, 1, 0]},
+     12: {'modes': [2, 1, 0]},
+     20: {'modes': [0, 2, 0]},
+     21: {'modes': [1, 2, 0]},
+     22: {'modes': [2, 2, 0]},
+    100: {'modes': [0, 0, 1]},
+    101: {'modes': [1, 0, 1]},
+    102: {'modes': [2, 0, 1]},
+    110: {'modes': [0, 1, 1]},
+    111: {'modes': [1, 1, 1]},
+    112: {'modes': [2, 1, 1]},
+    120: {'modes': [0, 2, 1]},
+    121: {'modes': [1, 2, 1]},
+    122: {'modes': [2, 2, 1]},
+    200: {'modes': [0, 0, 2]},
+    201: {'modes': [1, 0, 2]},
+    202: {'modes': [2, 0, 2]},
+    210: {'modes': [0, 1, 2]},
+    211: {'modes': [1, 1, 2]},
+    212: {'modes': [2, 1, 2]},
+    220: {'modes': [0, 2, 2]},
+    221: {'modes': [1, 2, 2]},
+    222: {'modes': [2, 2, 2]},
 }

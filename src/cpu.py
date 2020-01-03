@@ -92,7 +92,7 @@ class CPU:
             #       f"{memory.bank[process_active][par[2]['address']]}")
 
         elif opcode == 9:
-            return inst
+            computer.memory.base_offset += par[0]['value']
 
         elif opcode == 99:
             # Terminate Program Execution
