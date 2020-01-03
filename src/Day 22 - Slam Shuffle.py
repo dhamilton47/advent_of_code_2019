@@ -8,14 +8,7 @@ Created on Fri Dec  6 12:04:20 2019
 
 import numpy as np
 
-# %% Import the "XXXX" data (as a string)
-def read_program(txtfile):
-    f = open(txtfile, "r")
-    if f.mode == 'r':
-        contents = f.read()
-    f.close()
-
-    return contents
+import aoc
 
 
 # %% Transform the "XXXX" from a string to a list
@@ -86,9 +79,11 @@ def increment_n(deck, n):
 
     index = 0
     for j in range(len(deck)):
-        if index > len(deck):
+        if index >= len(deck):
             index = index - len(deck)
         data[index] = deck[j]
+        # print(len(deck))
+        # print(len(data))
         index += n
 
     return data
@@ -107,10 +102,32 @@ def parse_shuffles(x):
     return shuffles
 
 
+def shuffle_rounds(deck, reps, x):
+    deck = np.arange(deck)
+    count = 0
+    shuffles = parse_shuffles(x)
+
+    for i in range(reps):
+        for shuffle, n in shuffles:
+            if shuffle == 1:
+                deck = cut_n(deck, n)
+            elif shuffle == 2:
+                deck = increment_n(deck, n)
+            else:
+                deck = reverse(deck)
+
+        if reps > 1:
+            print(f"Day 22, Part 2, Round {i} Result = {deck[2019]}")
+            if deck[2019] == 2019:
+                count += 1
+
+    return deck, count
+
+
 # %% Development Environment
 
-txtfile = "../data/adventofcode_2019_day_22_input.txt"
-contents = read_program(txtfile)
+txtfile = "../data/AoC2019_day_22_input.txt"
+contents = aoc.read_program(txtfile)
 x = transform_program(contents)
 length = len(x)
 
@@ -122,19 +139,27 @@ length = len(x)
 number_of_cards_in_deck = 10007
 number_of_cards_in_deck1 = 119315717514047
 
-number_of_shuffle_reps = 101741582076661
-# Parce shuffles
+number_of_shuffle_reps = 12009
+number_of_shuffle_reps1 = 101741582076661
+# Parse shuffles
 
-deck = np.arange(number_of_cards_in_deck)
+# deck = np.arange(number_of_cards_in_deck)
 
-shuffles = parse_shuffles(x)
+# shuffles = parse_shuffles(x)
 
-for shuffle, n in shuffles:
-    if shuffle == 1:
-        deck = cut_n(deck, n)
-    elif shuffle == 2:
-        deck = increment_n(deck, n)
-    else:
-        deck = reverse(deck)
+# for shuffle, n in shuffles:
+#     if shuffle == 1:
+#         deck = cut_n(deck, n)
+#     elif shuffle == 2:
+#         deck = increment_n(deck, n)
+#     else:
+#         deck = reverse(deck)
 
-print(list(np.where(deck == 2019)[0]))
+# print(list(np.where(deck == 2019)[0]))
+
+# final_deck, count = shuffle_rounds(number_of_cards_in_deck, 1, x)
+# print(f"Day 22, Part 1 Result = {list(np.where(final_deck == 2019)[0])}")
+
+final_deck, count = shuffle_rounds(number_of_cards_in_deck,
+                                   number_of_cards_in_deck - 1, x)
+print(f"Day 22, Part 2 Result = {final_deck[2019]}")

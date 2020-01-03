@@ -5,25 +5,17 @@ Created on Mon Dec  2 14:34:08 2019
 @author: Dan J Hamilton
 """
 
+import aoc
+
 
 # %%
 def main(txtfile, instruction_length=4):
-    code = read_intcode(txtfile)
+    code = aoc.read_program(txtfile)
 
     for i in range(100):
         for j in range(100):
             memory = initiate_code_sequence(code, i, j)
             IntCode(memory)
-
-
-# %%
-def read_intcode(txtfile):
-    f = open(txtfile, "r")
-    if f.mode == 'r':
-        contents = f.read()
-    f.close()
-
-    return contents
 
 
 # %%
@@ -88,4 +80,4 @@ def IntCode(x):
 
 
 # %%
-main("../data/adventofcode_2019_day_2_input.txt")
+main("../data/AoC2019_day_2_input.txt")

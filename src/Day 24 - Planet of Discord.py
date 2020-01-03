@@ -225,7 +225,7 @@ def day24_part2(eris_initiator, minutes):
 # %% Development Environment
 
 # # set up total time-line 3-d matrix
-# txtfile = "../data/adventofcode_2019_day_24_input.txt"
+# txtfile = "../data/AoC2019_day_24_input.txt"
 # contents = aoc.read_program(txtfile)
 # eris_initiator = transform_program(contents)
 # minutes = 200
@@ -266,7 +266,7 @@ def day24_part2(eris_initiator, minutes):
 
 # %% Production Environment
 
-txtfile = "../data/adventofcode_2019_day_24_input.txt"
+txtfile = "../data/AoC2019_day_24_input.txt"
 contents = aoc.read_program(txtfile)
 eris = transform_program(contents)
 minutes = 50
@@ -275,7 +275,7 @@ layer = day24_part1(eris, minutes)
 biodiversity_rating = biodiversity(layer)
 print(f"Day 24, Part 1 - Biodiversity rating = {biodiversity_rating}")
 
-txtfile = "../data/adventofcode_2019_day_24_input.txt"
+txtfile = "../data/AoC2019_day_24_input.txt"
 contents = aoc.read_program(txtfile)
 eris_initiator = transform_program(contents)
 minutes = 200

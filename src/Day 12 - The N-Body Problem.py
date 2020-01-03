@@ -7,6 +7,7 @@ Created on Fri Dec  6 12:04:20 2019
 
 from itertools import groupby
 
+import aoc
 
 # Given the positions of the 4 largest moons of Jupiter and starting velocity
 # vectors for each of zero, calculate the motionsof the moons in time steps.
@@ -29,15 +30,6 @@ from itertools import groupby
 # 3. Kinetic energy = |v(x)| + |v(y)| + |v(z)|
 
 # %% Functions
-def read_input(txtfile):
-    f = open(txtfile, "r")
-    if f.mode == 'r':
-        contents = f.read()
-    f.close()
-
-    return contents
-
-
 def transform_input(data):
     for item in ['<', '>', '=', 'x', 'y', 'z', ',']:
         data = [''.join(j).strip(item) for sub in data
@@ -151,10 +143,12 @@ def moon_shot(new_moons, moons, max_steps):
         quarter_moons = position_at_end_of_time_step(harvest_moons)
         e = energy(quarter_moons)
         time_steps += 1
-        if quarter_moons == new_moons:
-            break
-        # if e == 0:
+        if not(time_steps % 100000):
+            print('Passing time step...{0:,d}'.format(time_steps))
+        # if quarter_moons == new_moons:
         #     break
+        if e == 0:
+            break
 
     print_format(quarter_moons, time_steps)
     print('Total energy in the system = {}'.format(e))
@@ -167,12 +161,12 @@ pairs = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]]
 
 # %% Development Environment
 
-txtfile = "../data/adventofcode_2019_day_12_input.txt"
-start = read_input(txtfile)
+txtfile = "../data/AoC2019_day_12_input.txt"
+start = aoc.read_program(txtfile)
 start_vector = transform_input(start)
 new_moons = convert_moon_list_to_dictionary(start_vector, 3, 2, 4)
 full_moons = convert_moon_list_to_dictionary(start_vector, 3, 2, 4)
 
-moon_shot(new_moons, full_moons, 1000)
+moon_shot(new_moons, full_moons, 100000000000)
 
 # %% Production Environment

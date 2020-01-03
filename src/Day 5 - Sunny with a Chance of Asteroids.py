@@ -6,14 +6,7 @@ Created on Mon Dec  2 21:32:44 2019
 """
 
 
-# %% Import the "program" data (as a string)
-def read_program(txtfile):
-    f = open(txtfile, "r")
-    if f.mode == 'r':
-        contents = f.read()
-    f.close()
-
-    return contents
+import aoc
 
 
 # %% Transform the "program" from a string to a list of integers
@@ -288,11 +281,11 @@ class IntCode:
 
 def TEST(self_initialize=True, noun=0, verb=0):
 
-    txtfile = "../data/adventofcode_2019_day_5_input.txt" \
-        if self_initialize else "../data/adventofcode_2019_day_2_input.txt"
+    txtfile = "../data/AoC2019_day_5_input.txt" \
+        if self_initialize else "../data/AoC2019_day_2_input.txt"
 
     # Preprocess "program"
-    program = read_program(txtfile)
+    program = aoc.read_program(txtfile)
     readable_program = transform_program(program)
 
     if not(self_initialize):
@@ -308,20 +301,20 @@ def TEST(self_initialize=True, noun=0, verb=0):
 
 # %% Development Environment
 
-# temp = IntCode(txtfile="../data/adventofcode_2019_day_5_input.txt",
+# temp = IntCode(txtfile="../data/AoC2019_day_5_input.txt",
 # noun=12, verb=2)
 # temp.run_program()
-# temp = IntCode(txtfile="../data/adventofcode_2019_day_5_input.txt",
+# temp = IntCode(txtfile="../data/AoC2019_day_5_input.txt",
 # noun=95, verb=7)
 # temp.run_program()
 
-# txtfile = "../data/adventofcode_2019_day_5_input.txt"
-# program = read_program(txtfile)
+# txtfile = "../data/AoC2019_day_5_input.txt"
+# program = aoc.read_program(txtfile)
 # readable_program = transform_program(program)
 # temp = IntCode(readable_program)
 # temp.run_program()
 
-# temp = IntCode(txtfile="../data/adventofcode_2019_day_5_input.txt",
+# temp = IntCode(txtfile="../data/AoC2019_day_5_input.txt",
 # noun=225, verb=1)
 # temp.read_program()
 # temp.initialize_memory()
