@@ -5,11 +5,11 @@ Created on Fri Dec  6 12:04:20 2019
 @author: Dan J Hamilton
 """
 
-from computer_v1 import Computer
+from computer import Computer
+
 
 import aoc
 import phases
-# from phase_generator import phase_generator
 
 # Day 7, Part 1 needs:
 #     Multiple programs running on the computer
@@ -20,103 +20,175 @@ import phases
 #         Phase setting
 #         Signal
 
+
 # %%
+def intcode(library, program, input1, input2):
+    """ Create an IntCode Computer """
+
+    computer = Computer(library, program)
+    computer.boot()
+    computer.program_load()
+    computer.flash_memory()
+    computer.emulated_input = [input1, input2]
+    computer.process_run()
+
+    return computer
 
 
-def test(library=aoc.PROGRAMS_AVAILABLE_DICTIONARY):
+def thruster(program, library=aoc.PROGRAMS_AVAILABLE_DICTIONARY):
     """ main() program """
-    computer = Computer(library)
+    computer = Computer(library, program)
     computer.boot()
 
     # Select a program to run & flash memory
     computer.program_load()
 
-    if computer.program_name == 'Diagnostics':
-        computer.buffers['Diagnostics'].register[0] = True
+    phase_input = phases.phase_generator()
+    print(f"Number of phase combinations to run = {len(phase_input)}")
+
+    thruster_max = 0
+
+    for index in range(len(phase_input)):
+        # index = 29
+        computer.program_reload(computer.library['Amp'])
         computer.flash_memory()
+
+        # if 'ampA' in computer.programs_loaded_keys:
+        phases.phase_load(computer, phase_input, index)
+        print(phase_input[index])
+        # if 'ampA' in computer.programs_loaded_keys:
+        computer.buffers['ampA'].register[0] = True
+        computer.buffers['ampA'].register[2] = 0
 
         computer.process_scheduler()
         computer.process_run()
+        thruster_max = thruster_max if thruster_max > \
+            computer.buffers[computer.process_active].register[3] \
+            else computer.buffers[computer.process_active].register[3]
+        print(computer.buffers[computer.process_active].register[3])
+        print('we got here')
+    print(f"Maximum thruster signal = {thruster_max}")
 
-    if computer.program_name == 'Amp':
-        phase_input = phases.phase_generator()
-        print(f"Number of phase combinations to run = {len(phase_input)}")
 
-        thruster_max = 0
+def process_scheduler(library, program):
+    """
+    the activity of the process manager that handles the removal
+    of the running process from the CPU and the selection of
+    another process on the basis of a particular strategy
+    """
 
-        for index in range(len(phase_input)):
-            # index = 29
-            computer.program_reload(computer.library['Amp'])
-            computer.flash_memory()
-
-            # if 'ampA' in computer.programs_loaded_keys:
-            phases.phase_load(computer, phase_input, index)
-            print(phase_input[index])
-            # if 'ampA' in computer.programs_loaded_keys:
-            computer.buffers['ampA'].register[0] = True
-            computer.buffers['ampA'].register[2] = 0
-
-            computer.process_scheduler()
-            computer.process_run()
-            thruster_max = thruster_max if thruster_max > \
-                computer.buffers[computer.process_active].register[3] \
-                else computer.buffers[computer.process_active].register[3]
-            print(computer.buffers[computer.process_active].register[3])
-            print('we got here')
-        print(f"Maximum thruster signal = {thruster_max}")
+    return library[program]['copies']
 
 
 # %% Development Environment
 
-# Create TEST
-COMPUTER = Computer(aoc.PROGRAMS_AVAILABLE_DICTIONARY)
-computer = COMPUTER
-COMPUTER.boot()
+# phase_input = phases.phase_generator()
+phase_input = phases.phase_generator1()
+print(f"Number of phase combinations to run = {len(phase_input)}")
 
-# Select a program to run & flash memory
-COMPUTER.program_load()
-# computer.flash_memory()
+program_stack = process_scheduler(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Amp')
+thruster_max = 0
 
-if COMPUTER.program_name == 'Diagnostics':
-    COMPUTER.buffers['Diagnostics'].register[0] = True
-    COMPUTER.flash_memory()
+# index = 119
+# index = 112
+# value = phase_input[index]
 
-    COMPUTER.process_scheduler()
-    COMPUTER.process_run()
+for index, value in enumerate(phase_input):
+    # print(index, value)
 
-if COMPUTER.program_name == 'Amp':
-    PHASE_INPUT = phases.phase_generator()
-    print(f"Number of phase combinations to run = {len(PHASE_INPUT)}")
-    COMPUTER.process_scheduler()
+    phase_register = value
+    print(phase_input[index])
 
-    thruster_max = 0
+    signal_register = [0, None, None, None, None]
+    # print(signal_register)
+    # signal_register[0] = 0
 
-    for index in range(len(PHASE_INPUT)):
-        # index = 29
-        COMPUTER.program_reload(COMPUTER.library['Amp'])
-        COMPUTER.flash_memory()
+    ampA = Computer(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Amp')
+    ampA.boot()
+    ampA.program_load()
+    ampA.flash_memory()
+    ampA.halt_condition = True
 
-        # if 'ampA' in computer.programs_loaded_keys:
-        phases.phase_load(COMPUTER, PHASE_INPUT, index)
-        # print(PHASE_INPUT[index])
-        # if 'ampA' in computer.programs_loaded_keys:
-        COMPUTER.buffers['ampA'].register[0] = True
-        COMPUTER.buffers['ampA'].register[2] = 0
+    ampB = Computer(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Amp')
+    ampB.boot()
+    ampB.program_load()
+    ampB.flash_memory()
+    ampB.halt_condition = True
 
-# when multiple copies of a program are running, how are they executed:
-#     1. in a fixed sequence, or
-#     2. in a variable (event) driven sequence
-# Check if instruction_next needed for any of the running programs
+    ampC = Computer(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Amp')
+    ampC.boot()
+    ampC.program_load()
+    ampC.flash_memory()
+    ampC.halt_condition = True
 
-        # COMPUTER.process_scheduler()
-        COMPUTER.process_run()
+    ampD = Computer(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Amp')
+    ampD.boot()
+    ampD.program_load()
+    ampD.flash_memory()
+    ampD.halt_condition = True
 
-        thruster_max = thruster_max if thruster_max > \
-            computer.buffers[computer.process_active].register[3] \
-            else computer.buffers[computer.process_active].register[3]
-        # print(computer.buffers[computer.process_active].register[3])
-        # print('we got here')
-    print(f"Maximum thruster signal = {thruster_max}")
+    ampE = Computer(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Amp')
+    ampE.boot()
+    ampE.program_load()
+    ampE.flash_memory()
+    ampE.halt_condition = True
+
+    for i in range(11):
+    # for i in range(1):
+        # print(f"\nBefore Amp A, Signal Register = {signal_register}")
+        ampA.emulated_input = [phase_register[0], signal_register[0]]
+        # print(ampA.emulated_input)
+        if signal_register[0] is not None:
+            ampA.process_run()
+            signal_register[0] = None
+
+        signal_register[1] = ampA.output_value
+        # print(f"AFter Amp A, Signal Register = {signal_register}")
+
+        # print(f"\nBefore Amp B, Signal Register = {signal_register}")
+        ampB.emulated_input = [phase_register[1], signal_register[1]]
+        if signal_register[1] is not None:
+            ampB.process_run()
+            signal_register[1] = None
+
+        signal_register[2] = ampB.output_value
+        # print(f"AFter Amp B, Signal Register = {signal_register}")
+
+        # print(f"\nBefore Amp C, Signal Register = {signal_register}")
+        ampC.emulated_input = [phase_register[2], signal_register[2]]
+        if signal_register[2] is not None:
+            ampC.process_run()
+            signal_register[2] = None
+
+        signal_register[3] = ampC.output_value
+        # print(f"AFter Amp C, Signal Register = {signal_register}")
+
+        # print(f"\nBefore Amp D, Signal Register = {signal_register}")
+        ampD.emulated_input = [phase_register[3], signal_register[3]]
+        if signal_register[3] is not None:
+            ampD.process_run()
+            signal_register[3] = None
+
+        signal_register[4] = ampD.output_value
+        # print(f"AFter Amp D, Signal Register = {signal_register}")
+
+        # print(f"\nBefore Amp E, Signal Register = {signal_register}")
+        ampE.emulated_input = [phase_register[4], signal_register[4]]
+        if signal_register[4] is not None:
+            ampE.process_run()
+            signal_register[4] = None
+
+        signal_register[0] = ampE.output_value
+        # print(f"AFter Amp E, Signal Register = {signal_register}")
+
+
+    thruster_test = ampE.output_value
+
+    thruster_max = thruster_max if thruster_max > \
+        thruster_test \
+        else thruster_test
+
+print(f"Maximum thruster signal = {thruster_max}")
 
 
 # test.instruction_next()
@@ -126,7 +198,5 @@ if COMPUTER.program_name == 'Amp':
 
 # %% Production Environment (LOL)
 
-# test()
-
 # if __name__ == "__main__":
-#     TEST()
+    # thruster('Amp', aoc.PROGRAMS_AVAILABLE_DICTIONARY)
