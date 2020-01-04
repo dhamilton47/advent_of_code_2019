@@ -7,10 +7,7 @@ Created on Tue Dec 31 13:49:40 2019
 
 # class Register
 #     Properties
-#         program_name
-#         purpose
-#         value
-#         state
+#         register
 
 
 # %% Memory Class
@@ -33,4 +30,24 @@ class Register:
             3: None,
             4: 1,
             5: 3,
+        }
+
+
+class Register1:
+    """
+        0: State,
+        1: Input 1,
+        2: Input 2,
+        3: Output,
+        4: Input counter,
+        5: Output counter,
+    """
+
+    def __init__(self):
+        self.register = {
+            0: None,
+            1: None,
+            2: None,
+            3: None,
+            4: None
         }

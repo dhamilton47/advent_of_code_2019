@@ -64,15 +64,15 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
 
     'Amp':
         {
+            # 'binary': '../data/adventofcode_2019_day_7_input5.txt',
             'binary': '../data/AoC2019_day_7_input.txt',
             'copies': ['ampA', 'ampB', 'ampC', 'ampD', 'ampE'],
             'description': 'Amplifier Controller Software',
-            'io_in': ['buffer', 'buffer'],
-            'io_out': ['buffer', 'buffer'],
+            'io_in': ['emulated', 'emulated'],
+            'io_out': ['monitor'],
             'messages_in': ['Enter phase: ',
                             'Enter input signal: '],
-            'messages_out': ['Output signal: ',
-                             'Max thruster signal ='],
+            'messages_out': ['Output signal: '],
             'name': 'Amp',
             # 'process_order': 'sequential',
         },
@@ -94,6 +94,11 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_11_input.txt',
             'copies': ['Registration'],
             'description': 'Emergency Hull Painting Robot Software',
+            'io_in': ['keyboard'],
+            'io_out': ['monitor', 'monitor'],
+            'messages_in': ['Enter color code (0 = black, 1 = white): '],
+            'messages_out': ['Paint panel (0 = black, 1 = white): ',
+                             'Turn (0 = left, 1 = right): '],
             'name': 'Registration',
         },
 

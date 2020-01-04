@@ -11,28 +11,37 @@ Created on Mon Dec 30 00:05:46 2019
 #         base_offset
 #
 #     Methods
-#         flash
-#         address
 #         extend_memory
+#         flash
+#         value
 
 
 # %% Memory Class
 
 class Memory:
     """
-    Memory is equivalent to RAM.  It stores a copy of each loaded Program.
-    These copies are then used to create the Instructions for a Program.
+    Memory is equivalent to RAM.  Initially, it stores a copy of the Program.
+    The memory is then used to create the Instruction(s) for execution
+    and modified as per the execution of those instructions.
 
-    A bank is the memory associated with a specific Program's code.
+    A bank is the memory allocated to a Program.
     """
 
     def __init__(self, program={}):
         self.bank = self.flash(program)
         self.base_offset = 0
 
+    def extend_memory(self, bank, address):
+        """ Extend the memory bank if it is too short for a desired address """
+        if address >= len(bank):
+            for index in range(len(bank), address + 1):
+                bank[index] = 0
+
+        return bank
+
     def flash(self, program):
         """
-        A Program's coded is added to Memory when the Porgram is loaded.
+        A Program's code is added to its bank when the Program is loaded.
         """
 
         mem_dict = {}
@@ -40,34 +49,21 @@ class Memory:
         if program == {}:
             return {}
 
-        for item in program:
-            code = program[item].code
+        code = program.code
 
-            for address, value in enumerate(code):
-                mem_dict[address] = value
+        for address, value in enumerate(code):
+            mem_dict[address] = value
 
-            self.bank[item] = mem_dict
+        self.bank = mem_dict
 
         return self.bank
 
-    def value(self, program_name, address):
+    def value(self, address):
         """ Return the value stored at a particular memory address. """
 
         if address is None:
             return 'None'
 
-        self.bank[program_name] = \
-            self.extend_memory(self.bank[program_name], address)
-        # print(f"program name = {program_name}, address = {address}, "
-        #       f"length bank = {len(self.bank[program_name])}")
-        return self.bank[program_name][address]
+        self.bank = self.extend_memory(self.bank, address)
 
-    def extend_memory(self, bank, address):
-        """ Extend the memory bank if it is too short for a desired address """
-        if address >= len(bank):
-            # print(len(bank))
-            for index in range(len(bank), address + 1):
-                bank[index] = 0
-            # bank.extend(0 * (address - len(bank)))
-
-        return bank
+        return self.bank[address]

@@ -6,12 +6,11 @@ Created on Sun Dec  22 15:49:41 2019
 """
 
 
-from cpu1 import CPU
-from io_aoc1 import IO
-from instruction1 import Instruction
-from memory1 import Memory
-from program1 import Program
-from register1 import Register
+from cpu import CPU
+from io_aoc import IO
+from instruction import Instruction
+from memory import Memory
+from program import Program
 
 
 # %% Define the IntCode class
@@ -53,12 +52,14 @@ class Computer:
     def __init__(self, library, program_to_load):
         self.computer_name = 'HAL'
 
-        self.buffer = None
         self.cpu = None
+        self.emulated_input = None
+        self.halt_condition = False
         self.io = None
         self.ip = 0
         self.library = library
         self.memory = None
+        self.output_value = None
         self.program_name = None
         self.program_loaded = None
         self.program_to_load = program_to_load
@@ -103,20 +104,22 @@ class Computer:
             instruction = \
                 self.cpu.instruction_execute(self, instruction)
             self.ip += instruction['length']
+            # print(self.ip)
             opcode = instruction['opcode']
+
+            # print(f"Halt: {self.halt_condition}, "
+            #       f"OpCode = {opcode}, "
+            #       f"Output Value = {self.output_value}")
+
+            if self.halt_condition and opcode == 4:
+                break
 
     def program_load(self):
         """ Load the Program """
 
         program_to_load = self.library[self.program_to_load]
-
         self.program_name = program_to_load['name']
-
-        program_loaded = Program(program_to_load)
-
-        self.buffer = Register()
-
-        self.program_loaded = program_loaded
+        self.program_loaded = Program(program_to_load)
 
     # def program_reload(self, program_to_load):
     #     """
