@@ -114,6 +114,8 @@ class Computer:
             if self.halt_condition and opcode == 4:
                 break
 
+        return opcode
+
     def program_load(self):
         """ Load the Program """
 
