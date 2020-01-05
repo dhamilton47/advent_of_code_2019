@@ -5,7 +5,7 @@ Created on Tue Dec 31 14:50:44 2019
 @author: danha
 """
 
-from register1 import Register1
+from register import Register1
 
 
 # %%
