@@ -23,35 +23,67 @@ class IO:
     buffer = an external function providing input to the buffer area.
     """
 
-    def get_input(self, computer, input1=None, input2=None):
+    # def get_input(self, computer, input1=None, input2=None):
+    def get_input(self, computer):
         """
         Determine where and how to get input
+
+        This program is still evolving as Day needs are revealed
         """
 
+        program_name = computer.program_name
         program = computer.program_loaded
 
-        io_in_count = program.io_in_count
-        io_ins, messages_in = program.io_in
-        # print(io_in_count)
-        io_in_count = io_in_count % len(io_ins)
-        # print(io_in_count)
-        io_in = io_ins[io_in_count]
-        message_in = messages_in[io_in_count]
+        # io_in_count = program.io_in_count
+        # io_ins, messages_in = program.io_in
+        # # print(io_in_count)
+        # # io_in_count = io_in_count % len(io_ins)
+        # # print(io_in_count)
+        # io_in = io_ins[io_in_count]
+        # message_in = messages_in[io_in_count]
 
-        if computer.program_name == 'Amp':
+        # One input only - emulated
+        if program_name == 'Registration':
+            # io_in_count = program.io_in_count
+            io_ins, messages_in = program.io_in
+            # io_in = io_ins[io_in_count]
+            # message_in = messages_in[io_in_count]
+            io_in = io_ins[0]
+            message_in = messages_in[0]
+            return computer.emulated_input
+
+        # two input - first once, then repeatedly the 2nd - emulated
+        if program_name == 'Amp':
+            io_in_count = program.io_in_count
+            io_ins, messages_in = program.io_in
+            io_in = io_ins[io_in_count]
+            message_in = messages_in[io_in_count]
             value = computer.emulated_input[io_in_count]
-            # print(io_in_count, value)
 
             computer.program_loaded.io_in_count = 1
 
             return value
 
         if io_in == 'keyboard':
+            io_in_count = program.io_in_count
+            io_ins, messages_in = program.io_in
+            # print(io_in_count)
+            # io_in_count = io_in_count % len(io_ins)
+            # print(io_in_count)
+            io_in = io_ins[io_in_count]
+            message_in = messages_in[io_in_count]
             program.io_in_count += 1
 
             return int(input(message_in))
 
         if io_in == 'emulated':
+            io_in_count = program.io_in_count
+            io_ins, messages_in = program.io_in
+            # print(io_in_count)
+            # io_in_count = io_in_count % len(io_ins)
+            # print(io_in_count)
+            io_in = io_ins[io_in_count]
+            message_in = messages_in[io_in_count]
             value = computer.emulated_input[io_in_count]
             # print(io_in_count, value)
 
@@ -72,19 +104,38 @@ class IO:
 
         io_out_count = program.io_out_count
         io_outs, messages_out = program.io_out
-        io_out_count = io_out_count % len(io_outs)
+        # io_out_count = io_out_count % len(io_outs)
 
-        if program_name != 'BOOST':
-            io_out = io_outs[io_out_count]
-            message_out = messages_out[io_out_count]
-        else:
+        # if program_name != 'BOOST':
+        #     io_out_count = io_out_count % len(io_outs)
+        #     io_out = io_outs[io_out_count]
+        #     message_out = messages_out[io_out_count]
+        # else:
+        #     io_out = io_outs[0]
+        #     message_out = messages_out[0]
+        #     print(f"I/O out device: {io_out}")
+
+        if program_name == 'BOOST':
             io_out = io_outs[0]
             message_out = messages_out[0]
-            # print(f"I/O out device: {io_out}")
+            value = instruction['parameters'][0]['value']
+            computer.output_value = value
+            return
+
+        if program_name == 'Registration':
+            # print(instruction['parameters'])
+            value = instruction['parameters'][0]['value']
+            program.io_out_count = not(program.io_out_count)
+
+            computer.output_value = value
+            return
 
         if io_out == 'monitor':
+            io_out_count = io_out_count % len(io_outs)
+            io_out = io_outs[io_out_count]
+            message_out = messages_out[io_out_count]
             value = instruction['parameters'][0]['value']
-            print(f"{message_out} {value}")
+            # print(f"{message_out} {value}")
 
             computer.output_value = value
 
