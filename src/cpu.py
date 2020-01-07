@@ -34,6 +34,8 @@ class CPU:
     def instruction_execute(self, computer, instruction):
         """ Execute the Instruction """
 
+        self.instruction = instruction
+
         print_flag = False
 
         if instruction is None:
@@ -45,7 +47,8 @@ class CPU:
         memory = computer.memory
         io = computer.io
         ip = computer.ip
-
+        # print(f"Instruction is {inst}")
+        # print(f"Parameters are {par}")
         if 0 in par.keys():
             adr0 = par[0]['address']
             # print(adr0)
@@ -132,6 +135,7 @@ class CPU:
             #     print(f"JUMP = {['True', 'False'][par[0]['value'] == 0]}")
 
         elif opcode == 7:
+            # print(val0, val1)
             memory.bank[adr2] = \
                 1 if val0 < val1 else 0
 
