@@ -75,6 +75,17 @@ class IO:
 
             return value
 
+        if program_name == 'Repair Droid':
+            # io_in_count = program.io_in_count
+            io_ins, messages_in = program.io_in
+            io_in = io_ins[0]
+            message_in = messages_in[0]
+            value = computer.emulated_input
+
+            # computer.program_loaded.io_in_count = 1
+
+            return value
+
         if io_in == 'keyboard':
             io_in_count = program.io_in_count
             io_ins, messages_in = program.io_in
@@ -142,6 +153,14 @@ class IO:
             return
 
         if program_name == 'Game':
+            # print(instruction['parameters'])
+            value = instruction['parameters'][0]['value']
+            program.io_out_count = not(program.io_out_count)
+
+            computer.output_value = value
+            return
+
+        if program_name == 'Repair Droid':
             # print(instruction['parameters'])
             value = instruction['parameters'][0]['value']
             program.io_out_count = not(program.io_out_count)
