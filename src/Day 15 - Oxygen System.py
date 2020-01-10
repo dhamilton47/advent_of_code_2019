@@ -6,8 +6,6 @@ Created on Tue Jan  7 00:58:30 2020
 """
 
 
-# import math
-
 import aoc
 from computer import Computer
 
@@ -39,6 +37,11 @@ You don't know anything about the area around the repair droid, but you
 can figure it out by watching the status codes.
 
 """
+
+
+SPACER = ' '
+CHARSET = \
+    [chr(35) + SPACER, chr(46) + SPACER, chr(79) + SPACER, chr(68) + SPACER]
 
 
 def survey_starter(start=()):
@@ -231,13 +234,14 @@ def create_display(coordinates, droid):
 
     for item, value in enumerate(coordinates):
         x, y = value
+        display[y - min_y][x - min_x] = coordinates[value]
+
         # print(f"rows = {len(display)}, columns = {len(display[0])}")
         # print(f"item = {item}, value = {value}, "
         #       f"orig x = {x}, min x = {min_x}, range x = {range_x}, "
         #       f"adj x = {x - min_x + 1}, "
         #       f"orig y = {y}, max y = {max_y}, range y = {range_y}, "
         #       f"adj y = {(y - max_y) + range_y}")
-        display[y - min_y][x - min_x] = coordinates[value]
 
     x, y = droid
     display[y - min_y][x - min_x] = CHARSET[3]
@@ -267,49 +271,52 @@ def intcode(library, program):
 def test():
     """ main() program """
 
-    possible_paths = []
+    # possible_paths, paths, path, coordinates = survey_starter()
 
-    possible_paths, paths, path, coordinates = survey_starter()
+    # while possible_paths == []:
+    #     possible_paths, paths, path, coordinates = \
+    #         survey(coordinates, paths)
 
-    while possible_paths == []:
-        possible_paths, paths, path, coordinates = \
+    answer, paths, path, coordinates = survey_starter()
+    while answer == []:
+        answer, paths, path, coordinates = \
             survey(coordinates, paths)
+    create_display(coordinates, (0, 0))
+    # display = create_display(coordinates, (0, 0))
+    distance_offset = len(answer)
 
-    # del driod, display
+    answer, paths, path, coordinates = survey_starter(answer)
+    while paths != {}:
+        answer, paths, path, coordinates = \
+            survey(coordinates, paths)
+    create_display(coordinates, (0, 0))
+    # display = create_display(coordinates, (0, 0))
+    oxygen_distance = len(path) - distance_offset - 1
 
-    print(f"Shortest path to Oxygen tank has {len(path)} steps.")
+    del coordinates, path  # display
+
+    print(f"Shortest path to Oxygen tank has {distance_offset} steps.")
+    print(f"Time to Oxygenate sector is {oxygen_distance} minutes.")
 
 
 # %% Development Environment
 
-# # possible_paths = []
-SPACER = ' '
-CHARSET = \
-    [chr(35) + SPACER, chr(46) + SPACER, chr(79) + SPACER, chr(68) + SPACER]
-answer, paths, path, coordinates = survey_starter()
-
-while answer == []:
-    answer, paths, path, coordinates = \
-        survey(coordinates, paths)
-display = create_display(coordinates, (0, 0))
-distance_offset = len(answer)
-answer, paths, path, coordinates = survey_starter(answer)
-while paths != {}:
-    answer, paths, path, coordinates = \
-        survey(coordinates, paths)
-display = create_display(coordinates, (0, 0))
-oxygen_distance = len(path) - distance_offset - 1
-print(f"Shortest path to Oxygen tank has {distance_offset} steps.")
-print(f"Time to Oxygenate sector is {oxygen_distance} minutes.")
-# %%
-# paths = {(2,): '.'}
-# # print(coordinates, paths, possible_paths)
+# answer, paths, path, coordinates = survey_starter()
+# while answer == []:
+#     answer, paths, path, coordinates = \
+#         survey(coordinates, paths)
+# display = create_display(coordinates, (0, 0))
+# distance_offset = len(answer)
+# answer, paths, path, coordinates = survey_starter(answer)
 # while paths != {}:
-#     possible_paths, paths, path, coordinates = \
-#         survey(coordinates, paths, possible_paths)
-# min_x, max_y, range_x, range_y = dimensions(coordinates)
-# display = create_display(coordinates, (1 - min_x, max_y + 1))
+#     answer, paths, path, coordinates = \
+#         survey(coordinates, paths)
+# display = create_display(coordinates, (0, 0))
+# oxygen_distance = len(path) - distance_offset - 1
+# print(f"Shortest path to Oxygen tank has {distance_offset} steps.")
+# print(f"Time to Oxygenate sector is {oxygen_distance} minutes.")
+
 # %% Production Environment (LOL)
 
-# if __name__ == "__main__":
-#     test()
+if __name__ == "__main__":
+    test()
