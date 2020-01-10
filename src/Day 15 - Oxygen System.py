@@ -37,10 +37,11 @@ The repair droid can reply with any of the following status codes:
 
 You don't know anything about the area around the repair droid, but you
 can figure it out by watching the status codes.
+
 """
 
 
-def survey_starter(answer):
+def survey_starter(start=()):
     """
     This is the inital survey of the 4 directions one could move based
     on the starting position.  This differs from survey() in that only
@@ -64,32 +65,27 @@ def survey_starter(answer):
 
     """
 
+    answer = []
     paths = {}
-    coordinates = {(0,0): charset[1]}
-    # coordinates = {(0,0): '. '}
+    coordinates = {(0, 0): CHARSET[1]}
     for i in [1, 2, 3, 4]:
-        path = (i, )
+        path = start + (i, )
 
-        test = move(path)
-        # paths[path] = move(path)
+        test_value = move(path)
 
         coordinate = map_coordinate(path)
-        coordinates[coordinate] = test
+        coordinates[coordinate] = test_value
 
-        # if test == '#':
-        #     coordinate = map_coordinate(path)
-        #     coordinates[coordinate] = '#'
+        if test_value in (CHARSET[1], CHARSET[2]):
+            paths[path] = test_value
 
-        if test == charset[2]:
+        if test_value == CHARSET[2]:
             answer = answer.append(path)
-
-        if test in (charset[1], charset[2]):
-            paths[path] = test
 
     return answer, paths, path, coordinates
 
 
-def survey(coordinates, paths, answer):
+def survey(coordinates, paths):
     """
     Returns the reported responses from the droid for the three unknown
     adjacent squares.
@@ -112,27 +108,28 @@ def survey(coordinates, paths, answer):
         Dictionary containing the detected wall coordinate of the maze.
 
     """
+
+    answer = []
     live_paths = {}
     previous_paths = paths.copy()
     for item in previous_paths:
         for i in [1, 2, 3, 4]:
-            if previous_paths[item] != charset[0]:
+            if previous_paths[item] != CHARSET[0]:
                 if list(item)[-1] == [2, 1, 4, 3][i - 1]:
                     continue
 
                 path = item + (i, )
 
-                test = move(path)
+                test_value = move(path)
 
                 coordinate = map_coordinate(path)
-                coordinates[coordinate] = test
+                coordinates[coordinate] = test_value
 
-                if test in (charset[1], charset[2]):
-                    live_paths[path] = move(path)
+                if test_value in (CHARSET[1], CHARSET[2]):
+                    live_paths[path] = test_value
 
-                if test == charset[2]:
+                if test_value == CHARSET[2]:
                     answer = path
-                    # answer = answer.append(path)
 
     return answer, live_paths, path, coordinates
 
@@ -159,8 +156,7 @@ def move(path):
         machine.emulated_input = item
         machine.process_run()
 
-    return charset[machine.output_value]
-    # return ['# ', '. ', 'O '][machine.output_value]
+    return CHARSET[machine.output_value]
 
 
 def map_coordinate(path):
@@ -189,7 +185,6 @@ def map_coordinate(path):
     for item in path:
 
         adj_x, adj_y = [(0, -1), (0, 1), (-1, 0), (1, 0)][item - 1]
-        # adj_x, adj_y = [(0, 1), (0, -1), (-1, 0), (1, 0)][item - 1]
         ending_x += adj_x
         ending_y += adj_y
 
@@ -225,19 +220,14 @@ def dimensions(coordinates):
           f"  Max y = {max_y}")
 
     return (min_x, min_y, range_x, range_y)
-    # return (min_x, max_y, range_x, range_y)
 
 
 def create_display(coordinates, droid):
     """ Create the maze after every survey """
 
     min_x, min_y, range_x, range_y = dimensions(coordinates)
-    # min_x, max_y, range_x, range_y = dimensions(coordinates)
-    display = [[charset[0] for i in range(range_x)] for j in range(range_y)]
-    # display = [['# ' for i in range(range_x)] for j in range(range_y)]
-    # display = [['#' for i in range(range_y + 2)] for j in range(range_x + 2)]
+    display = [[CHARSET[0] for i in range(range_x)] for j in range(range_y)]
     # print(f"rows = {len(display)}, columns = {len(display[0])}")
-    # opcode = 0
 
     for item, value in enumerate(coordinates):
         x, y = value
@@ -247,13 +237,10 @@ def create_display(coordinates, droid):
         #       f"adj x = {x - min_x + 1}, "
         #       f"orig y = {y}, max y = {max_y}, range y = {range_y}, "
         #       f"adj y = {(y - max_y) + range_y}")
-        # display[x - min_x][(y - max_y) + range_y - 1] = coordinates[value]
         display[y - min_y][x - min_x] = coordinates[value]
-        # display[x - min_x + 1][(y - max_y) + range_y + 1] = coordinates[value]
 
     x, y = droid
-    # display[(y - max_y) + range_y - 1][x - min_x] = 'D'
-    display[y - min_y][x - min_x] = charset[3]
+    display[y - min_y][x - min_x] = CHARSET[3]
 
     for row in range(len(display)):
         line = ''.join(display[row][:])
@@ -282,11 +269,11 @@ def test():
 
     possible_paths = []
 
-    possible_paths, paths, path, coordinates = survey_starter(possible_paths)
+    possible_paths, paths, path, coordinates = survey_starter()
 
     while possible_paths == []:
         possible_paths, paths, path, coordinates = \
-            survey(coordinates, paths, possible_paths)
+            survey(coordinates, paths)
 
     # del driod, display
 
@@ -295,23 +282,25 @@ def test():
 
 # %% Development Environment
 
-possible_paths = []
-spacer = ' '
-charset = [chr(35) + spacer, chr(46) + spacer, chr(79) + spacer, chr(68) + spacer]
-# charset = ['# ', '. ', 'O ']
-possible_paths, paths, path, coordinates = \
-    survey_starter(possible_paths)
+# # possible_paths = []
+SPACER = ' '
+CHARSET = \
+    [chr(35) + SPACER, chr(46) + SPACER, chr(79) + SPACER, chr(68) + SPACER]
+answer, paths, path, coordinates = survey_starter()
 
-while possible_paths == []:
-    possible_paths, paths, path, coordinates = \
-        survey(coordinates, paths, possible_paths)
-
-
-# min_x, max_y, range_x, range_y = dimensions(coordinates)
-display = create_display(coordinates, (0,0))
-# display = create_display(coordinates, (1 - min_x, max_y + 1))
-
-
+while answer == []:
+    answer, paths, path, coordinates = \
+        survey(coordinates, paths)
+display = create_display(coordinates, (0, 0))
+distance_offset = len(answer)
+answer, paths, path, coordinates = survey_starter(answer)
+while paths != {}:
+    answer, paths, path, coordinates = \
+        survey(coordinates, paths)
+display = create_display(coordinates, (0, 0))
+oxygen_distance = len(path) - distance_offset - 1
+print(f"Shortest path to Oxygen tank has {distance_offset} steps.")
+print(f"Time to Oxygenate sector is {oxygen_distance} minutes.")
 # %%
 # paths = {(2,): '.'}
 # # print(coordinates, paths, possible_paths)
