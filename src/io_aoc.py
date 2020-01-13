@@ -44,6 +44,15 @@ class IO:
         # message_in = messages_in[io_in_count]
 
         # One input only - emulated
+        if program_name == 'TractorBeam':
+            # io_in_count = program.io_in_count
+            # io_ins, messages_in = program.io_in
+            # io_in = io_ins[io_in_count]
+            # message_in = messages_in[io_in_count]
+            # io_in = io_ins[0]
+            # message_in = messages_in[0]
+            return computer.emulated_input.pop(0)
+
         if program_name == 'Diagnostics':
             io_in_count = program.io_in_count
             io_ins, messages_in = program.io_in
@@ -90,17 +99,6 @@ class IO:
             return value
 
         if program_name == 'Repair Droid':
-            # io_in_count = program.io_in_count
-            io_ins, messages_in = program.io_in
-            io_in = io_ins[0]
-            message_in = messages_in[0]
-            value = computer.emulated_input
-
-            # computer.program_loaded.io_in_count = 1
-
-            return value
-
-        if program_name == 'TractorBeam':
             # io_in_count = program.io_in_count
             io_ins, messages_in = program.io_in
             io_in = io_ins[0]
@@ -177,6 +175,13 @@ class IO:
         #     io_out = io_outs[0]
         #     message_out = messages_out[0]
         #     print(f"I/O out device: {io_out}")
+
+        if program_name == 'TractorBeam':
+            # print("We are here!")
+            # print(f"{instruction}")
+            value = instruction['parameters'][0]['value']
+            computer.output_value = value
+            return
 
         if program_name == 'BOOST':
             io_out = io_outs[0]
