@@ -70,7 +70,8 @@ class CPU:
             memory.bank[adr2] = self.add(val0, val1)
 
             if print_flag:
-                print(f"ADD({val0}, {val1}) = {memory.bank[adr2]}")
+                print(f"ADD({val0}, {val1}) = {memory.bank[adr2]}"
+                      f" stored at address {adr2}")
 
             # memory.bank[par[2]['address']] = \
             #     self.add(par[0]['value'], par[1]['value'])
@@ -84,7 +85,8 @@ class CPU:
                 self.multiply(val0, val1)
 
             if print_flag:
-                print(f"MUL({val0}, {val1}) = {memory.bank[adr2]}")
+                print(f"MUL({val0}, {val1}) = {memory.bank[adr2]}"
+                      f" stored at address {adr2}")
 
             # memory.bank[par[2]['address']] = \
             #     self.multiply(par[0]['value'], par[1]['value'])
@@ -99,9 +101,11 @@ class CPU:
 
             # answer = io.get_input(computer)
             # memory.bank[par[0]['address']] = answer
+            # print(f"{instruction}")
 
             if print_flag:
-                print(f"INPUT")
+                print(f"INPUT: value = {memory.bank[adr0]}"
+                      f" stored at address {adr0}")
 
         elif opcode == 4:
             io.return_output(computer, instruction)
@@ -110,11 +114,12 @@ class CPU:
                 print(f"OUTPUT")
 
         elif opcode == 5:
-            if val0:
+            if val0 != 0:
                 inst['length'] = val1 - ip
 
             if print_flag:
-                print(f"JIT = {['False', 'True'][val0 != 0]}")
+                print(f"JIT = {['False', 'True'][val0 != 0]}"
+                      f", next IP = {inst['length'] + ip}")
 
             # if par[0]['value']:
             #     inst['length'] = par[1]['value'] - ip
@@ -127,7 +132,8 @@ class CPU:
                 inst['length'] = val1 - ip
 
             if print_flag:
-                print(f"JIF = {['True', 'False'][val0 == 0]}")
+                print(f"JIF = {['True', 'False'][val0 == 0]}"
+                      f", next IP = {inst['length'] + ip}")
 
             # if par[0]['value'] == 0:
             #     inst['length'] = par[1]['value'] - ip
@@ -141,7 +147,8 @@ class CPU:
                 1 if val0 < val1 else 0
 
             if print_flag:
-                print(f"LT({val0}, {val1}) = {memory.bank[adr2]}")
+                print(f"LT({val0}, {val1}) = {memory.bank[adr2]}"
+                      f" stored at address {adr2}")
 
             # memory.bank[par[2]['address']] = \
             #     1 if par[0]['value'] < par[1]['value'] else 0
@@ -155,7 +162,8 @@ class CPU:
                 1 if val0 == val1 else 0
 
             if print_flag:
-                print(f"EQ({val0}, {val1}) = {memory.bank[adr2]}")
+                print(f"EQ({val0}, {val1}) = {memory.bank[adr2]}"
+                      f" stored at address {adr2}")
 
             # memory.bank[par[2]['address']] = \
             #     1 if par[0]['value'] == par[1]['value'] else 0
@@ -168,7 +176,7 @@ class CPU:
             computer.memory.base_offset += val0
 
             if print_flag:
-                print(f"REBASE = {val0}")
+                print(f"REBASE now = {computer.memory.base_offset}")
 
             # computer.memory.base_offset += par[0]['value']
 
