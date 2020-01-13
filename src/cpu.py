@@ -30,13 +30,14 @@ class CPU:
     def __init__(self, instruction=None):
         self.instruction = instruction
         self.name = 'The Little Train That Could'
+        self.print_flag = False
 
     def instruction_execute(self, computer, instruction):
         """ Execute the Instruction """
 
         self.instruction = instruction
 
-        print_flag = False
+        print_flag = self.print_flag
 
         if instruction is None:
             return instruction
@@ -113,7 +114,7 @@ class CPU:
                 inst['length'] = val1 - ip
 
             if print_flag:
-                print(f"JUMP = {['False', 'True'][val0 != 0]}")
+                print(f"JIT = {['False', 'True'][val0 != 0]}")
 
             # if par[0]['value']:
             #     inst['length'] = par[1]['value'] - ip
@@ -126,7 +127,7 @@ class CPU:
                 inst['length'] = val1 - ip
 
             if print_flag:
-                print(f"JUMP = {['True', 'False'][val0 == 0]}")
+                print(f"JIF = {['True', 'False'][val0 == 0]}")
 
             # if par[0]['value'] == 0:
             #     inst['length'] = par[1]['value'] - ip

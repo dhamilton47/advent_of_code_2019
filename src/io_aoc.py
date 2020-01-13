@@ -39,8 +39,22 @@ class IO:
         # # print(io_in_count)
         # # io_in_count = io_in_count % len(io_ins)
         # # print(io_in_count)
+
         # io_in = io_ins[io_in_count]
         # message_in = messages_in[io_in_count]
+
+        # One input only - emulated
+        if program_name == 'Diagnostics':
+            io_in_count = program.io_in_count
+            io_ins, messages_in = program.io_in
+            # print(io_in_count)
+            # io_in_count = io_in_count % len(io_ins)
+            # print(io_in_count)
+            io_in = io_ins[io_in_count]
+            message_in = messages_in[io_in_count]
+            program.io_in_count += 1
+
+            return int(input(message_in))
 
         # One input only - emulated
         if program_name == 'Registration':
@@ -95,6 +109,22 @@ class IO:
 
             # computer.program_loaded.io_in_count = 1
 
+            return value
+
+        if program_name == 'ASCII':
+            io_in_count = program.io_in_count
+            # io_in_count = program.io_in_count
+            io_ins, messages_in = program.io_in
+            io_in = io_ins[io_in_count]
+            # io_in = io_ins[0]
+            message_in = messages_in[io_in_count]
+            # message_in = messages_in[0]
+            value = computer.emulated_input
+
+            # computer.program_loaded.io_in_count += 1
+            # print(f"{message_in}{value}")
+            # return int(input(message_in))
+            print('hi')
             return value
 
         if io_in == 'keyboard':
@@ -180,7 +210,7 @@ class IO:
             return
 
         if program_name == 'ASCII':
-            # print(instruction['parameters'])
+            print(instruction['parameters'])
             value = instruction['parameters'][0]['value']
             program.io_out_count = not(program.io_out_count)
 
@@ -194,6 +224,15 @@ class IO:
 
             computer.output_value = value
             return
+
+        if program_name == 'Diagnostics':
+            io_out_count = io_out_count % len(io_outs)
+            io_out = io_outs[io_out_count]
+            message_out = messages_out[io_out_count]
+            value = instruction['parameters'][0]['value']
+            print(f"{message_out} {value}")
+
+            computer.output_value = value
 
         if io_out == 'monitor':
             io_out_count = io_out_count % len(io_outs)
