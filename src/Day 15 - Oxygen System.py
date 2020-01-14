@@ -156,7 +156,7 @@ def move(path):
     machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Oxygen System')
 
     for item in path:
-        machine.emulated_input = item
+        machine.emulated_input = [item]
         machine.process_run()
 
     return CHARSET[machine.output_value]
