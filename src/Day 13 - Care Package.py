@@ -128,7 +128,7 @@ def test():
     arcade = \
         intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Arcade Cabinet')
 
-    arcade.emulated_input = 0
+    arcade.emulated_input = [0]
 
     display, paddle_location, ball_location = create_initial_display(arcade)
     blocks = blocks_remaining(display)
@@ -140,7 +140,7 @@ def test():
         paddle_location, ball_location, score = \
             tracking(arcade, paddle_location, ball_location, score)
 
-        arcade.emulated_input = paddle_move(paddle_location, ball_location)
+        arcade.emulated_input = [paddle_move(paddle_location, ball_location)]
         blocks = blocks_remaining(display)
 
     del arcade, display
