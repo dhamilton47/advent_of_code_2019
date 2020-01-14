@@ -50,6 +50,7 @@ def reveal_scaffold():
     data_as_matrix = []
     newline_loc = []
     machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'ASCII')
+    machine.memory.bank[0] = 1
 
     while opcode != 99:
         opcode = machine.process_run()
@@ -211,77 +212,42 @@ B = 'L,12,R,8,L,12'
 C = 'L,10,R,8,R8'
 
 
-def ascii_translate(val):
+def ascii_interpreter(val):
     val1 = [ord(val[i]) for i in range(len(val))]
     val1.append(10)
 
     return val1
 
-M = ascii_translate(M)
-A = ascii_translate(A)
-B = ascii_translate(B)
-C = ascii_translate(C)
 
+M = ascii_interpreter(M)
+A = ascii_interpreter(A)
+B = ascii_interpreter(B)
+C = ascii_interpreter(C)
+VIDEO = ascii_interpreter('y')
+
+instructions = M + A + B + C + VIDEO
+# instructions.reverse()
 print('we got here')
 # machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'ASCII')
 # machine.memory.bank[0] = 2
 # machine.cpu.print_flag = False
 
 test()
+opcode = 0
 machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'ASCII')
 # machine = Computer(library, program)
-machine.boot()
-machine.program_load()
-machine.flash_memory()
+# machine.boot()
+# machine.program_load()
+# machine.flash_memory()
 machine.memory.bank[0] = 2
-machine.halt_condition = True
+# machine.halt_condition = True
 print(machine.memory.bank[0])
-machine.process_run()
-# machine.emulated_input = M
-
-for item in M:
-    # print(item)
-    machine.emulated_input = item
-    print(f"Routine input value = {machine.emulated_input}")
-    machine.process_run()
-    print(f"Output? = {machine.output_value}")
-
-# # machine.process_run()
-# # machine.emulated_input = A
-
-for item in A:
-    # print(item)
-    machine.emulated_input = item
-    print(f"Function A input value = {machine.emulated_input}")
-    machine.process_run()
-    print(f"Output? = {machine.output_value}")
-
-# # machine.process_run()
-# # machine.emulated_input = B
-
-for item in B:
-    # print(item)
-    machine.emulated_input = item
-    print(f"Function B input value = {machine.emulated_input}")
-    machine.process_run()
-    print(f"Output? = {machine.output_value}")
-
-# # machine.process_run()
-# # machine.emulated_input = C
-
-for item in C:
-    # print(item)
-    machine.emulated_input = item
-    print(f"Function C input value = {machine.emulated_input}")
-    machine.process_run()
-    print(f"Output? = {machine.output_value}")
-
+machine.emulated_input = instructions
+while opcode != 99:
+    opcode = machine.process_run()
+    machine.output_value
 # machine.process_run()
-machine.emulated_input = ord('n')
-print(f"Video feed input value = {machine.emulated_input}")
 
-machine.process_run()
-# print(machine.output_value)
 print(f"Day 17, Part 2 - Dust collected = {machine.output_value}")
 
 
