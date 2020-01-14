@@ -61,25 +61,24 @@ def intcode(library, program):
     computer.boot()
     computer.program_load()
     computer.flash_memory()
-    computer.halt_condition = True
 
     return computer
 
 
-def test():
-    """ main() program """
+# def test():
+#     """ main() program """
 
-    possible_paths = []
+#     possible_paths = []
 
-    possible_paths, paths, path, coordinates = survey_starter(possible_paths)
+#     possible_paths, paths, path, coordinates = survey_starter(possible_paths)
 
-    while possible_paths == []:
-        possible_paths, paths, path, coordinates = \
-            survey(coordinates, paths, possible_paths)
+#     while possible_paths == []:
+#         possible_paths, paths, path, coordinates = \
+#             survey(coordinates, paths, possible_paths)
 
-    # del driod, display
+#     # del driod, display
 
-    print(f"Shortest path to Oxygen tank has {len(path)} steps.")
+#     print(f"Shortest path to Oxygen tank has {len(path)} steps.")
 
 
 # %% Development Environment
