@@ -10,14 +10,17 @@ from computer import Computer
 import aoc
 import phases
 
-# Day 7, Part 1 needs:
-#     Multiple programs running on the computer
-#     Buffer(s) or stack to add instruction command control
-#     Inputs coming from the stack
-#     Outputs placed on the stack
-#     Inputs:
-#         Phase setting
-#         Signal
+
+"""
+Day 7, Part 1 needs:
+    Multiple programs running on the computer
+    Buffer(s) or stack to add instruction command control
+    Inputs coming from the stack
+    Outputs placed on the stack
+    Inputs:
+        Phase setting
+        Signal
+"""
 
 
 # %%
@@ -219,5 +222,9 @@ def thruster(program,
 
 if __name__ == "__main__":
     thruster(program='Amp',
-             part=2,
+             part=1,
              library=aoc.PROGRAMS_AVAILABLE_DICTIONARY)
+
+    # thruster(program='Amp',
+    #          part=2,
+    #          library=aoc.PROGRAMS_AVAILABLE_DICTIONARY)
