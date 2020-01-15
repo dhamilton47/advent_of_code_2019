@@ -5,25 +5,26 @@ Created on Sun Dec 29 23:59:09 2019
 @author: Dan J Hamilton
 """
 
+"""
+class Program
+    Properties
+        binary
+        code
+        copies
+        description
+        io_in
+        io_out
+        io_in_count
+        io_out_sount
+        messages_in
+        messages_out
+        name
+        process_order
 
-# class Program
-#     Properties
-#         binary
-#         code
-#         copies
-#         description
-#         io_in
-#         io_out
-#         io_in_count
-#         io_out_sount
-#         messages_in
-#         messages_out
-#         name
-#         process_order
-#
-#     Methods
-#         read_binary
-#         verify
+    Methods
+        read_binary
+        verify
+"""
 
 
 # %% Program Class
