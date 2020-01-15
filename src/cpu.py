@@ -9,15 +9,17 @@ Created on Mon Dec 30 00:05:21 2019
 import sys
 
 
-# class CPU
-#     Properties
-#         instruction
-#         name
-#
-#     Methods
-#         instruction_execute
-#         add
-#         multiply
+"""
+class CPU
+    Properties
+        instruction
+        name
+
+    Methods
+        instruction_execute
+        add
+        multiply
+"""
 
 
 # %% CPU Class
@@ -96,13 +98,15 @@ class CPU:
             #           f"{memory.bank[par[2]['address']]}")
 
         elif opcode == 3:
+            # print(computer.program_loaded.io_in)
             # answer = io.get_input(computer)
             memory.bank[adr0] = io.get_input(computer)
 
             # answer = io.get_input(computer)
             # memory.bank[par[0]['address']] = answer
             # print(f"{instruction}")
-
+            # print(f"INPUT: value = {memory.bank[adr0]}"
+            #       f" stored at address {adr0}")
             if print_flag:
                 print(f"INPUT: value = {memory.bank[adr0]}"
                       f" stored at address {adr0}")
