@@ -141,7 +141,7 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'name': 'springscript',
         },
 
-    'Ship Network':
+    'NIC':
         {
             'binary': '../data/AoC2019_day_23_input.txt',
             'copies': ['NIC'],
