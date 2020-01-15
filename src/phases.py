@@ -5,8 +5,6 @@ Created on Tue Dec 31 14:50:44 2019
 @author: danha
 """
 
-from register import Register1
-
 
 # %%
 
@@ -66,14 +64,3 @@ def phase_generator1():
                                    element_5])
 
     return phases
-
-
-def phase_load(data, index):
-    """ Load each set of phase codes into the IntCode computer as required. """
-    register = Register1()
-    return register
-
-    for i in register:
-        register.register[i] = data[index][i]
-
-    return register

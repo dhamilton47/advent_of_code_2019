@@ -26,7 +26,6 @@ class Computer:
                     Return data to user or place into a register.
             class CPU - executes Instruction(s)
             class OS - ?
-            class Register - ?
 
         Properties
             buffer
