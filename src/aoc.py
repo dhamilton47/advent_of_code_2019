@@ -25,6 +25,9 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_2_input.txt',
             'copies': ['GravAsst'],
             'description': 'Gravity Assist Program',
+            'io_in': ['keyboard', 'keyboard'],
+            'io_out': ['monitor'],
+            'messages_in': ['Noun = ', 'Verb = '],
             'messages_out': ['Day 2, Part 1 - Value at position 0 =',
                              'Day 2, Part 2 - 100 * noun + verb ='],
             'name': 'GravAsst',
@@ -35,31 +38,11 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_5_input.txt',
             'copies': ['Diagnostics'],
             'description': 'Spacecraft System Diagnostic Program',
-            'io_in': ['keyboard'],
-            'io_out': ['monitor',
-                       'monitor',
-                       'monitor',
-                       'monitor',
-                       'monitor',
-                       'monitor',
-                       'monitor',
-                       'monitor',
-                       'monitor',
-                       'monitor',],
-            'messages_in': ['Which System ID are we testing? '],
-            'messages_out': ['Diagnostic test =',
-                             'Diagnostic test =',
-                             'Diagnostic test =',
-                             'Diagnostic test =',
-                             'Diagnostic test =',
-                             'Diagnostic test =',
-                             'Diagnostic test =',
-                             'Diagnostic test =',
-                             'Diagnostic test =',
-                             'Day 5, Part 1 - Diagnostic code =',
-                             'Day 5, Part 2 - Diagnostic code ='],
+            'io_in': 'emulated',
+            'io_out': 'emulated',
+            'messages_in': [],
+            'messages_out': [],
             'name': 'Diagnostics',
-            # 'process_order': 'sequential',
         },
 
     'Amp':
@@ -67,14 +50,11 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_7_input.txt',
             'copies': ['ampA', 'ampB', 'ampC', 'ampD', 'ampE'],
             'description': 'Amplifier Controller Software',
-            'io_in': ['buffer', 'buffer'],
-            'io_out': ['buffer', 'buffer'],
-            'messages_in': ['Enter phase: ',
-                            'Enter input signal: '],
-            'messages_out': ['Output signal: ',
-                             'Max thruster signal ='],
+            'io_in': 'emulated',
+            'io_out': 'emulated',
+            'messages_in': [],
+            'messages_out': [],
             'name': 'Amp',
-            # 'process_order': 'sequential',
         },
 
     'BOOST':
@@ -82,6 +62,10 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_9_input.txt',
             'copies': ['BOOST'],
             'description': 'Basic Operation Of System Test Program',
+            'io_in': 'emulated',
+            'io_out': 'emulated',
+            'messages_in': [],
+            'messages_out': [],
             'name': 'BOOST',
         },
 
@@ -90,6 +74,10 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_11_input.txt',
             'copies': ['Registration'],
             'description': 'Emergency Hull Painting Robot Software',
+            'io_in': 'emulated',
+            'io_out': 'emulated',
+            'messages_in': [],
+            'messages_out': [],
             'name': 'Registration',
         },
 
@@ -98,6 +86,10 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_13_input.txt',
             'copies': ['Breakout'],
             'description': 'Arcade Cabinet Video Game Software',
+            'io_in': 'emulated',
+            'io_out': 'emulated',
+            'messages_in': [],
+            'messages_out': [],
             'name': 'Game',
         },
 
@@ -106,7 +98,11 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_15_input.txt',
             'copies': ['Oxygen'],
             'description': 'Repair Droid Remote Control Program',
-            'name': 'Repair Program',
+            'io_in': 'emulated',
+            'io_out': 'emulated',
+            'messages_in': [],
+            'messages_out': [],
+            'name': 'Repair Droid',
         },
 
     'ASCII':
@@ -114,7 +110,11 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_17_input.txt',
             'copies': ['ASCII'],
             'description': 'Aft Scaffolding Control and Information Interface',
-            'name': 'ASCII',
+            'io_in': 'emulated',
+            'io_out': 'emulated',
+            'messages_in': [],
+            'messages_out': [],
+            'name': 'ascii_enabled',
         },
 
     'Tractor Beam':
@@ -122,6 +122,10 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_19_input.txt',
             'copies': ['TractorBeam'],
             'description': 'Drone Control Program',
+            'io_in': 'emulated',
+            'io_out': 'emulated',
+            'messages_in': [],
+            'messages_out': [],
             'name': 'TractorBeam',
         },
 
@@ -130,14 +134,22 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_21_input.txt',
             'copies': ['Springdroid'],
             'description': 'ASCII-capable Springscript Translation Program',
+            'io_in': 'emulated',
+            'io_out': 'emulated',
+            'messages_in': [],
+            'messages_out': [],
             'name': 'springscript',
         },
 
-    'Ship Network':
+    'NIC':
         {
             'binary': '../data/AoC2019_day_23_input.txt',
             'copies': ['NIC'],
             'description': 'Network Interface Controller (NIC) Software',
+            'io_in': 'emulated',
+            'io_out': 'emulated',
+            'messages_in': [],
+            'messages_out': [],
             'name': 'NIC',
         },
 
@@ -146,6 +158,10 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_25_input.txt',
             'copies': ['Search'],
             'description': 'ASCII-capable Droid Communications Program',
+            'io_in': 'emulated',
+            'io_out': 'emulated',
+            'messages_in': [],
+            'messages_out': [],
             'name': 'Droid Communications',
         },
 
@@ -160,412 +176,44 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
 # %% OpCode Dictionary
 
 OPCODE_DICTIONARY = {
-    1: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'position']
-        },
+    1: {'opcode': 1, 'length': 4, 'func': 'add', 'params': [0, 0, 0]},
+    2: {'opcode': 2, 'length': 4, 'func': 'multiply', 'params': [0, 0, 0]},
+    3: {'opcode': 3, 'length': 2, 'func': 'input', 'params': [0]},
+    4: {'opcode': 4, 'length': 2, 'func': 'output', 'params': [0]},
+    5: {'opcode': 5, 'length': 3, 'func': 'jump-if-true', 'params': [0, 0]},
+    6: {'opcode': 6, 'length': 3, 'func': 'jump-if-false', 'params': [0, 0]},
+    7: {'opcode': 7, 'length': 4, 'func': 'lt', 'params': [0, 0, 0]},
+    8: {'opcode': 8, 'length': 4, 'func': 'eq', 'params': [0, 0, 0]},
+    9: {'opcode': 9, 'length': 2, 'func': 'rebase', 'params': [0]},
+    99: {'opcode': 99, 'length': 1, 'func': 'exit', 'params': []},
+}
 
-    101: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'position']
-        },
-
-    1001: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'immediate',
-                  'position']
-        },
-
-    1101: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'position']
-        },
-
-
-    10001: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'immediate']
-        },
-
-    10101: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'immediate']
-        },
-
-    11101: {
-        'opcode': 1,
-        'length': 4,
-        'function': 'add',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'immediate']
-        },
-
-    2: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'position']
-        },
-
-    102: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'position']
-        },
-
-    1002: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'immediate',
-                  'position']
-        },
-
-    1102: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'position']
-        },
-
-    10002: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'immediate']
-        },
-
-    10102: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'immediate']
-        },
-
-    11102: {
-        'opcode': 2,
-        'length': 4,
-        'function': 'multiply',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'immediate']
-        },
-
-    3: {
-        'opcode': 3,
-        'length': 2,
-        'function': 'input',
-        'parameters': [0],
-        'modes': ['position']
-        },
-
-    103: {
-        'opcode': 3,
-        'length': 2,
-        'function': 'input',
-        'parameters': [0],
-        'modes': ['immediate']
-        },
-
-    4: {
-        'opcode': 4,
-        'length': 2,
-        'function': 'output',
-        'parameters': [0],
-        'modes': ['position']
-        },
-
-    104: {
-        'opcode': 4,
-        'length': 2,
-        'function': 'input',
-        'parameters': [0],
-        'modes': ['immediate']
-        },
-
-    5: {
-        'opcode': 5,
-        'length': 3,
-        'function': 'jump-if-true',
-        'parameters': [0, 0],
-        'modes': ['position',
-                  'position']
-        },
-
-    105: {
-        'opcode': 5,
-        'length': 3,
-        'function': 'jump-if-true',
-        'parameters': [0, 0],
-        'modes': ['immediate',
-                  'position']
-        },
-
-    1005: {
-        'opcode': 5,
-        'length': 3,
-        'function': 'jump-if-true',
-        'parameters': [0, 0],
-        'modes': ['position',
-                  'immediate']
-        },
-
-    1105: {
-        'opcode': 5,
-        'length': 3,
-        'function': 'jump-if-true',
-        'parameters': [0, 0],
-        'modes': ['immediate',
-                  'immediate']
-        },
-
-    6: {
-        'opcode': 6,
-        'length': 3,
-        'function': 'jump-if-false',
-        'parameters': [0, 0],
-        'modes': ['position',
-                  'position']
-        },
-
-    106: {
-        'opcode': 6,
-        'length': 3,
-        'function': 'jump-if-false',
-        'parameters': [0, 0],
-        'modes': ['immediate',
-                  'position']
-        },
-
-    1006: {
-        'opcode': 6,
-        'length': 3,
-        'function': 'jump-if-false',
-        'parameters': [0, 0],
-        'modes': ['position',
-                  'immediate']
-        },
-
-    1106: {
-        'opcode': 6,
-        'length': 3,
-        'function': 'jump-if-false',
-        'parameters': [0, 0],
-        'modes': ['immediate',
-                  'immediate']
-        },
-
-    7: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'position']
-        },
-
-    107: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'position']
-        },
-
-    1007: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'immediate',
-                  'position']
-        },
-
-    1107: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'position']
-        },
-
-    10007: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'immediate']
-        },
-
-    10107: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'immediate']
-        },
-
-    11107: {
-        'opcode': 7,
-        'length': 4,
-        'function': 'less than',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'immediate']
-        },
-
-    8: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'position']
-        },
-
-    108: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'position']
-        },
-
-    1008: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'immediate',
-                  'position']
-        },
-
-    1108: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'position']
-        },
-
-    10008: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['position',
-                  'position',
-                  'immediate']
-        },
-
-    10108: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'position',
-                  'immediate']
-        },
-
-    11108: {
-        'opcode': 8,
-        'length': 4,
-        'function': 'equals',
-        'parameters': [0, 0, 0],
-        'modes': ['immediate',
-                  'immediate',
-                  'immediate']
-        },
-
-    9: {
-        'opcode': 9,
-        'length': 2,
-        'function': 'rebase',
-        'parameters': [0],
-        'modes': ['immediate', ]
-        },
-
-    99: {
-        'opcode': 99,
-        'length': 1,
-        'function': 'exit',
-        'parameters': [],
-        'modes': []
-        },
-
-    'None': {
-        'opcode': 'None',
-        'length': 0,
-        'function': 'none',
-        'parameters': 'None',
-        'modes': 'None'
-        },
+MODE_DICTIONARY = {
+    0: {'modes': [0, 0, 0]},
+    1: {'modes': [1, 0, 0]},
+    2: {'modes': [2, 0, 0]},
+    10: {'modes': [0, 1, 0]},
+    11: {'modes': [1, 1, 0]},
+    12: {'modes': [2, 1, 0]},
+    20: {'modes': [0, 2, 0]},
+    21: {'modes': [1, 2, 0]},
+    22: {'modes': [2, 2, 0]},
+    100: {'modes': [0, 0, 1]},
+    101: {'modes': [1, 0, 1]},
+    102: {'modes': [2, 0, 1]},
+    110: {'modes': [0, 1, 1]},
+    111: {'modes': [1, 1, 1]},
+    112: {'modes': [2, 1, 1]},
+    120: {'modes': [0, 2, 1]},
+    121: {'modes': [1, 2, 1]},
+    122: {'modes': [2, 2, 1]},
+    200: {'modes': [0, 0, 2]},
+    201: {'modes': [1, 0, 2]},
+    202: {'modes': [2, 0, 2]},
+    210: {'modes': [0, 1, 2]},
+    211: {'modes': [1, 1, 2]},
+    212: {'modes': [2, 1, 2]},
+    220: {'modes': [0, 2, 2]},
+    221: {'modes': [1, 2, 2]},
+    222: {'modes': [2, 2, 2]},
 }

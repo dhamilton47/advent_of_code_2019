@@ -111,7 +111,7 @@ def run(robot):
 
         color_to_paint_prior_to_moving = robot.output_value
 
-        # opcode = robot.process_run()
+
         direction_to_turn = robot.output_value
         coordinates[current_position]['color'] = color_to_paint_prior_to_moving
 
@@ -151,7 +151,7 @@ def run(robot):
     args = dimensions(x_s, y_s)
 
     display = graph(coordinates, *args)
-    # output_to_file(display)
+    output_to_file(display)
     steps = len(coordinates)
 
     # del coordinates
@@ -189,8 +189,8 @@ def graph(coordinates, *args):
     # Blank grid in the size indicated by the part 1 output
     layout = np.array(['.'] * (range_x * range_y)).reshape((range_y, range_x))
     print(f"The shape of layout is {layout.shape}")
-    # Map the coordinates output
 
+    # Map the coordinates output
     for item in list(coordinates.items()):
         coord = list(item)[0]
         item = list(item)[1]
@@ -202,18 +202,16 @@ def graph(coordinates, *args):
         # print(row, column, color)
         layout[y, x] = '.' if color == 0 else '#'
 
-    for row in range(len(layout)):
-        line = ''.join(layout[row])
-        print(line)
+    temp = [''.join(layout[j, :]) for j in range(range_y)]
 
-    return layout
+    return temp
+
 
 def output_to_file(display):
     """ Output the final graph to a text file so we can actually see it """
 
     file1 = open("../data/day11_output.txt", "w")
     for item in display:
-        print(item)
         file1.write((item + '\n'))
 
     file1.close()

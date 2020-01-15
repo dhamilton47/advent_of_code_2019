@@ -1,24 +1,43 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Dec  6 12:04:20 2019
+Created on Fri Jan  3 00:11:17 2020
 
 @author: Dan J Hamilton
 """
 
+from computer import Computer
 
 import aoc
 
 
-# %% Transform the "XXXX" from a string to a list
-def transform_program(contents):
-    memory = list(contents.split(","))
-#    memory_length = len(memory)
-#    for i in range(memory_length):
-#        memory[i] = int(memory[i])
+# %%
+def intcode(library, program):
+    """ Create an IntCode Computer """
 
-    return memory
+    computer = Computer(library, program)
+    computer.boot()
+    computer.program_load()
+    computer.flash_memory()
+
+    return computer
 
 
-txtfile = "../data/AoC2019_day_9_input.txt"
-contents = aoc.read_program(txtfile)
-transformed_contents = transform_program(contents)
+def test(library, program):
+    """ main() program """
+
+    machine = intcode(library, program)
+    machine.emulated_input = [1]
+    machine.process_run()
+    print(f"Day 9, Part 1 - BOOST keycode = {machine.output_value}")
+
+    machine = intcode(library, program)
+    machine.emulated_input = [2]
+    machine.process_run()
+    print(f"Day 9, Part 2 - Distress signal coordinates "
+          f"= {machine.output_value}")
+
+
+# %% Production Environment (LOL)
+
+if __name__ == "__main__":
+    test(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'BOOST')

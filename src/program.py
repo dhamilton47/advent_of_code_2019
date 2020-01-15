@@ -5,25 +5,26 @@ Created on Sun Dec 29 23:59:09 2019
 @author: Dan J Hamilton
 """
 
+"""
+class Program
+    Properties
+        binary
+        code
+        copies
+        description
+        io_in
+        io_out
+        io_in_count
+        io_out_sount
+        messages_in
+        messages_out
+        name
+        process_order
 
-# class Program
-#     Properties
-#         binary
-#         code
-#         copies
-#         description
-#         io_in
-#         io_out
-#         io_in_count
-#         io_out_sount
-#         messages_in
-#         messages_out
-#         name
-#         process_order
-#
-#     Methods
-#         read_binary
-#         verify
+    Methods
+        read_binary
+        verify
+"""
 
 
 # %% Program Class
@@ -35,8 +36,7 @@ class Program:
     """
 
     def __init__(self, program):
-        self.binary = program['binary']
-        self.code = self.read_binary()
+        self.code = self.read_binary(program['binary'])
         self.description = program['description']
         self.io_in = (self.verify(program, 'io_in'),
                       self.verify(program, 'messages_in'))
@@ -45,17 +45,13 @@ class Program:
         self.io_in_count = 0
         self.io_out_count = 0
         self.name = program['name']
-        self.process_order = self.verify(program, 'process_order')
 
-    def read_binary(self, program_binary=None):
+    def read_binary(self, program_binary):
         """
         Read and parse the text file associated with the named program
         """
 
-        if program_binary is not None:
-            self.binary = program_binary
-
-        file = open(self.binary, "r")
+        file = open(program_binary, "r")
         if file.mode == 'r':
             contents = file.read()
             file.close()

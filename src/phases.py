@@ -5,6 +5,8 @@ Created on Tue Dec 31 14:50:44 2019
 @author: danha
 """
 
+from register import Register1
+
 
 # %%
 
@@ -44,9 +46,34 @@ def phase_generator():
     return phases
 
 
-def phase_load(computer, data, index):
+def phase_generator1():
+    """ Generate the permutations of initial set. """
+    phase0 = [5, 6, 7, 8, 9]
+    phases = []
+    for index, element_1 in enumerate(phase0):
+        phase1 = build_phase_choices(phase0, phase0[index])
+        for index1, element_2 in enumerate(phase1):
+            phase2 = build_phase_choices(phase1, phase1[index1])
+            for index2, element_3 in enumerate(phase2):
+                phase3 = build_phase_choices(phase2, phase2[index2])
+                for index3, element_4 in enumerate(phase3):
+                    phase4 = build_phase_choices(phase3, phase3[index3])
+                    element_5 = phase4[0]
+                    phases.append([element_1,
+                                   element_2,
+                                   element_3,
+                                   element_4,
+                                   element_5])
+
+    return phases
+
+
+def phase_load(data, index):
     """ Load each set of phase codes into the IntCode computer as required. """
-    name = computer.program_copies_loaded
-    number = len(name)
-    for i in range(number):
-        computer.buffers[name[i]].register[1] = data[index][i]
+    register = Register1()
+    return register
+
+    for i in register:
+        register.register[i] = data[index][i]
+
+    return register
