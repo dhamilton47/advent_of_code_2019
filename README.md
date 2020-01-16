@@ -6,6 +6,7 @@
 #
 
 # Thoughts on IntCode Structure
+
     _(as of Day 11, Part 1)_
     _(as of Day 17, Part 2)_
     _(as of Day 21, Part 1)_
