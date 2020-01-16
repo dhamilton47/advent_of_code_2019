@@ -77,7 +77,7 @@ def ascii_interpreter(val):
 def create_initial_network(network, input_queue):
     for i in range(50):
         network[i] = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'NIC')
-        network[i].emulated_input = [i]
+        network[i].io.input_value = [i]
         input_queue[i] = []
 
     return network
@@ -93,6 +93,10 @@ def intcode(library, program):
     computer.halt_condition = True
 
     return computer
+
+
+def test():
+    pass
 
 
 # %% Development Environment
@@ -123,14 +127,14 @@ for i, _ in enumerate(network):
     #     else:
     #         x, y = input_queue[i][0]
     #         network[i].emulated_input = [x, y]
-    network[i].emulated_input = input_queue_state(input_queue[i])
+    network[i].io.input_value = input_queue_state(input_queue[i])
 
     network[i].process_run()
-    address = network[i].output_value
+    address = network[i].io.output_value
     network[i].process_run()
-    input_instruction = network[i].output_value
+    input_instruction = network[i].io.output_value
     network[i].process_run()
-    y = network[i].output_value
+    y = network[i].io.output_value
     print(f"Address = {address}, x = {input_instruction}, y = {y}")
     input_queue[address].append((input_instruction, y))
     # else:
