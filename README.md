@@ -5,7 +5,12 @@
 
 #
 
-# Thoughts on IntCode Structure _(as of Day 7, Part 1)_
+# Thoughts on IntCode Structure
+    _(as of Day 11, Part 1)_
+    _(as of Day 17, Part 2)_
+    _(as of Day 21, Part 1)_
+    _(as of Day 23, Part 1)_
+
 
 Yes, geography and code ideas are still fluid.
 
@@ -27,7 +32,7 @@ aoc
 - read_intcode_program(txtfile)
 
 
-### IntCode Class (Computer) _(as currently implemented)_
+### IntCode Class (Computer)
 **Nouns:**
 Computer(library = dictionary of information regarding programs)
 - CPU
@@ -55,7 +60,7 @@ Computer(library = dictionary of information regarding programs)
 - program_load()
 
 
-### Instruction Class _(as currently implemented)_
+### Instruction Class
 **Nouns:**
 Instruction(computer, op_dictionary=aoc.OPCODE_DICTIONARY,
             mode_dictionary=aoc.MODE_DICTIONARY)
@@ -80,7 +85,7 @@ Instruction(computer, op_dictionary=aoc.OPCODE_DICTIONARY,
 - decode_parameters(memory, length, ip)
 
 
-### Program Class (Applications)
+### Program Class
 **Nouns:**
 Program(program)
 
@@ -112,7 +117,7 @@ CPU(instruction=None)
 - multiply(i, j):
 
 
-### Hardware:  I/O Class _(Conceptual stage)_
+### Hardware:  I/O Class
 **Nouns:**
 IO
 
