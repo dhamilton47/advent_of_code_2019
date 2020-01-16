@@ -96,23 +96,23 @@ def run(robot):
     x_s = [0]
     y_s = [0]
 
-    robot.emulated_input = [0]
+    robot.io.input_value = [0]
 
     while opcode != 99:
     # for i in range(4000):
 
         opcode = robot.process_run()
 
-        robot.emulated_input = [panel_color(coordinates, current_position)]
+        robot.io.input_value = [panel_color(coordinates, current_position)]
 
         if print_flag:
             print(f"\nColor of panel {current_position} prior to move is "
-                  f"{['black', 'white'][robot.emulated_input]}")
+                  f"{['black', 'white'][robot.io.input_value]}")
 
-        color_to_paint_prior_to_moving = robot.output_value
+        color_to_paint_prior_to_moving = robot.io.output_value
 
 
-        direction_to_turn = robot.output_value
+        direction_to_turn = robot.io.output_value
         coordinates[current_position]['color'] = color_to_paint_prior_to_moving
 
         if print_flag:
