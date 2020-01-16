@@ -15,15 +15,16 @@ class CPU:
     """
     The CPU is where the Instructions are executed.
 
-    class Program
+    class CPU
         Properties
-            binary
-            code
-            description
+            instruction
             name
+            print_flag
 
         Methods
-            read_binary
+            add(i, j)
+            instruction_execute(computer, instruction)
+            multiply(i, j)
     """
 
     def __init__(self, instruction=None):
