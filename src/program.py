@@ -18,7 +18,6 @@ class Program:
 
     class Program
         Properties
-            binary
             code
             description
             name
