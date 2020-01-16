@@ -9,12 +9,11 @@
 
 Yes, geography and code ideas are still fluid.
 
-### Ship System and its Program
-- Gravity Assist Program (Day 2) - No Ship System
-- Thermal Environment Supervision Terminal (TEST)
-    - Air Conditioner (system ID 1) - Diagnostic Program
-    - Thermal Radiators (system ID 5) - Diagnostic Program
-- Amplifiers - Amplifier Controller Software
+Current pain points:
+1. Tracking movement/arrays correctly and efficiently
+2. Communication of repetitive I/O cycles.
+3. Communication between IntCode computer instances.
+
 
 #### Custom Imports
 
@@ -25,141 +24,120 @@ aoc
 - opcode_dictionary
 
 **Verbs:**
-- read_program(txtfile)
+- read_intcode_program(txtfile)
 
 
 ### IntCode Class (Computer) _(as currently implemented)_
 **Nouns:**
 Computer(library = dictionary of information regarding programs)
-- OS _(not implemented)_
-- I/O _(not implemented)_
 - CPU
-- Stack _(not implemented)_
+- Instruction
+- I/O
 - Memory
 - Program
 
 
 **Adjectives:**
-- name = 'HAL'
-- programs_available_dictionary = library
+- computer_name = 'HAL'
+- halt_condition = False
+- ip = 0
+- library = library
+- program_name = None
 - program_loaded = None
-- ip = None
+- program_to_load = program_to_load
 
 
 **Verbs:**
 - boot()
-- instruction_next(memory, pointer)
+- flash_memory()
+- instruction_next()
+- process_run()
 - program_load()
-- program_menu(program_list)
-- programs_available()
-
--(not implemented yet)_
-- get_input(program_id):
-- return_output(program_id, *args):
 
 
-### OS_AoC19 Class _(Conceptual stage)_
+### Instruction Class _(as currently implemented)_
 **Nouns:**
+Instruction(computer, op_dictionary=aoc.OPCODE_DICTIONARY,
+            mode_dictionary=aoc.MODE_DICTIONARY)
 
 
 **Adjectives:**
-- name = 'AdventofCode2019'
+- raw_opcode = computer.memory.value(computer.ip)
+- opcode = op_dictionary[raw_opcode % 100]['opcode']
+- length = op_dictionary[raw_opcode % 100]['length']
+- function = op_dictionary[raw_opcode % 100]['func']
+- parameters = op_dictionary[raw_opcode % 100]['params']
+- modes = mode_dictionary[raw_opcode // 100]['modes']
+- instruction = {'opcode': opcode,
+                 'parameters': decode_parameters(
+                    computer.memory,
+                    length,
+                    computer.ip),
+                'length': length}
 
 
 **Verbs:**
-- opcode_switch(instruction)
-- execute_instruction(instruction, message='')
+- decode_parameters(memory, length, ip)
 
 
-### Stack Class _(Conceptual stage)_
+### Program Class (Applications)
 **Nouns:**
+Program(program)
 
 
 **Adjectives:**
+- code = read_binary(program['binary'])
+- description = program['description']
+- name = program['name']
 
 
 **Verbs:**
-- Operations
-    - Push
-    - Pop
+- read_binary(program_binary):
 
 
-### Hardware:  CPU Class _(as currently implemented)_
+### Hardware:  CPU Class
 **Nouns:**
-CPU(instruction=[])
+CPU(instruction=None)
 
 
 **Adjectives:**
-- name = 'The Little Train That Could'
 - instruction = instruction
+- name = 'The Little Train That Could'
+- print_flag = False
 
 
 **Verbs:**
-- instruction_execute(memory, ip, inst)
 - add(i, j)
+- instruction_execute(computer, instruction)
 - multiply(i, j):
 
 
 ### Hardware:  I/O Class _(Conceptual stage)_
 **Nouns:**
-
-
-**Adjectives:**
-
-
-**Verbs:**
-- SysIn
-- SysOut
-
-
-### Program Class (Applications) _(as currently implemented)_
-**Nouns:**
-Program(programID)
-
+IO
 
 **Adjectives:**
-- programID = programID
-- name = programID['name']
-- binary = programID['binary']
-- code = read_binary()
-
+- halt_condition (?)
+- input_value
+- output_value
 
 **Verbs:**
-- read_binary(program_binary=None):
+- get_input
+- return_output
 
 
-### Instruction Class _(as currently implemented)_
+### Hardware:  Memory Class
 **Nouns:**
-Instruction()
-
-
-**Adjectives:**
-- raw_opcode = memory.address(ip)
-- opcode = dictionary[raw_opcode]['opcode']
-- modes = dictionary[raw_opcode]['modes']
-- parameters = dictionary[raw_opcode]['parameters']
-- length = dictionary[raw_opcode]['length']
-- instruction = {'opcode': opcode,
-                 'parameters': decode_parameters(memory, self.length, ip),
-                 'length': length}
-
-
-**Verbs:**
-- __init__(memory, ip=None, dictionary=aoc.opcode_dictionary)
-- decode_parameters(self, memory, length, ip)
-
-
-### Hardware:  Memory Class _(as currently implemented)_
-**Nouns:**
-Memory(code=[])
+Memory(program={})
 
 
 **Adjectives:**
 - bank = flash(code)
+- base_offset
 
 
 **Verbs:**
-- flash(code)
-- address(i)
-
+- extend_memory(bank, address)
+- flash(program)
+- value(address)
 
