@@ -156,10 +156,10 @@ def move(path):
     machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Oxygen System')
 
     for item in path:
-        machine.emulated_input = [item]
+        machine.io.input_value = [item]
         machine.process_run()
 
-    return CHARSET[machine.output_value]
+    return CHARSET[machine.io.output_value]
 
 
 def map_coordinate(path):
