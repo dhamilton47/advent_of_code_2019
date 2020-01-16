@@ -26,13 +26,16 @@ def output_cycle(machine):
     """ Cycle through the required number of """
 
     machine.process_run()
-    left_offset = machine.output_value
+    left_offset = machine.io.output_value
+    # left_offset = machine.output_value
 
     machine.process_run()
-    top_offset = machine.output_value
+    top_offset = machine.io.output_value
+    # top_offset = machine.output_value
 
     machine.process_run()
-    item = machine.output_value
+    item = machine.io.output_value
+    # item = machine.output_value
     # print(f"x = {left_offset}, y = {top_offset}, item = {item}")
 
     return left_offset, top_offset, item  # , opcode
@@ -46,15 +49,18 @@ def create_initial_display(machine):
 
     while opcode != 99:
         opcode = machine.process_run()
-        left_offset = machine.output_value
+        left_offset = machine.io.output_value
+        # left_offset = machine.output_value
         if opcode == 99:
             break
 
         opcode = machine.process_run()
-        top_offset = machine.output_value
+        top_offset = machine.io.output_value
+        # top_offset = machine.output_value
 
         opcode = machine.process_run()
-        item = machine.output_value
+        item = machine.io.output_value
+        # item = machine.output_value
 
         if item == 3:
             paddle_location = [left_offset, top_offset]
@@ -128,7 +134,8 @@ def test():
     arcade = \
         intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Arcade Cabinet')
 
-    arcade.emulated_input = [0]
+    arcade.io.input_value = [0]
+    # arcade.emulated_input = [0]
 
     display, paddle_location, ball_location = create_initial_display(arcade)
     blocks = blocks_remaining(display)
@@ -140,7 +147,8 @@ def test():
         paddle_location, ball_location, score = \
             tracking(arcade, paddle_location, ball_location, score)
 
-        arcade.emulated_input = [paddle_move(paddle_location, ball_location)]
+        arcade.io.input_value = [paddle_move(paddle_location, ball_location)]
+        # arcade.emulated_input = [paddle_move(paddle_location, ball_location)]
         blocks = blocks_remaining(display)
 
     del arcade, display
