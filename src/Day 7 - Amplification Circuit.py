@@ -82,50 +82,50 @@ def thruster(program,
         for i in range(runs):
             if print_flag:
                 print(f"\nBefore Amp A, Signal Register = {signal_register}")
-            ampA.emulated_input = [phase_register[0], signal_register[0]]
+            ampA.io.input_value = [phase_register[0], signal_register[0]]
             signal_register[0] = program_run_halt(ampA, signal_register[0])
 
-            signal_register[1] = ampA.output_value
+            signal_register[1] = ampA.io.output_value
             if print_flag:
                 print(f"AFter Amp A, Signal Register = {signal_register}")
 
             if print_flag:
                 print(f"\nBefore Amp B, Signal Register = {signal_register}")
-            ampB.emulated_input = [phase_register[1], signal_register[1]]
+            ampB.io.input_value = [phase_register[1], signal_register[1]]
             signal_register[1] = program_run_halt(ampB, signal_register[1])
 
-            signal_register[2] = ampB.output_value
+            signal_register[2] = ampB.io.output_value
             if print_flag:
                 print(f"AFter Amp B, Signal Register = {signal_register}")
 
             if print_flag:
                 print(f"\nBefore Amp C, Signal Register = {signal_register}")
-            ampC.emulated_input = [phase_register[2], signal_register[2]]
+            ampC.io.input_value = [phase_register[2], signal_register[2]]
             signal_register[2] = program_run_halt(ampC, signal_register[2])
 
-            signal_register[3] = ampC.output_value
+            signal_register[3] = ampC.io.output_value
             if print_flag:
                 print(f"AFter Amp C, Signal Register = {signal_register}")
 
             if print_flag:
                 print(f"\nBefore Amp D, Signal Register = {signal_register}")
-            ampD.emulated_input = [phase_register[3], signal_register[3]]
+            ampD.io.input_value = [phase_register[3], signal_register[3]]
             signal_register[3] = program_run_halt(ampD, signal_register[3])
 
-            signal_register[4] = ampD.output_value
+            signal_register[4] = ampD.io.output_value
             if print_flag:
                 print(f"AFter Amp D, Signal Register = {signal_register}")
 
             if print_flag:
                 print(f"\nBefore Amp E, Signal Register = {signal_register}")
-            ampE.emulated_input = [phase_register[4], signal_register[4]]
+            ampE.io.input_value = [phase_register[4], signal_register[4]]
             signal_register[4] = program_run_halt(ampE, signal_register[4])
 
-            signal_register[0] = ampE.output_value
+            signal_register[0] = ampE.io.output_value
             if print_flag:
                 print(f"AFter Amp E, Signal Register = {signal_register}")
 
-        thruster_test = ampE.output_value
+        thruster_test = ampE.io.output_value
 
         thruster_max = thruster_max if thruster_max > \
             thruster_test \
@@ -225,6 +225,6 @@ if __name__ == "__main__":
              part=1,
              library=aoc.PROGRAMS_AVAILABLE_DICTIONARY)
 
-    # thruster(program='Amp',
-    #          part=2,
-    #          library=aoc.PROGRAMS_AVAILABLE_DICTIONARY)
+    thruster(program='Amp',
+              part=2,
+              library=aoc.PROGRAMS_AVAILABLE_DICTIONARY)
