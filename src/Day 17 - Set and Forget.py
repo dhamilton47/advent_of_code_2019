@@ -54,9 +54,9 @@ def reveal_scaffold():
 
     while opcode != 99:
         opcode = machine.process_run()
-        data_as_string += chr(machine.output_value)
-        data_as_matrix.append(machine.output_value)
-        if machine.output_value == 10:
+        data_as_string += chr(machine.io.output_value)
+        data_as_matrix.append(machine.io.output_value)
+        if machine.io.output_value == 10:
             newline_loc.append(i)
         i += 1
 
@@ -242,13 +242,13 @@ machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'ASCII')
 machine.memory.bank[0] = 2
 # machine.halt_condition = True
 print(machine.memory.bank[0])
-machine.emulated_input = instructions
+machine.io.input_value = instructions
 while opcode != 99:
     opcode = machine.process_run()
-    machine.output_value
+    machine.io.output_value
 # machine.process_run()
 
-print(f"Day 17, Part 2 - Dust collected = {machine.output_value}")
+print(f"Day 17, Part 2 - Dust collected = {machine.io.output_value}")
 
 
 # %% Production Environment (LOL)
