@@ -182,15 +182,15 @@ answer = [
 opcode = 0
 
 machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Springdroid')
-machine.emulated_input = ascii_interpreter(answer[0])
+machine.io.input_value = ascii_interpreter(answer[0])
 string = ''
 while opcode != 99:
     machine.process_run()
-    if machine.output_value < 128:
+    if machine.io.output_value < 128:
         # print(machine.output_value)
-        string += chr(machine.output_value)
+        string += chr(machine.io.output_value)
     else:
-        print(machine.output_value)
+        print(machine.io.output_value)
         break
 
 # print(chr(machine.output_value))
