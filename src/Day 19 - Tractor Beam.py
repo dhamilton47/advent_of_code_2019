@@ -93,9 +93,9 @@ for row in range(ROWS):
 
         machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Tractor Beam')
 
-        machine.emulated_input = [row, column]
+        machine.io.input_value = [row, column]
         machine.process_run()
-        array[row, column] = machine.output_value
+        array[row, column] = machine.io.output_value
 
         del machine
 
@@ -112,9 +112,9 @@ for row in range(ROWS):
 
         machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Tractor Beam')
 
-        machine.emulated_input = [1073 + row, 411 + column]
+        machine.io.input_value = [1073 + row, 411 + column]
         machine.process_run()
-        array[row, column] = machine.output_value
+        array[row, column] = machine.io.output_value
 
         del machine
 
