@@ -3,13 +3,7 @@
 Created on Mon Dec 30 00:05:25 2019
 
 @author: Dan J Hamilton
-"""
 
-"""
-class IO
-    Methods
-        get_input
-        return_output
 """
 
 
@@ -22,33 +16,33 @@ class IO:
 
     keyboard = user input from the keyboard
     buffer = an external function providing input to the buffer area.
+
+    class IO
+        Properties
+            halt_condition
+            input_value
+            output_value
+
+        Methods
+            get_input
+            return_output
     """
 
-    def get_input(self, computer):
+    def __init__(self):
+        self.halt_condition = False
+        self.input_value = None
+        self.output_value = None
+
+    def get_input(self):
         """
         Determine where and how to get input
         """
 
-        program = computer.program_loaded
-        io_in, message_in = program.io_in
+        return self.input_value.pop(0)
 
-        if io_in == 'emulated':
-
-            return computer.emulated_input.pop(0)
-
-        raise ValueError('That device has not been attached.')
-
-    def return_output(self, computer, instruction):
+    def return_output(self, instruction):
         """
         Determine where to output results
         """
 
-        program = computer.program_loaded
-        io_outs, messages_out = program.io_out
-
-        if io_outs == 'emulated':
-            computer.output_value = instruction['parameters'][0]['value']
-
-            return
-
-        raise ValueError('That device has not been attached.')
+        self.output_value = instruction['parameters'][0]['value']

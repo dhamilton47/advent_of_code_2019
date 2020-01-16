@@ -9,24 +9,21 @@ Created on Mon Dec 30 00:05:21 2019
 import sys
 
 
-"""
-class CPU
-    Properties
-        instruction
-        name
-
-    Methods
-        instruction_execute
-        add
-        multiply
-"""
-
-
 # %% CPU Class
 
 class CPU:
     """
     The CPU is where the Instructions are executed.
+
+    class Program
+        Properties
+            binary
+            code
+            description
+            name
+
+        Methods
+            read_binary
     """
 
     def __init__(self, instruction=None):
@@ -100,7 +97,8 @@ class CPU:
         elif opcode == 3:
             # print(computer.program_loaded.io_in)
             # answer = io.get_input(computer)
-            memory.bank[adr0] = io.get_input(computer)
+            memory.bank[adr0] = io.get_input()
+            # memory.bank[adr0] = io.get_input(computer)
 
             # answer = io.get_input(computer)
             # memory.bank[par[0]['address']] = answer
@@ -112,7 +110,8 @@ class CPU:
                       f" stored at address {adr0}")
 
         elif opcode == 4:
-            io.return_output(computer, instruction)
+            io.return_output(instruction)
+            # io.return_output(computer, instruction)
 
             if print_flag:
                 print(f"OUTPUT")

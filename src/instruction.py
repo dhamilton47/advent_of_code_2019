@@ -3,23 +3,11 @@
 Created on Mon Dec 30 00:05:50 2019
 
 @author: Dan J Hamilton
+
 """
 
 
 import aoc
-
-
-# class Instruction
-#     Properties
-#         raw_opcode
-#         opcode
-#         length
-#         parameters
-#         modes
-#         instruction
-#
-#     Methods
-#         decode_parameters
 
 
 # %% Instruction Class
@@ -28,6 +16,18 @@ class Instruction:
     """
     An Instruction is the smallest element of code derived from a Program
     which the CPU is able to execute.
+
+    class Instruction
+        Properties
+            raw_opcode
+            opcode
+            length
+            parameters
+            modes
+            instruction
+
+        Methods
+            decode_parameters
     """
 
     def __init__(self, computer, op_dictionary=aoc.OPCODE_DICTIONARY,

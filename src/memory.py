@@ -5,16 +5,6 @@ Created on Mon Dec 30 00:05:46 2019
 @author: Dan J Hamilton
 """
 
-# class Memory
-#     Properties
-#         bank
-#         base_offset
-#
-#     Methods
-#         extend_memory
-#         flash
-#         value
-
 
 # %% Memory Class
 
@@ -25,6 +15,16 @@ class Memory:
     and modified as per the execution of those instructions.
 
     A bank is the memory allocated to a Program.
+
+    class Memory
+        Properties
+            bank
+            base_offset
+
+        Methods
+            extend_memory
+            flash
+            value
     """
 
     def __init__(self, program={}):

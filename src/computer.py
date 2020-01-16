@@ -28,9 +28,9 @@ class Computer:
             class OS - ?
 
         Properties
-            buffer
             computer_name
             cpu
+            halt_condition
             io
             ip (instruction pointer)
             library
@@ -45,20 +45,17 @@ class Computer:
             instruction_next
             process_run
             program_load
-            # program_reload
     """
 
     def __init__(self, library, program_to_load):
         self.computer_name = 'HAL'
 
         self.cpu = None
-        self.emulated_input = None
         self.halt_condition = False
         self.io = None
         self.ip = 0
         self.library = library
         self.memory = None
-        self.output_value = None
         self.program_name = None
         self.program_loaded = None
         self.program_to_load = program_to_load
@@ -91,8 +88,6 @@ class Computer:
         Execute the Program
         """
 
-        # thruster_max = 0
-
         opcode = 0
         # print(f"\nRunning process {self.process_active}")
 
@@ -121,18 +116,3 @@ class Computer:
         program_to_load = self.library[self.program_to_load]
         self.program_name = program_to_load['name']
         self.program_loaded = Program(program_to_load)
-
-    # def program_reload(self, program_to_load):
-    #     """
-    #     When running multiple times, parts of the Program load process
-    #     need to be re-initialized.
-    #     """
-    #     # print(f"Program copies loaded = {self.program_copies_loaded}")
-    #     self.stack = self.program_copies_loaded.copy()
-
-    #     for item in self.program_copies_loaded:
-    #         program_loaded = Program(program_to_load)
-
-    #         self.buffers[item] = Register()
-    #         self.programs_loaded[item] = program_loaded
-    #         self.ips[item] = 0

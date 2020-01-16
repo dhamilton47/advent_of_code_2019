@@ -6,13 +6,24 @@ Created on Thu Dec 26 21:41:25 2019
 """
 
 
-# %% Import the "XXXX" data (as a string)
-def read_program(txtfile):
+# %% Import the program data (as a string)
+
+def read_intcode_program(file_path):
     """ Read the context of a .txt file """
-    file = open(txtfile, "r")
-    if file.mode == 'r':
+
+    with open(file_path, 'r') as file:
+        contents = file.read().split(',')
+
+    contents = [int(_) for i, _ in enumerate(contents)]
+
+    return contents
+
+
+def read_program(file_path):
+    """ Read the context of a .txt file """
+
+    with open(file_path, 'r') as file:
         contents = file.read()
-    file.close()
 
     return contents
 
@@ -25,11 +36,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_2_input.txt',
             'copies': ['GravAsst'],
             'description': 'Gravity Assist Program',
-            'io_in': ['keyboard', 'keyboard'],
-            'io_out': ['monitor'],
-            'messages_in': ['Noun = ', 'Verb = '],
-            'messages_out': ['Day 2, Part 1 - Value at position 0 =',
-                             'Day 2, Part 2 - 100 * noun + verb ='],
             'name': 'GravAsst',
         },
 
@@ -38,10 +44,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_5_input.txt',
             'copies': ['Diagnostics'],
             'description': 'Spacecraft System Diagnostic Program',
-            'io_in': 'emulated',
-            'io_out': 'emulated',
-            'messages_in': [],
-            'messages_out': [],
             'name': 'Diagnostics',
         },
 
@@ -50,10 +52,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_7_input.txt',
             'copies': ['ampA', 'ampB', 'ampC', 'ampD', 'ampE'],
             'description': 'Amplifier Controller Software',
-            'io_in': 'emulated',
-            'io_out': 'emulated',
-            'messages_in': [],
-            'messages_out': [],
             'name': 'Amp',
         },
 
@@ -62,10 +60,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_9_input.txt',
             'copies': ['BOOST'],
             'description': 'Basic Operation Of System Test Program',
-            'io_in': 'emulated',
-            'io_out': 'emulated',
-            'messages_in': [],
-            'messages_out': [],
             'name': 'BOOST',
         },
 
@@ -74,10 +68,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_11_input.txt',
             'copies': ['Registration'],
             'description': 'Emergency Hull Painting Robot Software',
-            'io_in': 'emulated',
-            'io_out': 'emulated',
-            'messages_in': [],
-            'messages_out': [],
             'name': 'Registration',
         },
 
@@ -86,10 +76,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_13_input.txt',
             'copies': ['Breakout'],
             'description': 'Arcade Cabinet Video Game Software',
-            'io_in': 'emulated',
-            'io_out': 'emulated',
-            'messages_in': [],
-            'messages_out': [],
             'name': 'Game',
         },
 
@@ -98,10 +84,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_15_input.txt',
             'copies': ['Oxygen'],
             'description': 'Repair Droid Remote Control Program',
-            'io_in': 'emulated',
-            'io_out': 'emulated',
-            'messages_in': [],
-            'messages_out': [],
             'name': 'Repair Droid',
         },
 
@@ -110,10 +92,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_17_input.txt',
             'copies': ['ASCII'],
             'description': 'Aft Scaffolding Control and Information Interface',
-            'io_in': 'emulated',
-            'io_out': 'emulated',
-            'messages_in': [],
-            'messages_out': [],
             'name': 'ascii_enabled',
         },
 
@@ -122,10 +100,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_19_input.txt',
             'copies': ['TractorBeam'],
             'description': 'Drone Control Program',
-            'io_in': 'emulated',
-            'io_out': 'emulated',
-            'messages_in': [],
-            'messages_out': [],
             'name': 'TractorBeam',
         },
 
@@ -134,10 +108,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_21_input.txt',
             'copies': ['Springdroid'],
             'description': 'ASCII-capable Springscript Translation Program',
-            'io_in': 'emulated',
-            'io_out': 'emulated',
-            'messages_in': [],
-            'messages_out': [],
             'name': 'springscript',
         },
 
@@ -146,10 +116,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_23_input.txt',
             'copies': ['NIC'],
             'description': 'Network Interface Controller (NIC) Software',
-            'io_in': 'emulated',
-            'io_out': 'emulated',
-            'messages_in': [],
-            'messages_out': [],
             'name': 'NIC',
         },
 
@@ -158,10 +124,6 @@ PROGRAMS_AVAILABLE_DICTIONARY = {
             'binary': '../data/AoC2019_day_25_input.txt',
             'copies': ['Search'],
             'description': 'ASCII-capable Droid Communications Program',
-            'io_in': 'emulated',
-            'io_out': 'emulated',
-            'messages_in': [],
-            'messages_out': [],
             'name': 'Droid Communications',
         },
 
