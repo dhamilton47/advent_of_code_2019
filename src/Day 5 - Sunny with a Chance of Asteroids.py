@@ -31,15 +31,14 @@ def test(library, program):
     """ main() program """
 
     machine = intcode(library, program)
-    machine.emulated_input = [1]
+    machine.io.input_value = [1]
     machine.process_run()
-    print(f"Day 5, Part 1 - Diagnostic code = {machine.output_value}")
+    print(f"Day 5, Part 1 - Diagnostic code = {machine.io.output_value}")
 
     machine = intcode(library, program)
-    machine.emulated_input = [5]
+    machine.io.input_value = [5]
     machine.process_run()
-    print(f"Day 5, Part 2 - Diagnostic code = "
-          f"= {machine.output_value}")
+    print(f"Day 5, Part 2 - Diagnostic code = {machine.io.output_value}")
 
 # %% Development Environment
 
