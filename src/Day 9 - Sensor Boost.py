@@ -26,15 +26,15 @@ def test(library, program):
     """ main() program """
 
     machine = intcode(library, program)
-    machine.emulated_input = [1]
+    machine.io.input_value = [1]
     machine.process_run()
-    print(f"Day 9, Part 1 - BOOST keycode = {machine.output_value}")
+    print(f"Day 9, Part 1 - BOOST keycode = {machine.io.output_value}")
 
     machine = intcode(library, program)
-    machine.emulated_input = [2]
+    machine.io.input_value = [2]
     machine.process_run()
     print(f"Day 9, Part 2 - Distress signal coordinates "
-          f"= {machine.output_value}")
+          f"= {machine.io.output_value}")
 
 
 # %% Production Environment (LOL)
