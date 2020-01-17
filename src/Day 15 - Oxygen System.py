@@ -203,9 +203,9 @@ def dimensions(coordinates):
     y_s = []
 
     for item in list(coordinates.keys()):
-        x, y = item
-        x_s.append(x)
-        y_s.append(y)
+        _x, _y = item
+        x_s.append(_x)
+        y_s.append(_y)
 
     max_x = max(x_s)
     min_x = min(x_s)
@@ -232,9 +232,9 @@ def create_display(coordinates, droid):
     display = [[CHARSET[0] for i in range(range_x)] for j in range(range_y)]
     # print(f"rows = {len(display)}, columns = {len(display[0])}")
 
-    for item, value in enumerate(coordinates):
-        x, y = value
-        display[y - min_y][x - min_x] = coordinates[value]
+    for _, value in enumerate(coordinates):
+        _x, _y = value
+        display[_y - min_y][_x - min_x] = coordinates[value]
 
         # print(f"rows = {len(display)}, columns = {len(display[0])}")
         # print(f"item = {item}, value = {value}, "
@@ -243,8 +243,8 @@ def create_display(coordinates, droid):
         #       f"orig y = {y}, max y = {max_y}, range y = {range_y}, "
         #       f"adj y = {(y - max_y) + range_y}")
 
-    x, y = droid
-    display[y - min_y][x - min_x] = CHARSET[3]
+    droid_x, droid_y = droid
+    display[droid_y - min_y][droid_x - min_x] = CHARSET[3]
 
     for row in range(len(display)):
         line = ''.join(display[row][:])
@@ -260,15 +260,13 @@ def intcode(library, program):
     """ Create an IntCode Computer """
 
     computer = Computer(library, program)
-    computer.boot()
-    computer.program_load()
     computer.flash_memory()
     computer.halt_condition = True
 
     return computer
 
 
-def test():
+def main():
     """ main() program """
 
     # possible_paths, paths, path, coordinates = survey_starter()
@@ -319,4 +317,4 @@ def test():
 # %% Production Environment (LOL)
 
 if __name__ == "__main__":
-    test()
+    main()
