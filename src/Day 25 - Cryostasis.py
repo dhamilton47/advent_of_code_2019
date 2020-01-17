@@ -6,19 +6,37 @@ Created on Fri Dec  6 12:04:20 2019
 """
 
 
+import numpy as np
+
 import aoc
+from computer import Computer
 
 
-# %% Transform the "XXXX" from a string to a list
-def transform_program(contents):
-    memory = list(contents.split(","))
-#    memory_length = len(memory)
-#    for i in range(memory_length):
-#        memory[i] = int(memory[i])
+def intcode(library, program):
+    """ Create an IntCode Computer """
 
-    return memory
+    computer = Computer(library, program)
+    computer.flash_memory()
+    computer.halt_condition = True
+
+    return computer
 
 
-txtfile = "../data/AoC2019_day_25_input.txt"
-contents = aoc.read_program(txtfile)
-transformed_contents = transform_program(contents)
+def main():
+    pass
+
+
+# %% Development Environment
+
+opcode = 0
+machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Search Droid')
+
+
+# txtfile = "../data/AoC2019_day_25_input.txt"
+# contents = aoc.read_program(txtfile)
+# transformed_contents = transform_program(contents)
+
+# %% Production Environment (LOL)
+
+# if __name__ == "__main__":
+#     main()
