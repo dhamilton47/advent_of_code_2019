@@ -22,7 +22,6 @@ class Memory:
             base_offset
 
         Methods
-            extend_memory
             flash
             value
     """
@@ -30,14 +29,6 @@ class Memory:
     def __init__(self, program={}):
         self.bank = self.flash(program)
         self.base_offset = 0
-
-    def extend_memory(self, bank, address):
-        """ Extend the memory bank if it is too short for a desired address """
-        if address >= len(bank):
-            for index in range(len(bank), address + 1):
-                bank[index] = 0
-
-        return bank
 
     def flash(self, program):
         """
@@ -54,9 +45,7 @@ class Memory:
         for address, value in enumerate(code):
             mem_dict[address] = value
 
-        self.bank = mem_dict
-
-        return self.bank
+        return mem_dict
 
     def value(self, address):
         """ Return the value stored at a particular memory address. """
@@ -64,6 +53,7 @@ class Memory:
         if address is None:
             return 'None'
 
-        self.bank = self.extend_memory(self.bank, address)
+        if address not in self.bank:
+            self.bank[address] = 0
 
         return self.bank[address]
