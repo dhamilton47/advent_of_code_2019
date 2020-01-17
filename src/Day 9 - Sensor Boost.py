@@ -15,14 +15,12 @@ def intcode(library, program):
     """ Create an IntCode Computer """
 
     computer = Computer(library, program)
-    computer.boot()
-    computer.program_load()
     computer.flash_memory()
 
     return computer
 
 
-def test(library, program):
+def main(library, program):
     """ main() program """
 
     machine = intcode(library, program)
@@ -36,8 +34,10 @@ def test(library, program):
     print(f"Day 9, Part 2 - Distress signal coordinates "
           f"= {machine.io.output_value}")
 
+    return machine
 
 # %% Production Environment (LOL)
 
+
 if __name__ == "__main__":
-    test(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'BOOST')
+    sensor = main(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'BOOST')
