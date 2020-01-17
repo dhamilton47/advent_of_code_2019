@@ -120,15 +120,13 @@ def intcode(library, program):
     """ Create an IntCode Computer """
 
     computer = Computer(library, program)
-    computer.boot()
-    computer.program_load()
     computer.flash_memory()
     computer.halt_condition = True
 
     return computer
 
 
-def test():
+def main():
     """ main() program """
 
     arcade = \
@@ -179,4 +177,4 @@ def test():
 # %% Production Environment (LOL)
 
 if __name__ == "__main__":
-    test()
+    main()
