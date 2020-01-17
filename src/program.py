@@ -6,9 +6,6 @@ Created on Sun Dec 29 23:59:09 2019
 """
 
 
-import aoc
-
-
 # %% Program Class
 
 class Program:
@@ -32,8 +29,10 @@ class Program:
         self.name = program['name']
 
     def read_binary(self, program_binary):
-        """
-        Read and parse the text file associated with the named program
-        """
 
-        return aoc.read_intcode_program(program_binary)
+        with open(program_binary, 'r', encoding='utf-8') as file:
+            contents = file.read().split(',')
+
+        contents = [int(_) for i, _ in enumerate(contents)]
+
+        return contents
