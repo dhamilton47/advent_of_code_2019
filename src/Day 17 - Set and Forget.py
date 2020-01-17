@@ -117,15 +117,14 @@ def intcode(library, program):
     """ Create an IntCode Computer """
 
     computer = Computer(library, program)
-    computer.boot()
-    computer.program_load()
     computer.flash_memory()
+    # computer.flash_memory(len(computer.program.code) + 2000)
     computer.halt_condition = True
 
     return computer
 
 
-def test():
+def main():
     """ main() program """
 
     scaffold, newline_locs = reveal_scaffold()
@@ -175,9 +174,8 @@ this puzzle.  Hence the following approach will be used:
    the instructions. Include a newline ASCII code at the end of each
    instruction.
 7. Enter y or n for using the live camera feed.
-"""
 
-"""
+
 Step 1:
     L10, R8, R6, R10, L12, R8, L12, L10, R8, R6, R10, L12, R8, L12, L10,
     R8, R8, L10, R8, R8, L12, R8, L12, L10, R8, R6, R10, L10, R8, R8,
@@ -226,27 +224,16 @@ C = ascii_interpreter(C)
 VIDEO = ascii_interpreter('y')
 
 instructions = M + A + B + C + VIDEO
-# instructions.reverse()
-print('we got here')
-# machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'ASCII')
-# machine.memory.bank[0] = 2
-# machine.cpu.print_flag = False
 
-test()
+main()
 opcode = 0
 machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'ASCII')
-# machine = Computer(library, program)
-# machine.boot()
-# machine.program_load()
-# machine.flash_memory()
 machine.memory.bank[0] = 2
-# machine.halt_condition = True
 print(machine.memory.bank[0])
 machine.io.input_value = instructions
 while opcode != 99:
     opcode = machine.process_run()
     machine.io.output_value
-# machine.process_run()
 
 print(f"Day 17, Part 2 - Dust collected = {machine.io.output_value}")
 
@@ -254,4 +241,4 @@ print(f"Day 17, Part 2 - Dust collected = {machine.io.output_value}")
 # %% Production Environment (LOL)
 
 # if __name__ == "__main__":
-#     test()
+#     main()
