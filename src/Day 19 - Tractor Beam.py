@@ -58,14 +58,12 @@ def intcode(library, program):
     """ Create an IntCode Computer """
 
     computer = Computer(library, program)
-    computer.boot()
-    computer.program_load()
     computer.flash_memory()
 
     return computer
 
 
-# def test():
+# def main():
 #     """ main() program """
 
 #     possible_paths = []
@@ -124,4 +122,4 @@ print(f"Day 19, Part 2 = {411 + 1073 * 10000}")
 # %% Production Environment (LOL)
 
 # if __name__ == "__main__":
-#     test()
+#     main()
