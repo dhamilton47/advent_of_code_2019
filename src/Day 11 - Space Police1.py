@@ -221,8 +221,6 @@ def intcode(library, program):
     """ Create an IntCode Computer """
 
     computer = Computer(library, program)
-    computer.boot()
-    computer.program_load()
     computer.flash_memory()
     computer.halt_condition = True
     # computer.process_run()
@@ -230,7 +228,7 @@ def intcode(library, program):
     return computer
 
 
-def test():
+def main():
     """ main() program """
 
     robot = \
@@ -296,4 +294,4 @@ steps, coordinates, display = run(robot)
 # %% Production Environment (LOL)
 
 # if __name__ == "__main__":
-#     steps = test()
+#     steps = main()
