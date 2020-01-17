@@ -14,6 +14,7 @@ def blocks_remaining(display):
     """ Count the number of blocks to be broken """
 
     count = 0
+
     for i in range(1, 42):
         for j in range(1, 17):
             if display[j][i] == 2:
@@ -23,22 +24,19 @@ def blocks_remaining(display):
 
 
 def output_cycle(machine):
-    """ Cycle through the required number of """
+    """ Cycle through the required number of outputs """
 
     machine.process_run()
     left_offset = machine.io.output_value
-    # left_offset = machine.output_value
 
     machine.process_run()
     top_offset = machine.io.output_value
-    # top_offset = machine.output_value
 
     machine.process_run()
     item = machine.io.output_value
-    # item = machine.output_value
     # print(f"x = {left_offset}, y = {top_offset}, item = {item}")
 
-    return left_offset, top_offset, item  # , opcode
+    return left_offset, top_offset, item
 
 
 def create_initial_display(machine):
@@ -50,17 +48,14 @@ def create_initial_display(machine):
     while opcode != 99:
         opcode = machine.process_run()
         left_offset = machine.io.output_value
-        # left_offset = machine.output_value
         if opcode == 99:
             break
 
         opcode = machine.process_run()
         top_offset = machine.io.output_value
-        # top_offset = machine.output_value
 
         opcode = machine.process_run()
         item = machine.io.output_value
-        # item = machine.output_value
 
         if item == 3:
             paddle_location = [left_offset, top_offset]
@@ -99,7 +94,7 @@ def tracking(machine, paddle_location, ball_location, score):
     #       f"Paddle at ({paddle_location[0], paddle_location[1]}), "
     #       f"Score = {score}")
 
-    return paddle_location, ball_location, score  # , opcode
+    return paddle_location, ball_location, score
 
 
 def paddle_move(paddle_location, ball_location):
@@ -133,7 +128,6 @@ def main():
         intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'Arcade Cabinet')
 
     arcade.io.input_value = [0]
-    # arcade.emulated_input = [0]
 
     display, paddle_location, ball_location = create_initial_display(arcade)
     blocks = blocks_remaining(display)
@@ -146,8 +140,6 @@ def main():
             tracking(arcade, paddle_location, ball_location, score)
 
         arcade.io.input_value = [paddle_move(paddle_location, ball_location)]
-        # arcade.emulated_input = [paddle_move(paddle_location, ball_location)]
-        blocks = blocks_remaining(display)
 
     del arcade, display
 
