@@ -77,8 +77,6 @@ def intcode(library, program):
     """ Create an IntCode Computer """
 
     computer = Computer(library, program)
-    computer.boot()
-    computer.program_load()
     computer.flash_memory()
     computer.halt_condition = True
 
@@ -134,7 +132,9 @@ for i in range(1, 16):
     playlist()
     print(reg)
 
-
+"""
+Try xx01, then x01x, then 01xx
+"""
 answer = [
     'NOT D J\n'
     'NOT J T\n'
@@ -199,4 +199,4 @@ while opcode != 99:
 # %% Production Environment (LOL)
 
 # if __name__ == "__main__":
-#     test()
+#     main()
