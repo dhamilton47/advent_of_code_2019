@@ -16,8 +16,7 @@ def intcode(library, program):
     """ Create an IntCode Computer """
 
     computer = Computer(library, program)
-    computer.boot()
-    computer.flash_memory(len(computer.program.code))
+    computer.flash_memory()
     computer.halt_condition = True
 
     return computer
