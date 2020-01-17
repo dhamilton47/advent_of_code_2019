@@ -28,8 +28,6 @@ def intcode(library, program):
     """ Create an IntCode Computer """
 
     computer = Computer(library, program)
-    computer.boot()
-    computer.program_load()
     computer.flash_memory()
     computer.halt_condition = True
 
@@ -46,6 +44,7 @@ def program_run_halt(computer, halt_check):
 def thruster(program,
              part,
              library=aoc.PROGRAMS_AVAILABLE_DICTIONARY,
+             label='',
              print_flag=False):
     """ main() program """
 
@@ -131,7 +130,7 @@ def thruster(program,
             thruster_test \
             else thruster_test
 
-    print(f"Maximum thruster signal = {thruster_max}")
+    print(f"{label}Maximum thruster signal = {thruster_max}")
 
 
 # def process_scheduler(library, program):
@@ -223,8 +222,10 @@ def thruster(program,
 if __name__ == "__main__":
     thruster(program='Amp',
              part=1,
-             library=aoc.PROGRAMS_AVAILABLE_DICTIONARY)
+             library=aoc.PROGRAMS_AVAILABLE_DICTIONARY,
+             label='Day 7, Part 1 - ')
 
     thruster(program='Amp',
-              part=2,
-              library=aoc.PROGRAMS_AVAILABLE_DICTIONARY)
+             part=2,
+             library=aoc.PROGRAMS_AVAILABLE_DICTIONARY,
+             label='Day 7, Part 2 - ')
