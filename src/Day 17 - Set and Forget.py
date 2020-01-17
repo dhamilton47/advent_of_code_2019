@@ -204,15 +204,14 @@ Step 3:
         A, B, A, B, C, C, B, A, C, A
 """
 
-M = 'A,B,A,B,C,C,B,A,C,A'
-A = 'L,10,R,8,R,6,R,10'
-B = 'L,12,R,8,L,12'
-C = 'L,10,R,8,R8'
+M = 'A,B,A,B,C,C,B,A,C,A\n'
+A = 'L,10,R,8,R,6,R,10\n'
+B = 'L,12,R,8,L,12\n'
+C = 'L,10,R,8,R,8\n'
 
 
 def ascii_interpreter(val):
     val1 = [ord(val[i]) for i in range(len(val))]
-    val1.append(10)
 
     return val1
 
@@ -221,7 +220,7 @@ M = ascii_interpreter(M)
 A = ascii_interpreter(A)
 B = ascii_interpreter(B)
 C = ascii_interpreter(C)
-VIDEO = ascii_interpreter('y')
+VIDEO = ascii_interpreter('y\n')
 
 instructions = M + A + B + C + VIDEO
 
@@ -229,11 +228,9 @@ main()
 opcode = 0
 machine = intcode(aoc.PROGRAMS_AVAILABLE_DICTIONARY, 'ASCII')
 machine.memory.bank[0] = 2
-print(machine.memory.bank[0])
 machine.io.input_value = instructions
 while opcode != 99:
     opcode = machine.process_run()
-    machine.io.output_value
 
 print(f"Day 17, Part 2 - Dust collected = {machine.io.output_value}")
 
