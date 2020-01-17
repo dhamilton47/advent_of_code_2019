@@ -37,7 +37,7 @@ class Instruction:
                 0: {'address': 0, 'value': 0},
                 1: {'address': 0, 'value': 0},
                 2: {'address': 0, 'value': 0},
-                 },
+                },
             },
         2: {
             'opcode': 2,
@@ -47,7 +47,7 @@ class Instruction:
                 0: {'address': 0, 'value': 0},
                 1: {'address': 0, 'value': 0},
                 2: {'address': 0, 'value': 0},
-                 },
+                },
             },
         3: {
             'opcode': 3,
@@ -55,7 +55,7 @@ class Instruction:
             'func': 'INPUT',
             'params': {
                 0: {'address': 0, 'value': 0},
-                 },
+                },
             },
         4: {
             'opcode': 4,
@@ -63,7 +63,7 @@ class Instruction:
             'func': 'OUTPUT',
             'params': {
                 0: {'address': 0, 'value': 0},
-                 },
+                },
             },
         5: {
             'opcode': 5,
@@ -72,7 +72,7 @@ class Instruction:
             'params': {
                 0: {'address': 0, 'value': 0},
                 1: {'address': 0, 'value': 0},
-                 },
+                },
             },
         6: {
             'opcode': 6,
@@ -81,7 +81,7 @@ class Instruction:
             'params': {
                 0: {'address': 0, 'value': 0},
                 1: {'address': 0, 'value': 0},
-                 },
+                },
             },
         7: {
             'opcode': 7,
@@ -91,7 +91,7 @@ class Instruction:
                 0: {'address': 0, 'value': 0},
                 1: {'address': 0, 'value': 0},
                 2: {'address': 0, 'value': 0},
-                 },
+                },
             },
         8: {
             'opcode': 8,
@@ -101,7 +101,7 @@ class Instruction:
                 0: {'address': 0, 'value': 0},
                 1: {'address': 0, 'value': 0},
                 2: {'address': 0, 'value': 0},
-                 },
+                },
             },
         9: {
             'opcode': 9,
@@ -166,10 +166,10 @@ class Instruction:
         modes = self.mode_dictionary[memory.value(ip) // 100]['modes']
 
         parameters = self.decode_parameters(
-                           memory,
-                           parameters,
-                           modes,
-                           ip)
+            memory,
+            parameters,
+            modes,
+            ip)
 
         return parameters
 
